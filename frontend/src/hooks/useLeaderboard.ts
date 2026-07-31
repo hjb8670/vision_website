@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
-import type { LeaderboardRow } from '../lib/types';
+import type { LeaderboardRow, BiggestWin } from '../lib/types';
 
 export function useLeaderboard() {
   return useQuery({
@@ -10,5 +10,16 @@ export function useLeaderboard() {
       return data;
     },
     refetchInterval: 8000,
+  });
+}
+
+export function useBiggestWins() {
+  return useQuery({
+    queryKey: ['leaderboard-biggest-wins'],
+    queryFn: async () => {
+      const { data } = await api.get<BiggestWin[]>('/leaderboard/biggest-wins');
+      return data;
+    },
+    refetchInterval: 15000,
   });
 }

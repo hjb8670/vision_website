@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { ToastHost } from './components/ToastHost';
+import { DepositModal } from './components/DepositModal';
 import { HomePage } from './pages/HomePage';
 import { MarketsPage } from './pages/MarketsPage';
 import { MarketDetailPage } from './pages/MarketDetailPage';
@@ -10,6 +11,7 @@ import { PortfolioPage } from './pages/PortfolioPage';
 import { WalletPage } from './pages/WalletPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { ReferralsPage } from './pages/ReferralsPage';
 
 function App() {
   return (
@@ -25,10 +27,12 @@ function App() {
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/referral" element={<ReferralsPage />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
         </Routes>
       </main>
       <ToastHost />
+      <DepositModal />
     </>
   );
 }

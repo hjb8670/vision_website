@@ -63,6 +63,13 @@ export interface LeaderboardRow {
   username: string;
   profit: number;
   winRate: number;
+  volume: number;
+}
+
+export interface BiggestWin {
+  username: string;
+  amount: number;
+  note: string | null;
 }
 
 export type SortFilter = 'newest' | 'trending' | 'volume' | 'ending';

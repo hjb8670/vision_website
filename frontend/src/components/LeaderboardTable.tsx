@@ -1,47 +1,68 @@
 import type { LeaderboardRow } from '../lib/types';
+import { useAuthStore } from '../store/authStore';
 
-const MEDAL_STYLES: Record<number, string> = {
-  1: 'bg-[#F2B134]/20 text-[#F2B134]',
-  2: 'bg-[#C9C9C9]/20 text-[#C9C9C9]',
-  3: 'bg-[#B91F1F]/20 text-[#E8362F]',
-};
+function avatarColor(username: string) {
+  let hash = 0;
+  for (let i = 0; i < username.length; i++) hash = (hash * 31 + username.charCodeAt(i)) >>> 0;
+  const hue = hash % 360;
+  return `linear-gradient(135deg, hsl(${hue}, 70%, 55%), hsl(${(hue + 60) % 360}, 70%, 45%))`;
+}
 
-export function LeaderboardTable({ rows }: { rows: LeaderboardRow[] }) {
+const MEDALS: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' };
+
+interface LeaderboardTableProps {
+  rows: LeaderboardRow[];
+  sortBy: 'profit' | 'volume';
+}
+
+export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
+  const currentUsername = useAuthStore((s) => s.user?.username);
+
   return (
-    <div className="overflow-x-auto bg-bg-elevated rounded-2xl">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left text-text-secondary border-b border-white/10">
-            <th className="px-4 py-3 font-medium">Rank</th>
-            <th className="px-4 py-3 font-medium">Trader</th>
-            <th className="px-4 py-3 font-medium text-right">Virtual profit</th>
-            <th className="px-4 py-3 font-medium text-right">Win rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.username} className="border-b border-white/10 last:border-0 hover:bg-white/5">
-              <td className="px-4 py-3">
+    <div className="bg-bg-elevated rounded-2xl overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-3 text-xs text-text-secondary border-b border-white/5">
+        <span />
+        <div className="flex gap-10">
+          <span className={sortBy === 'profit' ? 'text-text-primary font-semibold' : ''}>Profit/Loss</span>
+          <span className={sortBy === 'volume' ? 'text-text-primary font-semibold' : ''}>Volume</span>
+        </div>
+      </div>
+      {rows.length === 0 ? (
+        <p className="text-sm text-text-secondary text-center py-10">No traders match your search.</p>
+      ) : (
+        rows.map((row) => {
+          const isYou = row.username === currentUsername;
+          return (
+            <div
+              key={row.username}
+              className={`flex items-center justify-between px-4 py-3.5 border-b border-white/5 last:border-0 ${
+                isYou ? 'bg-white/5' : 'hover:bg-white/5'
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="w-5 text-sm text-text-secondary shrink-0">{MEDALS[row.rank] ?? row.rank}</span>
                 <span
-                  className={`inline-flex w-7 h-7 items-center justify-center rounded-full font-bold text-xs ${
-                    MEDAL_STYLES[row.rank] ?? 'bg-bg-elevated text-text-secondary'
-                  }`}
-                >
-                  {row.rank}
+                  className="w-8 h-8 rounded-full shrink-0"
+                  style={{ background: avatarColor(row.username) }}
+                />
+                <span className="text-sm font-medium truncate">
+                  {row.username}
+                  {isYou && <span className="text-text-secondary font-normal"> (You)</span>}
                 </span>
-              </td>
-              <td className="px-4 py-3 font-medium">{row.username}</td>
-              <td
-                className="px-4 py-3 text-right font-semibold"
-                style={{ color: row.profit >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}
-              >
-                {row.profit >= 0 ? '+' : ''}${row.profit.toFixed(2)}
-              </td>
-              <td className="px-4 py-3 text-right text-text-secondary">{row.winRate.toFixed(0)}%</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+              <div className="flex gap-10 text-sm shrink-0">
+                <span
+                  className="w-24 text-right font-semibold"
+                  style={{ color: row.profit >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}
+                >
+                  {row.profit >= 0 ? '+' : ''}${row.profit.toFixed(2)}
+                </span>
+                <span className="w-24 text-right text-text-secondary">${row.volume.toFixed(2)}</span>
+              </div>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }

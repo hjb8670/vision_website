@@ -11,8 +11,9 @@ export class LeaderboardService {
   async findAll() {
     const users = await this.prisma.user.findMany({
       include: {
-        wallet: true,
+        wallet: { include: { ledger: true } },
         positions: { include: { market: true } },
+        orders: true,
       },
     });
 
@@ -44,16 +45,33 @@ export class LeaderboardService {
         const profit = totalValue - STARTING_BALANCE;
         const winRate =
           resolvedCount > 0 ? (winCount / resolvedCount) * 100 : 0;
+        const volume = u.orders.reduce((sum, o) => sum + Math.abs(o.cost), 0);
 
         return {
           username: u.username,
           profit,
           winRate,
+          volume,
         };
       })
       .sort((a, b) => b.profit - a.profit)
       .map((row, i) => ({ rank: i + 1, ...row }));
 
     return rows;
+  }
+
+  async biggestWins(limit = 5) {
+    const payouts = await this.prisma.walletLedger.findMany({
+      where: { type: 'PAYOUT' },
+      orderBy: { amount: 'desc' },
+      take: limit,
+      include: { wallet: { include: { user: true } } },
+    });
+
+    return payouts.map((p) => ({
+      username: p.wallet.user.username,
+      amount: p.amount,
+      note: p.note,
+    }));
   }
 }

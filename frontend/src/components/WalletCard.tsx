@@ -1,4 +1,5 @@
 import { useWalletBalance, useWalletTransactions } from '../hooks/useWallet';
+import { useDepositModalStore } from '../store/depositModalStore';
 
 const TYPE_LABEL: Record<string, string> = {
   SEED: 'Starting balance',
@@ -9,6 +10,7 @@ const TYPE_LABEL: Record<string, string> = {
 export function WalletCard() {
   const { data: wallet, isLoading } = useWalletBalance();
   const { data: transactions } = useWalletTransactions(5);
+  const openDeposit = useDepositModalStore((s) => s.open);
 
   return (
     <div className="space-y-6">
@@ -19,17 +21,16 @@ export function WalletCard() {
         <div className="flex gap-2 mt-4">
           <button
             type="button"
-            disabled
-            title="Coming soon"
-            className="flex-1 py-2 rounded-md bg-white/5 text-text-secondary text-sm font-medium cursor-not-allowed"
+            onClick={openDeposit}
+            className="flex-1 py-2 rounded-full bg-accent-primary hover:bg-accent-secondary text-white text-sm font-semibold transition-colors"
           >
-            Deposit — Coming Soon
+            Deposit
           </button>
           <button
             type="button"
             disabled
             title="Coming soon"
-            className="flex-1 py-2 rounded-md bg-white/5 text-text-secondary text-sm font-medium cursor-not-allowed"
+            className="flex-1 py-2 rounded-full bg-white/5 text-text-secondary text-sm font-semibold cursor-not-allowed"
           >
             Withdraw — Coming Soon
           </button>

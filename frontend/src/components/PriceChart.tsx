@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useMarketHistory } from '../hooks/useMarkets';
 
 const RANGES: Array<'1D' | '1W' | '1M' | 'ALL'> = ['1D', '1W', '1M', 'ALL'];
@@ -37,13 +37,8 @@ export function PriceChart({ marketId }: { marketId: string }) {
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-              <defs>
-                <linearGradient id="yesGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--color-accent-primary)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="var(--color-accent-primary)" stopOpacity={0} />
-                </linearGradient>
-              </defs>
+            <LineChart data={chartData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" vertical={false} />
               <XAxis
                 dataKey="time"
                 type="number"
@@ -56,6 +51,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
                 minTickGap={40}
               />
               <YAxis
+                orientation="right"
                 domain={[0, 100]}
                 tickFormatter={(v) => `${v}%`}
                 stroke="var(--color-text-secondary)"
@@ -67,21 +63,15 @@ export function PriceChart({ marketId }: { marketId: string }) {
               <Tooltip
                 contentStyle={{
                   background: 'var(--color-bg-elevated)',
-                  border: '1px solid var(--color-border)',
+                  border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: 8,
                   fontSize: 12,
                 }}
                 labelFormatter={(t) => new Date(t as number).toLocaleString()}
                 formatter={(v) => [`${v}%`, 'YES']}
               />
-              <Area
-                type="monotone"
-                dataKey="yes"
-                stroke="var(--color-accent-primary)"
-                strokeWidth={2}
-                fill="url(#yesGradient)"
-              />
-            </AreaChart>
+              <Line type="monotone" dataKey="yes" stroke="var(--color-accent-primary)" strokeWidth={2} dot={false} />
+            </LineChart>
           </ResponsiveContainer>
         )}
       </div>

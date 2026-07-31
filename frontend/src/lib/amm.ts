@@ -34,3 +34,34 @@ export function tradeCost(
   const newQNo = outcome === 'NO' ? qNo + delta : qNo;
   return cost(newQYes, newQNo, b) - cost(qYes, qNo, b);
 }
+
+/**
+ * Inverts tradeCost via binary search: given a target dollar amount, finds the
+ * share quantity that costs (BUY) or returns (SELL) approximately that amount.
+ * tradeCost is monotonic in quantity, so binary search converges reliably.
+ */
+export function quantityForCost(
+  qYes: number,
+  qNo: number,
+  b: number,
+  outcome: Outcome,
+  side: 'BUY' | 'SELL',
+  targetAmount: number,
+): number {
+  if (targetAmount <= 0) return 0;
+
+  let lo = 0;
+  let hi = 1;
+  while (Math.abs(tradeCost(qYes, qNo, b, outcome, side, hi)) < targetAmount && hi < 1e8) {
+    hi *= 2;
+  }
+
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    const c = Math.abs(tradeCost(qYes, qNo, b, outcome, side, mid));
+    if (c < targetAmount) lo = mid;
+    else hi = mid;
+  }
+
+  return (lo + hi) / 2;
+}
