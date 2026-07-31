@@ -18,6 +18,10 @@
   --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
+:root {
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   background-color: var(--color-bg-secondary);

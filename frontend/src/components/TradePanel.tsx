@@ -141,14 +141,17 @@ export function TradePanel({ market }: { market: MarketDetail }) {
             {side === 'SELL' ? `${held.toFixed(2)} shares` : `$${balance.toFixed(2)} cash`}
           </span>
         </div>
-        <input
-          type="number"
-          min={0}
-          value={amount || ''}
-          onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-          placeholder="0"
-          className="w-full bg-transparent text-4xl font-extrabold focus:outline-none"
-        />
+        <div className="flex items-center gap-1 text-text-primary">
+          <span className="text-4xl font-extrabold">$</span>
+          <input
+            type="number"
+            min={0}
+            value={amount || ''}
+            onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
+            placeholder="0"
+            className="w-full bg-transparent text-4xl font-extrabold text-text-primary placeholder:text-text-secondary focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+        </div>
         <div className="grid grid-cols-4 gap-2 mt-3">
           {QUICK_AMOUNTS.map((a) => (
             <button

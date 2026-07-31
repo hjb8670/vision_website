@@ -16,7 +16,9 @@ export function WalletCard() {
     <div className="space-y-6">
       <div className="bg-bg-elevated rounded-2xl p-6">
         <p className="text-text-secondary text-sm mb-1">Virtual balance</p>
-        <p className="text-4xl font-extrabold">{isLoading ? '—' : `$${wallet?.balance.toFixed(2)}`}</p>
+        <p className="text-4xl font-extrabold">
+          {isLoading || wallet?.balance == null ? '—' : `$${wallet.balance.toFixed(2)}`}
+        </p>
 
         <div className="flex gap-2 mt-4">
           <button

@@ -69,7 +69,7 @@ export function LeaderboardPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by name"
-                className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
               />
             </div>
             <div className="flex gap-10 pr-4 text-xs text-text-secondary shrink-0">
