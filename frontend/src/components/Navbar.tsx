@@ -15,7 +15,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-20 bg-bg-secondary/95 backdrop-blur border-b border-border">
+    <header className="sticky top-0 z-20 bg-bg-elevated/95 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center gap-4 px-4 h-16">
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <span className="w-9 h-9 rounded-lg bg-accent-primary flex items-center justify-center text-white font-bold text-lg">
@@ -29,7 +29,7 @@ export function Navbar() {
             <Link
               key={l.to}
               to={l.to}
-              className="px-3 py-2 rounded-md text-sm text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+              className="px-3 py-2 rounded-md text-sm text-text-secondary hover:text-text-primary hover:bg-white/10 transition-colors"
             >
               {l.label}
             </Link>
@@ -40,14 +40,14 @@ export function Navbar() {
           <input
             type="search"
             placeholder="Search markets..."
-            className="w-full max-w-md bg-bg-primary/40 border border-border rounded-md px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
+            className="w-full max-w-md bg-white/5 border border-white/10 rounded-md px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
           />
         </div>
 
         <button
           type="button"
           aria-label="Notifications"
-          className="p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+          className="p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-white/10"
         >
           <BellIcon />
         </button>
@@ -56,7 +56,7 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               to="/wallet"
-              className="px-3 py-1.5 rounded-md bg-bg-elevated border border-border text-sm font-medium"
+              className="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-sm font-medium"
             >
               ${wallet?.balance?.toFixed(2) ?? '—'}
             </Link>
@@ -69,24 +69,24 @@ export function Navbar() {
                 {user.username.slice(0, 2).toUpperCase()}
               </button>
               {menuOpen && (
-                <div className="absolute right-0 mt-2 w-44 bg-bg-elevated border border-border rounded-md shadow-lg py-1 text-sm">
+                <div className="absolute right-0 mt-2 w-44 bg-bg-elevated border border-white/10 rounded-md shadow-lg py-1 text-sm">
                   <Link
                     to="/portfolio"
-                    className="block px-3 py-2 hover:bg-bg-primary/30"
+                    className="block px-3 py-2 hover:bg-white/5"
                     onClick={() => setMenuOpen(false)}
                   >
                     Portfolio
                   </Link>
                   <Link
                     to={`/profile/${user.username}`}
-                    className="block px-3 py-2 hover:bg-bg-primary/30"
+                    className="block px-3 py-2 hover:bg-white/5"
                     onClick={() => setMenuOpen(false)}
                   >
                     Profile
                   </Link>
                   <button
                     type="button"
-                    className="w-full text-left px-3 py-2 hover:bg-bg-primary/30 text-error"
+                    className="w-full text-left px-3 py-2 hover:bg-white/5 text-error"
                     onClick={() => {
                       logout();
                       setMenuOpen(false);

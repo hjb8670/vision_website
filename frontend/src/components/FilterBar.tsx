@@ -27,7 +27,7 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
           className={`shrink-0 px-3 py-1.5 rounded-full text-sm border transition-colors ${
             !category
               ? 'bg-accent-primary border-accent-primary text-white font-semibold'
-              : 'border-border text-text-secondary hover:text-text-primary'
+              : 'border-white/10 text-text-secondary hover:text-text-primary'
           }`}
         >
           All
@@ -40,7 +40,7 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
             className={`shrink-0 px-3 py-1.5 rounded-full text-sm border transition-colors ${
               category === c.slug
                 ? 'bg-accent-primary border-accent-primary text-white font-semibold'
-                : 'border-border text-text-secondary hover:text-text-primary'
+                : 'border-white/10 text-text-secondary hover:text-text-primary'
             }`}
           >
             {c.name}
@@ -53,7 +53,7 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
         <select
           value={sf}
           onChange={(e) => onSfChange(e.target.value as SortFilter)}
-          className="bg-bg-secondary border border-border rounded-md px-2 py-1 text-sm focus:outline-none focus:border-accent-primary"
+          className="bg-bg-elevated border border-white/10 rounded-md px-2 py-1 text-sm focus:outline-none focus:border-accent-primary"
         >
           {SORTS.map((s) => (
             <option key={s.value} value={s.value}>

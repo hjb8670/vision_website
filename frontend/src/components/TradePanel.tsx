@@ -49,7 +49,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
 
   if (!token) {
     return (
-      <div className="bg-bg-secondary border border-border rounded-xl p-5 text-center space-y-3">
+      <div className="bg-bg-elevated border border-white/10 rounded-xl p-5 text-center space-y-3">
         <p className="text-sm text-text-secondary">Log in to trade on this market.</p>
         <button
           type="button"
@@ -63,8 +63,8 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   }
 
   return (
-    <div className="bg-bg-secondary border border-border rounded-xl p-5 space-y-4">
-      <div className="grid grid-cols-2 gap-1 bg-bg-elevated rounded-md p-1">
+    <div className="bg-bg-elevated border border-white/10 rounded-xl p-5 space-y-4">
+      <div className="grid grid-cols-2 gap-1 bg-black/30 rounded-md p-1">
         {(['BUY', 'SELL'] as const).map((s) => (
           <button
             key={s}
@@ -86,7 +86,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           className={`py-3 rounded-md font-bold text-sm border transition-colors ${
             outcome === 'YES'
               ? 'text-bg-primary'
-              : 'border-border text-text-secondary hover:text-text-primary'
+              : 'border-white/10 text-text-secondary hover:text-text-primary'
           }`}
           style={outcome === 'YES' ? { background: 'var(--color-yes)', borderColor: 'var(--color-yes)' } : undefined}
         >
@@ -96,7 +96,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           type="button"
           onClick={() => setOutcome('NO')}
           className={`py-3 rounded-md font-bold text-sm border transition-colors ${
-            outcome === 'NO' ? 'text-white' : 'border-border text-text-secondary hover:text-text-primary'
+            outcome === 'NO' ? 'text-white' : 'border-white/10 text-text-secondary hover:text-text-primary'
           }`}
           style={outcome === 'NO' ? { background: 'var(--color-no)', borderColor: 'var(--color-no)' } : undefined}
         >
@@ -110,7 +110,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           <button
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 5))}
-            className="w-9 h-9 rounded-md bg-bg-elevated border border-border text-lg leading-none"
+            className="w-9 h-9 rounded-md bg-white/5 border border-white/10 text-lg leading-none"
           >
             −
           </button>
@@ -119,19 +119,19 @@ export function TradePanel({ market }: { market: MarketDetail }) {
             min={1}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(0, Number(e.target.value)))}
-            className="flex-1 text-center bg-bg-elevated border border-border rounded-md py-2 focus:outline-none focus:border-accent-primary"
+            className="flex-1 text-center bg-white/5 border border-white/10 rounded-md py-2 focus:outline-none focus:border-accent-primary"
           />
           <button
             type="button"
             onClick={() => setQuantity((q) => q + 5)}
-            className="w-9 h-9 rounded-md bg-bg-elevated border border-border text-lg leading-none"
+            className="w-9 h-9 rounded-md bg-white/5 border border-white/10 text-lg leading-none"
           >
             +
           </button>
         </div>
       </div>
 
-      <div className="text-sm space-y-1 border-t border-border pt-3">
+      <div className="text-sm space-y-1 border-t border-white/10 pt-3">
         <div className="flex justify-between text-text-secondary">
           <span>Avg. price</span>
           <span>{(preview.price * 100).toFixed(1)}¢</span>

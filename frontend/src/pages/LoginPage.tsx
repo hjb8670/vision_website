@@ -40,7 +40,7 @@ export function LoginPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-bg-secondary border border-border rounded-md px-3 py-2 focus:outline-none focus:border-accent-primary"
+            className="w-full bg-bg-elevated border border-white/10 rounded-md px-3 py-2 focus:outline-none focus:border-accent-primary"
           />
         </div>
         <div>
@@ -50,7 +50,7 @@ export function LoginPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-bg-secondary border border-border rounded-md px-3 py-2 focus:outline-none focus:border-accent-primary"
+            className="w-full bg-bg-elevated border border-white/10 rounded-md px-3 py-2 focus:outline-none focus:border-accent-primary"
           />
         </div>
         {error && <p className="text-sm text-error">{error}</p>}

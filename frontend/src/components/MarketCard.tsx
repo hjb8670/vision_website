@@ -17,18 +17,18 @@ export function MarketCard({ market }: { market: MarketSummary }) {
   return (
     <Link
       to={`/market/${market.slug}`}
-      className={`group block rounded-xl border border-border bg-bg-secondary overflow-hidden transition-all hover:border-accent-primary hover:shadow-[0_0_0_1px_var(--color-accent-primary)] ${
+      className={`group block rounded-xl border border-white/10 bg-bg-elevated overflow-hidden transition-all hover:border-accent-primary hover:shadow-[0_0_0_1px_var(--color-accent-primary)] ${
         isClosed ? 'opacity-60' : ''
       }`}
     >
       <CategoryThumb label={market.category.name} className="h-28 w-full" />
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[11px] uppercase tracking-wide text-text-secondary bg-bg-elevated px-2 py-0.5 rounded">
+          <span className="text-[11px] uppercase tracking-wide text-text-secondary bg-white/10 px-2 py-0.5 rounded">
             {market.category.name}
           </span>
           {isClosed ? (
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-bg-elevated text-text-secondary">
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-white/10 text-text-secondary">
               {market.status === 'RESOLVED' ? 'Resolved' : 'Closed'}
             </span>
           ) : (

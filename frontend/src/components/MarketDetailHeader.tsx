@@ -45,7 +45,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
         {expanded ? 'Read less' : 'Read more'}
       </button>
 
-      <div className="text-xs text-text-secondary border-t border-border pt-2">
+      <div className="text-xs text-text-secondary border-t border-white/10 pt-2">
         <span className="font-medium text-text-primary">Resolution source: </span>
         {market.resolutionSource}
       </div>

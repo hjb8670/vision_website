@@ -10,7 +10,13 @@ export function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
-      <section className="rounded-2xl bg-gradient-to-br from-bg-secondary to-bg-elevated border border-border p-8 md:p-12 text-center">
+      <section
+        className="rounded-2xl bg-bg-elevated border border-white/10 p-8 md:p-12 text-center"
+        style={{
+          backgroundImage:
+            'radial-gradient(ellipse at 20% 0%, rgba(232, 54, 47, 0.15), transparent 55%), radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, 0.04), transparent 50%)',
+        }}
+      >
         <h1 className="text-3xl md:text-5xl font-extrabold mb-3">Trade on what happens next.</h1>
         <p className="text-text-secondary max-w-xl mx-auto mb-6">
           Buy and sell shares on real-world outcomes — politics, crypto, sports, and more. Trade with a free virtual

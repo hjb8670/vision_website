@@ -20,10 +20,10 @@
 
 body {
   margin: 0;
-  background-color: var(--color-bg-primary);
+  background-color: var(--color-bg-secondary);
   background-image:
-    radial-gradient(ellipse at 50% -20%, rgba(255, 255, 255, 0.06), transparent 60%),
-    radial-gradient(ellipse at 50% 120%, rgba(0, 0, 0, 0.35), transparent 60%);
+    radial-gradient(ellipse at 50% -20%, rgba(255, 255, 255, 0.05), transparent 60%),
+    radial-gradient(ellipse at 15% 0%, rgba(232, 54, 47, 0.08), transparent 45%);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   min-height: 100svh;

@@ -12,7 +12,7 @@ export function WalletCard() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-bg-secondary border border-border rounded-xl p-6">
+      <div className="bg-bg-elevated border border-white/10 rounded-xl p-6">
         <p className="text-text-secondary text-sm mb-1">Virtual balance</p>
         <p className="text-4xl font-extrabold">{isLoading ? '—' : `$${wallet?.balance.toFixed(2)}`}</p>
 
@@ -21,7 +21,7 @@ export function WalletCard() {
             type="button"
             disabled
             title="Coming soon"
-            className="flex-1 py-2 rounded-md bg-bg-elevated border border-border text-text-secondary text-sm font-medium cursor-not-allowed"
+            className="flex-1 py-2 rounded-md bg-white/5 border border-white/10 text-text-secondary text-sm font-medium cursor-not-allowed"
           >
             Deposit — Coming Soon
           </button>
@@ -29,7 +29,7 @@ export function WalletCard() {
             type="button"
             disabled
             title="Coming soon"
-            className="flex-1 py-2 rounded-md bg-bg-elevated border border-border text-text-secondary text-sm font-medium cursor-not-allowed"
+            className="flex-1 py-2 rounded-md bg-white/5 border border-white/10 text-text-secondary text-sm font-medium cursor-not-allowed"
           >
             Withdraw — Coming Soon
           </button>
@@ -41,9 +41,9 @@ export function WalletCard() {
         {!transactions || transactions.length === 0 ? (
           <p className="text-sm text-text-secondary">No transactions yet.</p>
         ) : (
-          <ul className="divide-y divide-border border border-border rounded-xl overflow-hidden">
+          <ul className="divide-y divide-border border border-white/10 rounded-xl overflow-hidden">
             {transactions.map((tx) => (
-              <li key={tx.id} className="flex items-center justify-between px-4 py-3 bg-bg-secondary">
+              <li key={tx.id} className="flex items-center justify-between px-4 py-3 bg-bg-elevated">
                 <div>
                   <p className="text-sm">{tx.note || TYPE_LABEL[tx.type]}</p>
                   <p className="text-xs text-text-secondary">{new Date(tx.createdAt).toLocaleString()}</p>
