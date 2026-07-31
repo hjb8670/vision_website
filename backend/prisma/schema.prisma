@@ -1,0 +1,142 @@
+// Vision Prediction Market — Demo MVP schema (see demo-mvp-scope.md §6)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Outcome {
+  YES
+  NO
+}
+
+enum OrderSide {
+  BUY
+  SELL
+}
+
+enum MarketStatus {
+  OPEN
+  CLOSED
+  RESOLVED
+}
+
+enum LedgerType {
+  SEED
+  TRADE
+  PAYOUT
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  username     String     @unique
+  passwordHash String
+  role         Role       @default(USER)
+  createdAt    DateTime   @default(now())
+
+  wallet    Wallet?
+  positions Position[]
+  orders    Order[]
+}
+
+model Wallet {
+  id      String @id @default(uuid())
+  userId  String @unique
+  user    User   @relation(fields: [userId], references: [id])
+  balance Float  @default(0)
+
+  ledger WalletLedger[]
+}
+
+model WalletLedger {
+  id        String     @id @default(uuid())
+  walletId  String
+  wallet    Wallet     @relation(fields: [walletId], references: [id])
+  amount    Float
+  type      LedgerType
+  note      String?
+  createdAt DateTime   @default(now())
+}
+
+model Category {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  slug    String   @unique
+  markets Market[]
+}
+
+model Market {
+  id                String       @id @default(uuid())
+  slug              String       @unique
+  question          String
+  description       String
+  resolutionSource  String
+  categoryId        String
+  category          Category     @relation(fields: [categoryId], references: [id])
+  imageUrl          String?
+  closeDate         DateTime
+  status            MarketStatus @default(OPEN)
+  resolvedOutcome   Outcome?
+  qYes              Float        @default(0)
+  qNo               Float        @default(0)
+  liquidityB        Float        @default(75)
+  createdAt         DateTime     @default(now())
+
+  positions   Position[]
+  orders      Order[]
+  pricePoints PricePoint[]
+
+  @@index([categoryId])
+  @@index([status])
+}
+
+model Position {
+  id             String  @id @default(uuid())
+  userId         String
+  user           User    @relation(fields: [userId], references: [id])
+  marketId       String
+  market         Market  @relation(fields: [marketId], references: [id])
+  outcome        Outcome
+  quantity       Float   @default(0)
+  avgEntryPrice  Float   @default(0)
+
+  @@unique([userId, marketId, outcome])
+}
+
+model Order {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  marketId  String
+  market    Market    @relation(fields: [marketId], references: [id])
+  outcome   Outcome
+  side      OrderSide
+  quantity  Float
+  cost      Float
+  price     Float
+  createdAt DateTime  @default(now())
+
+  @@index([marketId])
+  @@index([userId])
+}
+
+model PricePoint {
+  id              String   @id @default(uuid())
+  marketId        String
+  market          Market   @relation(fields: [marketId], references: [id])
+  timestamp       DateTime
+  yesProbability  Float
+  volume          Float    @default(0)
+
+  @@index([marketId, timestamp])
+}

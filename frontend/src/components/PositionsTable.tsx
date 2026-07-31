@@ -1,0 +1,67 @@
+import { Link } from 'react-router-dom';
+import type { Position } from '../lib/types';
+
+export function PositionsTable({ positions }: { positions: Position[] }) {
+  if (positions.length === 0) {
+    return (
+      <div className="text-center py-16 border border-dashed border-border rounded-xl">
+        <p className="text-text-secondary mb-4">You don't have any open positions yet.</p>
+        <Link
+          to="/markets"
+          className="inline-block px-4 py-2 rounded-md bg-accent-primary hover:bg-accent-secondary font-semibold text-white transition-colors"
+        >
+          Browse markets
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto border border-border rounded-xl">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="text-left text-text-secondary border-b border-border">
+            <th className="px-4 py-3 font-medium">Market</th>
+            <th className="px-4 py-3 font-medium">Outcome</th>
+            <th className="px-4 py-3 font-medium text-right">Qty</th>
+            <th className="px-4 py-3 font-medium text-right">Avg. entry</th>
+            <th className="px-4 py-3 font-medium text-right">Current value</th>
+            <th className="px-4 py-3 font-medium text-right">Unrealized P&amp;L</th>
+          </tr>
+        </thead>
+        <tbody>
+          {positions.map((p) => (
+            <tr key={p.id} className="border-b border-border last:border-0 hover:bg-bg-elevated/50">
+              <td className="px-4 py-3 max-w-[280px]">
+                <Link to={`/market/${p.market.slug}`} className="hover:text-accent-primary line-clamp-1">
+                  {p.market.question}
+                </Link>
+              </td>
+              <td className="px-4 py-3">
+                <span
+                  className="text-xs font-bold px-2 py-0.5 rounded"
+                  style={{
+                    background: p.outcome === 'YES' ? 'var(--color-yes)' : 'var(--color-no)',
+                    color: p.outcome === 'YES' ? 'var(--color-bg-primary)' : '#fff',
+                  }}
+                >
+                  {p.outcome}
+                </span>
+              </td>
+              <td className="px-4 py-3 text-right">{p.quantity.toFixed(2)}</td>
+              <td className="px-4 py-3 text-right">{(p.avgEntryPrice * 100).toFixed(1)}¢</td>
+              <td className="px-4 py-3 text-right">${p.currentValue.toFixed(2)}</td>
+              <td
+                className="px-4 py-3 text-right font-medium"
+                style={{ color: p.unrealizedPnl >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}
+              >
+                {p.unrealizedPnl >= 0 ? '+' : ''}
+                {p.unrealizedPnl.toFixed(2)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

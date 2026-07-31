@@ -1,0 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../lib/api';
+import type { Category } from '../lib/types';
+
+export function useCategories() {
+  return useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data } = await api.get<Category[]>('/categories');
+      return data;
+    },
+    staleTime: 60_000,
+  });
+}
