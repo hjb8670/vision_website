@@ -134,7 +134,7 @@ export function CategoryIcon({ label, size = 40 }: { label: string; size?: numbe
 
   return (
     <div
-      className="shrink-0 flex items-center justify-center rounded-lg bg-white/5 border border-white/10"
+      className="shrink-0 flex items-center justify-center rounded-lg bg-white/5"
       style={{ width: size, height: size }}
     >
       <svg {...ICON_PROPS} width={size * 0.55} height={size * 0.55} className="text-text-secondary">

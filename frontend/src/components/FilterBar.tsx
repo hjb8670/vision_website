@@ -24,10 +24,8 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
         <button
           type="button"
           onClick={() => onCategoryChange(undefined)}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-sm border transition-colors ${
-            !category
-              ? 'bg-accent-primary border-accent-primary text-white font-semibold'
-              : 'border-white/10 text-text-secondary hover:text-text-primary'
+          className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            !category ? 'bg-accent-primary text-white' : 'bg-white/5 text-text-secondary hover:text-text-primary'
           }`}
         >
           All
@@ -37,10 +35,10 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
             key={c.id}
             type="button"
             onClick={() => onCategoryChange(c.slug)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-sm border transition-colors ${
+            className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
               category === c.slug
-                ? 'bg-accent-primary border-accent-primary text-white font-semibold'
-                : 'border-white/10 text-text-secondary hover:text-text-primary'
+                ? 'bg-accent-primary text-white'
+                : 'bg-white/5 text-text-secondary hover:text-text-primary'
             }`}
           >
             {c.name}

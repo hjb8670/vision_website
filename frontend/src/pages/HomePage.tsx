@@ -11,7 +11,7 @@ export function HomePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
       <section
-        className="rounded-2xl bg-bg-elevated border border-white/10 p-8 md:p-12 text-center"
+        className="rounded-2xl bg-bg-elevated p-8 md:p-12 text-center"
         style={{
           backgroundImage:
             'radial-gradient(ellipse at 20% 0%, rgba(232, 54, 47, 0.15), transparent 55%), radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, 0.04), transparent 50%)',
@@ -24,7 +24,7 @@ export function HomePage() {
         </p>
         <Link
           to="/markets"
-          className="inline-block px-6 py-3 rounded-md bg-accent-primary hover:bg-accent-secondary font-bold text-white transition-colors"
+          className="inline-block px-6 py-3 rounded-full bg-accent-primary hover:bg-accent-secondary font-bold text-white transition-colors"
         >
           Explore markets
         </Link>

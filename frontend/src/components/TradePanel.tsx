@@ -49,7 +49,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
 
   if (!token) {
     return (
-      <div className="bg-bg-elevated border border-white/10 rounded-xl p-5 text-center space-y-3">
+      <div className="bg-bg-elevated rounded-2xl p-5 text-center space-y-3">
         <p className="text-sm text-text-secondary">Log in to trade on this market.</p>
         <button
           type="button"
@@ -63,7 +63,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   }
 
   return (
-    <div className="bg-bg-elevated border border-white/10 rounded-xl p-5 space-y-4">
+    <div className="bg-bg-elevated rounded-2xl p-5 space-y-4">
       <div className="grid grid-cols-2 gap-1 bg-black/30 rounded-md p-1">
         {(['BUY', 'SELL'] as const).map((s) => (
           <button
@@ -83,22 +83,20 @@ export function TradePanel({ market }: { market: MarketDetail }) {
         <button
           type="button"
           onClick={() => setOutcome('YES')}
-          className={`py-3 rounded-md font-bold text-sm border transition-colors ${
-            outcome === 'YES'
-              ? 'text-bg-primary'
-              : 'border-white/10 text-text-secondary hover:text-text-primary'
+          className={`py-3 rounded-md font-bold text-sm transition-colors ${
+            outcome === 'YES' ? 'text-bg-primary' : 'bg-white/5 text-text-secondary hover:text-text-primary'
           }`}
-          style={outcome === 'YES' ? { background: 'var(--color-yes)', borderColor: 'var(--color-yes)' } : undefined}
+          style={outcome === 'YES' ? { background: 'var(--color-yes)' } : undefined}
         >
           YES {Math.round(priceForOutcome(market.qYes, market.qNo, market.liquidityB, 'YES') * 100)}%
         </button>
         <button
           type="button"
           onClick={() => setOutcome('NO')}
-          className={`py-3 rounded-md font-bold text-sm border transition-colors ${
-            outcome === 'NO' ? 'text-white' : 'border-white/10 text-text-secondary hover:text-text-primary'
+          className={`py-3 rounded-md font-bold text-sm transition-colors ${
+            outcome === 'NO' ? 'text-white' : 'bg-white/5 text-text-secondary hover:text-text-primary'
           }`}
-          style={outcome === 'NO' ? { background: 'var(--color-no)', borderColor: 'var(--color-no)' } : undefined}
+          style={outcome === 'NO' ? { background: 'var(--color-no)' } : undefined}
         >
           NO {Math.round(priceForOutcome(market.qYes, market.qNo, market.liquidityB, 'NO') * 100)}%
         </button>
@@ -110,7 +108,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           <button
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 5))}
-            className="w-9 h-9 rounded-md bg-white/5 border border-white/10 text-lg leading-none"
+            className="w-9 h-9 rounded-md bg-white/5 text-lg leading-none"
           >
             −
           </button>
@@ -119,12 +117,12 @@ export function TradePanel({ market }: { market: MarketDetail }) {
             min={1}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(0, Number(e.target.value)))}
-            className="flex-1 text-center bg-white/5 border border-white/10 rounded-md py-2 focus:outline-none focus:border-accent-primary"
+            className="flex-1 text-center bg-white/5 rounded-md py-2 focus:outline-none focus:border-accent-primary"
           />
           <button
             type="button"
             onClick={() => setQuantity((q) => q + 5)}
-            className="w-9 h-9 rounded-md bg-white/5 border border-white/10 text-lg leading-none"
+            className="w-9 h-9 rounded-md bg-white/5 text-lg leading-none"
           >
             +
           </button>

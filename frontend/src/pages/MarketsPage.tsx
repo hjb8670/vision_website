@@ -1,18 +1,25 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useMarkets } from '../hooks/useMarkets';
 import { MarketCard } from '../components/MarketCard';
 import { FilterBar } from '../components/FilterBar';
 import type { SortFilter } from '../lib/types';
 
 export function MarketsPage() {
-  const [sf, setSf] = useState<SortFilter>('newest');
-  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [sf, setSf] = useState<SortFilter>((searchParams.get('sf') as SortFilter) ?? 'newest');
+  const category = searchParams.get('category') ?? undefined;
+
   const { data: markets, isLoading } = useMarkets(sf, category);
+
+  function handleCategoryChange(slug: string | undefined) {
+    setSearchParams(slug ? { category: slug } : {});
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
       <h1 className="text-2xl font-bold">Markets</h1>
-      <FilterBar sf={sf} onSfChange={setSf} category={category} onCategoryChange={setCategory} />
+      <FilterBar sf={sf} onSfChange={setSf} category={category} onCategoryChange={handleCategoryChange} />
 
       {isLoading ? (
         <p className="text-text-secondary">Loading markets…</p>

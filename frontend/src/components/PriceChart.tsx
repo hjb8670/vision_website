@@ -14,7 +14,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
   }));
 
   return (
-    <div className="bg-bg-elevated border border-white/10 rounded-xl p-4">
+    <div className="bg-bg-elevated rounded-2xl p-4">
       <div className="flex items-center justify-end gap-1 mb-2">
         {RANGES.map((r) => (
           <button

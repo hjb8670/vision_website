@@ -2,8 +2,8 @@
 
 @theme {
   --color-bg-primary: #a32620;
-  --color-bg-secondary: #121212;
-  --color-bg-elevated: #1c1c1c;
+  --color-bg-secondary: #0a0a0a;
+  --color-bg-elevated: #161616;
   --color-accent-primary: #e8362f;
   --color-accent-secondary: #b91f1f;
   --color-yes: #f2b134;
@@ -21,9 +21,6 @@
 body {
   margin: 0;
   background-color: var(--color-bg-secondary);
-  background-image:
-    radial-gradient(ellipse at 50% -20%, rgba(255, 255, 255, 0.05), transparent 60%),
-    radial-gradient(ellipse at 15% 0%, rgba(232, 54, 47, 0.08), transparent 45%);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   min-height: 100svh;

@@ -4,7 +4,7 @@ import type { Position } from '../lib/types';
 export function PositionsTable({ positions }: { positions: Position[] }) {
   if (positions.length === 0) {
     return (
-      <div className="text-center py-16 border border-dashed border-white/10 rounded-xl">
+      <div className="text-center py-16 border border-dashed border-white/15 rounded-2xl">
         <p className="text-text-secondary mb-4">You don't have any open positions yet.</p>
         <Link
           to="/markets"
@@ -17,7 +17,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
   }
 
   return (
-    <div className="overflow-x-auto border border-white/10 rounded-xl">
+    <div className="overflow-x-auto bg-bg-elevated rounded-2xl">
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-text-secondary border-b border-white/10">
@@ -31,7 +31,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
         </thead>
         <tbody>
           {positions.map((p) => (
-            <tr key={p.id} className="border-b border-white/10 last:border-0 hover:bg-bg-elevated/50">
+            <tr key={p.id} className="border-b border-white/10 last:border-0 hover:bg-white/5">
               <td className="px-4 py-3 max-w-[280px]">
                 <Link to={`/market/${p.market.slug}`} className="hover:text-accent-primary line-clamp-1">
                   {p.market.question}
