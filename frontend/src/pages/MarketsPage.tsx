@@ -17,7 +17,7 @@ export function MarketsPage() {
       {isLoading ? (
         <p className="text-text-secondary">Loading markets…</p>
       ) : markets && markets.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {markets.map((m) => (
             <MarketCard key={m.id} market={m} />
           ))}
