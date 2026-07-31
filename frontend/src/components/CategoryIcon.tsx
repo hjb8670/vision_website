@@ -129,18 +129,15 @@ const DEFAULT_ICON = (
   </>
 );
 
-export function CategoryThumb({ label, className = '' }: { label: string; className?: string }) {
+export function CategoryIcon({ label, size = 40 }: { label: string; size?: number }) {
   const icon = ICONS[label.toLowerCase()] ?? DEFAULT_ICON;
 
   return (
     <div
-      className={`relative flex items-center justify-center bg-bg-elevated overflow-hidden ${className}`}
-      style={{
-        backgroundImage:
-          'radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.06), transparent 60%), linear-gradient(135deg, rgba(255,255,255,0.03), transparent 60%)',
-      }}
+      className="shrink-0 flex items-center justify-center rounded-lg bg-white/5 border border-white/10"
+      style={{ width: size, height: size }}
     >
-      <svg {...ICON_PROPS} width={30} height={30} className="text-text-secondary/80">
+      <svg {...ICON_PROPS} width={size * 0.55} height={size * 0.55} className="text-text-secondary">
         {icon}
       </svg>
     </div>
