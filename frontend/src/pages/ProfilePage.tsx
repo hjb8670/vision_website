@@ -1,9 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function ProfilePage() {
   const { username } = useParams<{ username: string }>();
+  const { t } = useTranslation();
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['user', username],
@@ -15,10 +17,10 @@ export function ProfilePage() {
   });
 
   if (isLoading) {
-    return <div className="max-w-2xl mx-auto px-4 py-16 text-text-secondary">Loading profile…</div>;
+    return <div className="max-w-2xl mx-auto px-4 py-16 text-text-secondary">{t('profilePage.loading')}</div>;
   }
   if (!user) {
-    return <div className="max-w-2xl mx-auto px-4 py-16 text-text-secondary">User not found.</div>;
+    return <div className="max-w-2xl mx-auto px-4 py-16 text-text-secondary">{t('profilePage.notFound')}</div>;
   }
 
   return (
@@ -28,7 +30,7 @@ export function ProfilePage() {
       </div>
       <h1 className="text-2xl font-bold">{user.username}</h1>
       <p className="text-text-secondary text-sm mt-1">
-        Trading since {new Date(user.createdAt).toLocaleDateString()}
+        {t('profilePage.tradingSince', { date: new Date(user.createdAt).toLocaleDateString() })}
       </p>
     </div>
   );

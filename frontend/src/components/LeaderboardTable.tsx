@@ -1,5 +1,6 @@
 import type { LeaderboardRow } from '../lib/types';
 import { useAuthStore } from '../store/authStore';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 function avatarColor(username: string) {
   let hash = 0;
@@ -17,18 +18,19 @@ interface LeaderboardTableProps {
 
 export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
   const currentUsername = useAuthStore((s) => s.user?.username);
+  const { t } = useTranslation();
 
   return (
     <div className="bg-bg-elevated rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 text-xs text-text-secondary border-b border-white/5">
         <span />
         <div className="flex gap-10">
-          <span className={sortBy === 'profit' ? 'text-text-primary font-semibold' : ''}>Profit/Loss</span>
-          <span className={sortBy === 'volume' ? 'text-text-primary font-semibold' : ''}>Volume</span>
+          <span className={sortBy === 'profit' ? 'text-text-primary font-semibold' : ''}>{t('leaderboardTable.profitLoss')}</span>
+          <span className={sortBy === 'volume' ? 'text-text-primary font-semibold' : ''}>{t('leaderboardTable.volume')}</span>
         </div>
       </div>
       {rows.length === 0 ? (
-        <p className="text-sm text-text-secondary text-center py-10">No traders match your search.</p>
+        <p className="text-sm text-text-secondary text-center py-10">{t('leaderboardTable.noMatches')}</p>
       ) : (
         rows.map((row) => {
           const isYou = row.username === currentUsername;
@@ -47,7 +49,7 @@ export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
                 />
                 <span className="text-sm font-medium truncate">
                   {row.username}
-                  {isYou && <span className="text-text-secondary font-normal"> (You)</span>}
+                  {isYou && <span className="text-text-secondary font-normal">{t('leaderboardTable.you')}</span>}
                 </span>
               </div>
               <div className="flex gap-10 text-sm shrink-0">

@@ -1,54 +1,58 @@
 import { Link } from 'react-router-dom';
 import { useMarkets } from '../hooks/useMarkets';
 import { MarketCard } from '../components/MarketCard';
+import { HeroSection } from '../components/HeroSection';
+import { TrendingTopicsWidget } from '../components/TrendingTopicsWidget';
+import { LeaderboardTeaserWidget } from '../components/LeaderboardTeaserWidget';
+import { MultiMarketComparisonChart } from '../components/MultiMarketComparisonChart';
+import { DepositProgressBanner } from '../components/DepositProgressBanner';
+import { useTranslation } from '../lib/i18n/useTranslation';
+import { useCategoryLabel } from '../lib/i18n/categories';
 
 export function HomePage() {
   const { data: trending } = useMarkets('trending');
   const { data: newest } = useMarkets('newest');
+  const { t } = useTranslation();
 
-  const featured = (trending ?? []).slice(0, 4);
+  const comparisonMarkets = (trending ?? []).slice(0, 3);
+  const sideCards = (trending ?? []).slice(3, 5);
+  const topCategoryLabel = useCategoryLabel(comparisonMarkets[0]?.category);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
-      <section
-        className="rounded-2xl bg-bg-elevated p-8 md:p-12 text-center"
-        style={{
-          backgroundImage:
-            'radial-gradient(ellipse at 20% 0%, rgba(232, 54, 47, 0.15), transparent 55%), radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, 0.04), transparent 50%)',
-        }}
-      >
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-3">Trade on what happens next.</h1>
-        <p className="text-text-secondary max-w-xl mx-auto mb-6">
-          Buy and sell shares on real-world outcomes — politics, crypto, sports, and more. Trade with a free virtual
-          balance.
-        </p>
-        <Link
-          to="/markets"
-          className="inline-block px-6 py-3 rounded-full bg-accent-primary hover:bg-accent-secondary font-bold text-white transition-colors"
-        >
-          Explore markets
-        </Link>
-      </section>
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2">
+          <HeroSection />
+        </div>
+        <div className="space-y-4">
+          <TrendingTopicsWidget />
+          <LeaderboardTeaserWidget />
+        </div>
+      </div>
+
+      {comparisonMarkets.length >= 3 && (
+        <section>
+          <h2 className="text-xl font-bold mb-4">{t('home.comparisonSubheading', { category: topCategoryLabel })}</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2">
+              <MultiMarketComparisonChart markets={comparisonMarkets} />
+            </div>
+            <div className="space-y-4">
+              {sideCards.map((m) => (
+                <MarketCard key={m.id} market={m} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <DepositProgressBanner />
 
       <section>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">Trending now</h2>
+          <h2 className="text-xl font-bold">{t('home.allMarketsHeading')}</h2>
           <Link to="/markets" className="text-sm text-accent-primary hover:underline">
-            View all
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {featured.map((m) => (
-            <MarketCard key={m.id} market={m} />
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">Newest markets</h2>
-          <Link to="/markets" className="text-sm text-accent-primary hover:underline">
-            View all
+            {t('home.viewAll')}
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

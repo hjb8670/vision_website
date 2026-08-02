@@ -1,4 +1,7 @@
+import { useTranslation } from '../lib/i18n/useTranslation';
+
 export function ProbabilityRing({ pct, size = 56 }: { pct: number; size?: number }) {
+  const { t } = useTranslation();
   const stroke = 4;
   const r = (size - stroke) / 2;
   const circumference = 2 * Math.PI * r;
@@ -25,7 +28,7 @@ export function ProbabilityRing({ pct, size = 56 }: { pct: number; size?: number
         <span className="text-sm font-bold" style={{ color }}>
           {Math.round(pct)}%
         </span>
-        <span className="text-[8px] text-text-secondary mt-0.5">chance</span>
+        <span className="text-[8px] text-text-secondary mt-0.5">{t('probabilityRing.chance')}</span>
       </div>
     </div>
   );

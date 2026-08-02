@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function ReferralsPage() {
   const user = useAuthStore((s) => s.user);
   const push = useToastStore((s) => s.push);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   if (!user) {
@@ -20,27 +22,30 @@ export function ReferralsPage() {
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopied(true);
-      push('Referral link copied to clipboard');
+      push(t('referralsPage.linkCopied'));
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      push('Could not copy link', 'error');
+      push(t('marketDetailHeader.couldNotCopyLink'), 'error');
     }
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center gap-2 mb-1">
-        <h1 className="text-3xl font-extrabold">Referrals</h1>
+        <h1 className="text-3xl font-extrabold">{t('referralsPage.heading')}</h1>
         <span className="text-lg">⚡</span>
         <span className="px-2 py-0.5 rounded-full bg-accent-secondary/30 text-accent-primary text-[11px] font-bold uppercase">
-          Boosted
+          {t('referralsPage.boosted')}
         </span>
       </div>
       <p className="text-text-secondary mb-6">
-        Earn <span className="font-semibold text-text-primary">10% of fees</span> from direct referrals, and{' '}
-        <span className="font-semibold text-text-primary">5% of fees</span> for all indirect referrals.{' '}
-        <span className="text-accent-primary hover:underline cursor-pointer" onClick={() => push('Details coming soon.')}>
-          Learn more
+        {t('referralsPage.earnIntro')}
+        <span className="font-semibold text-text-primary">{t('referralsPage.tenPercentFees')}</span>
+        {t('referralsPage.fromDirect')}
+        <span className="font-semibold text-text-primary">{t('referralsPage.fivePercentFees')}</span>
+        {t('referralsPage.forIndirect')}
+        <span className="text-accent-primary hover:underline cursor-pointer" onClick={() => push(t('referralsPage.detailsComingSoon'))}>
+          {t('referralsPage.learnMore')}
         </span>
       </p>
 
@@ -70,14 +75,12 @@ export function ReferralsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard label="Sign ups" value="0" />
-        <StatCard label="Active Traders" value="0" />
-        <StatCard label="Earnings" value="$0.00" accent />
+        <StatCard label={t('referralsPage.signUps')} value="0" />
+        <StatCard label={t('referralsPage.activeTraders')} value="0" />
+        <StatCard label={t('referralsPage.earnings')} value="$0.00" accent />
       </div>
 
-      <p className="text-xs text-text-secondary mt-6">
-        Referral tracking isn't live in this demo yet — this page is integration-ready for the next phase.
-      </p>
+      <p className="text-xs text-text-secondary mt-6">{t('referralsPage.notLiveNotice')}</p>
     </div>
   );
 }

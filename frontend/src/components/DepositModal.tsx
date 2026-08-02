@@ -2,21 +2,24 @@ import { useState, type ReactNode } from 'react';
 import { useDepositModalStore } from '../store/depositModalStore';
 import { useToastStore } from '../store/toastStore';
 import { useWalletBalance } from '../hooks/useWallet';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 type Tab = 'cash' | 'crypto';
 
 interface Method {
   key: string;
-  label: string;
-  sub: string;
+  labelKey: string;
+  subKey: string;
+  subVars?: Record<string, string>;
   icon: ReactNode;
 }
 
 const CASH_METHODS: Method[] = [
   {
     key: 'card',
-    label: 'Card',
-    sub: '$115k limit · Instant',
+    labelKey: 'depositModal.card',
+    subKey: 'depositModal.limitInstant',
+    subVars: { limit: '$115k' },
     icon: (
       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -28,8 +31,9 @@ const CASH_METHODS: Method[] = [
   },
   {
     key: 'apple-pay',
-    label: 'Apple Pay',
-    sub: '$115k limit · Instant',
+    labelKey: 'depositModal.applePay',
+    subKey: 'depositModal.limitInstant',
+    subVars: { limit: '$115k' },
     icon: (
       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#000">
@@ -40,8 +44,8 @@ const CASH_METHODS: Method[] = [
   },
   {
     key: 'cash-app',
-    label: 'Cash App',
-    sub: '$10k · Instant',
+    labelKey: 'depositModal.cashApp',
+    subKey: 'depositModal.cashAppLimit',
     icon: (
       <div className="w-10 h-10 rounded-xl bg-[#00D64B] flex items-center justify-center text-black font-bold text-lg">
         $
@@ -50,8 +54,9 @@ const CASH_METHODS: Method[] = [
   },
   {
     key: 'google-pay',
-    label: 'Google Pay',
-    sub: '$115k limit · Instant',
+    labelKey: 'depositModal.googlePay',
+    subKey: 'depositModal.limitInstant',
+    subVars: { limit: '$115k' },
     icon: (
       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black font-bold">G</div>
     ),
@@ -61,8 +66,8 @@ const CASH_METHODS: Method[] = [
 const CRYPTO_METHODS: Method[] = [
   {
     key: 'transfer-crypto',
-    label: 'Transfer Crypto',
-    sub: 'No limit · Instant',
+    labelKey: 'depositModal.transferCrypto',
+    subKey: 'depositModal.noLimitInstant',
     icon: (
       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -76,8 +81,8 @@ const CRYPTO_METHODS: Method[] = [
   },
   {
     key: 'lightning',
-    label: 'Bitcoin Lightning',
-    sub: '$10k · Instant',
+    labelKey: 'depositModal.bitcoinLightning',
+    subKey: 'depositModal.bitcoinLightningLimit',
     icon: (
       <div className="w-10 h-10 rounded-full bg-[#F2A900] flex items-center justify-center text-black font-bold">
         ₿
@@ -86,8 +91,8 @@ const CRYPTO_METHODS: Method[] = [
   },
   {
     key: 'exchange',
-    label: 'Connect Exchange',
-    sub: 'No limit · 2 min',
+    labelKey: 'depositModal.connectExchange',
+    subKey: 'depositModal.noLimitTwoMin',
     icon: (
       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -103,6 +108,7 @@ export function DepositModal() {
   const { isOpen, close } = useDepositModalStore();
   const push = useToastStore((s) => s.push);
   const { data: wallet } = useWalletBalance();
+  const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>('cash');
 
   if (!isOpen) return null;
@@ -120,15 +126,15 @@ export function DepositModal() {
       >
         <div className="flex items-start justify-between mb-1">
           <div className="flex-1 text-center">
-            <h2 className="text-xl font-bold">Deposit</h2>
+            <h2 className="text-xl font-bold">{t('depositModal.heading')}</h2>
             <p className="text-sm text-text-secondary mt-0.5">
-              Vision balance: ${wallet?.balance?.toFixed(2) ?? '0.00'}
+              {t('depositModal.balance', { amount: wallet?.balance?.toFixed(2) ?? '0.00' })}
             </p>
           </div>
           <button
             type="button"
             onClick={close}
-            aria-label="Close"
+            aria-label={t('depositModal.close')}
             className="p-1 -mt-1 -mr-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -146,7 +152,7 @@ export function DepositModal() {
               tab === 'crypto' ? 'bg-white/10 text-text-primary' : 'text-text-secondary'
             }`}
           >
-            ₿ Use Crypto
+            ₿ {t('depositModal.useCrypto')}
           </button>
           <button
             type="button"
@@ -155,7 +161,7 @@ export function DepositModal() {
               tab === 'cash' ? 'bg-white/10 text-text-primary' : 'text-text-secondary'
             }`}
           >
-            $ Use Cash
+            $ {t('depositModal.useCash')}
           </button>
         </div>
 
@@ -164,13 +170,13 @@ export function DepositModal() {
             <button
               key={m.key}
               type="button"
-              onClick={() => push('Deposits aren’t live in this demo yet — integration-ready for the next phase.', 'success')}
+              onClick={() => push(t('depositModal.comingSoon'), 'success')}
               className="w-full flex items-center gap-3 rounded-xl bg-white/5 hover:bg-white/10 px-4 py-3 text-left transition-colors"
             >
               {m.icon}
               <div>
-                <div className="text-sm font-semibold">{m.label}</div>
-                <div className="text-xs text-text-secondary">{m.sub}</div>
+                <div className="text-sm font-semibold">{t(m.labelKey)}</div>
+                <div className="text-xs text-text-secondary">{t(m.subKey, m.subVars)}</div>
               </div>
             </button>
           ))}

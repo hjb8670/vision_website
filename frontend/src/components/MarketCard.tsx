@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import type { MarketSummary } from '../lib/types';
 import { CategoryIcon } from './CategoryIcon';
 import { ProbabilityRing } from './ProbabilityRing';
+import { useTranslation } from '../lib/i18n/useTranslation';
+import { useCategoryLabel } from '../lib/i18n/categories';
 
 function daysUntil(dateStr: string) {
   const diff = new Date(dateStr).getTime() - Date.now();
@@ -10,6 +12,8 @@ function daysUntil(dateStr: string) {
 }
 
 export function MarketCard({ market }: { market: MarketSummary }) {
+  const { t } = useTranslation();
+  const categoryLabel = useCategoryLabel(market.category);
   const isClosed = market.status !== 'OPEN';
   const days = daysUntil(market.closeDate);
   const yesPct = Math.round(market.yesProbability * 100);
@@ -30,8 +34,12 @@ export function MarketCard({ market }: { market: MarketSummary }) {
       </div>
 
       <div className="text-[11px] text-text-secondary">
-        {market.category.name} · ${market.volume24h.toFixed(0)} vol ·{' '}
-        {isClosed ? (market.status === 'RESOLVED' ? 'Resolved' : 'Closed') : days > 0 ? `${days}d left` : 'closing soon'}
+        {categoryLabel} · ${market.volume24h.toFixed(0)} vol ·{' '}
+        {isClosed
+          ? t(market.status === 'RESOLVED' ? 'common.status.RESOLVED' : 'common.status.CLOSED')
+          : days > 0
+            ? t('marketCard.daysLeft', { days })
+            : t('marketCard.closingSoon')}
       </div>
     </Link>
   );

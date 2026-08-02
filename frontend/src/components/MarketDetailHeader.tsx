@@ -2,11 +2,15 @@ import { useState } from 'react';
 import type { MarketDetail } from '../lib/types';
 import { CategoryIcon } from './CategoryIcon';
 import { useToastStore } from '../store/toastStore';
+import { useTranslation } from '../lib/i18n/useTranslation';
+import { useCategoryLabel } from '../lib/i18n/categories';
 
 export function MarketDetailHeader({ market }: { market: MarketDetail }) {
   const [expanded, setExpanded] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const push = useToastStore((s) => s.push);
+  const { t } = useTranslation();
+  const categoryLabel = useCategoryLabel(market.category);
   const yesPct = Math.round(market.yesProbability * 100);
   const closeDate = new Date(market.closeDate).toLocaleDateString(undefined, {
     year: 'numeric',
@@ -17,9 +21,9 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      push('Link copied to clipboard');
+      push(t('marketDetailHeader.linkCopied'));
     } catch {
-      push('Could not copy link', 'error');
+      push(t('marketDetailHeader.couldNotCopyLink'), 'error');
     }
   }
 
@@ -30,10 +34,12 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
           <CategoryIcon label={market.category.name} size={56} />
           <div className="min-w-0">
             <p className="text-sm text-text-secondary mb-1">
-              {market.category.name}
+              {categoryLabel}
               {market.status === 'RESOLVED' && (
                 <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-text-primary">
-                  Resolved: {market.resolvedOutcome}
+                  {t('marketDetailHeader.resolved', {
+                    outcome: t(market.resolvedOutcome === 'YES' ? 'common.yes' : 'common.no').toUpperCase(),
+                  })}
                 </span>
               )}
             </p>
@@ -45,7 +51,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
           <button
             type="button"
             onClick={copyLink}
-            aria-label="Copy link"
+            aria-label={t('marketDetailHeader.copyLink')}
             className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
           >
             <LinkIcon />
@@ -53,7 +59,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
           <button
             type="button"
             onClick={() => setBookmarked((v) => !v)}
-            aria-label="Bookmark"
+            aria-label={t('marketDetailHeader.bookmark')}
             className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
           >
             <BookmarkIcon filled={bookmarked} />
@@ -65,7 +71,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
         <span className="text-4xl font-extrabold" style={{ color: yesPct > 50 ? 'var(--color-yes)' : 'var(--color-no)' }}>
           {yesPct}%
         </span>
-        <span className="text-text-secondary text-sm">chance · closes {closeDate}</span>
+        <span className="text-text-secondary text-sm">{t('marketDetailHeader.chanceCloses', { date: closeDate })}</span>
       </div>
 
       <div>
@@ -75,12 +81,12 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
           onClick={() => setExpanded((v) => !v)}
           className="text-xs text-accent-primary font-medium hover:underline mt-1"
         >
-          {expanded ? 'Read less' : 'Read more'}
+          {expanded ? t('marketDetailHeader.readLess') : t('marketDetailHeader.readMore')}
         </button>
       </div>
 
       <div className="text-xs text-text-secondary border-t border-white/10 pt-3">
-        <span className="font-medium text-text-primary">Resolution source: </span>
+        <span className="font-medium text-text-primary">{t('marketDetailHeader.resolutionSource')}</span>
         {market.resolutionSource}
       </div>
     </div>

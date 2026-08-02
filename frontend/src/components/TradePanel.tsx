@@ -9,6 +9,7 @@ import { usePositions } from '../hooks/usePositions';
 import { useDepositModalStore } from '../store/depositModalStore';
 import { priceForOutcome, quantityForCost, tradeCost, type Outcome } from '../lib/amm';
 import { CategoryIcon } from './CategoryIcon';
+import { useTranslation } from '../lib/i18n/useTranslation';
 import type { MarketDetail } from '../lib/types';
 
 const QUICK_AMOUNTS = [1, 5, 10, 100];
@@ -21,6 +22,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   const openDeposit = useDepositModalStore((s) => s.open);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const [side, setSide] = useState<'BUY' | 'SELL'>('BUY');
   const [outcome, setOutcome] = useState<Outcome>('YES');
@@ -52,7 +54,13 @@ export function TradePanel({ market }: { market: MarketDetail }) {
       return data;
     },
     onSuccess: () => {
-      push(`${side === 'BUY' ? 'Bought' : 'Sold'} ~${preview.quantity.toFixed(1)} ${outcome} shares`, 'success');
+      push(
+        t(side === 'BUY' ? 'tradePanel.bought' : 'tradePanel.sold', {
+          qty: preview.quantity.toFixed(1),
+          outcome: t(outcome === 'YES' ? 'common.yes' : 'common.no'),
+        }),
+        'success',
+      );
       setAmount(0);
       queryClient.invalidateQueries({ queryKey: ['market', market.slug] });
       queryClient.invalidateQueries({ queryKey: ['market-history', market.id] });
@@ -61,20 +69,20 @@ export function TradePanel({ market }: { market: MarketDetail }) {
       queryClient.invalidateQueries({ queryKey: ['markets'] });
     },
     onError: (err: any) => {
-      push(err?.response?.data?.message ?? 'Trade failed', 'error');
+      push(err?.response?.data?.message ?? t('tradePanel.tradeFailed'), 'error');
     },
   });
 
   if (!token) {
     return (
       <div className="bg-bg-elevated rounded-2xl p-5 text-center space-y-3">
-        <p className="text-sm text-text-secondary">Log in to trade on this market.</p>
+        <p className="text-sm text-text-secondary">{t('tradePanel.loginPrompt')}</p>
         <button
           type="button"
           onClick={() => navigate('/login')}
           className="w-full py-2 rounded-full bg-accent-primary hover:bg-accent-secondary font-semibold text-white transition-colors"
         >
-          Log in
+          {t('navbar.logIn')}
         </button>
       </div>
     );
@@ -88,7 +96,9 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           <p className="text-sm font-semibold line-clamp-1">{market.question}</p>
           <p className="text-xs text-text-secondary">
             {new Date(market.closeDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} ·{' '}
-            <span style={{ color: outcome === 'YES' ? 'var(--color-yes)' : 'var(--color-no)' }}>{outcome}</span>
+            <span style={{ color: outcome === 'YES' ? 'var(--color-yes)' : 'var(--color-no)' }}>
+              {t(outcome === 'YES' ? 'common.yes' : 'common.no').toUpperCase()}
+            </span>
           </p>
         </div>
       </div>
@@ -103,11 +113,11 @@ export function TradePanel({ market }: { market: MarketDetail }) {
               side === s ? 'bg-white/10 text-text-primary' : 'text-text-secondary hover:text-text-primary'
             }`}
           >
-            {s}
+            {t(s === 'BUY' ? 'tradePanel.buy' : 'tradePanel.sell').toUpperCase()}
           </button>
         ))}
         <div className="col-span-2 flex justify-end pr-2 -mt-0.5">
-          <span className="text-[11px] text-text-secondary">Market ▾</span>
+          <span className="text-[11px] text-text-secondary">{t('tradePanel.market')} ▾</span>
         </div>
       </div>
 
@@ -120,7 +130,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           }`}
           style={outcome === 'YES' ? { background: 'var(--color-yes)' } : undefined}
         >
-          YES {Math.round(priceForOutcome(market.qYes, market.qNo, market.liquidityB, 'YES') * 100)}¢
+          {t('common.yes').toUpperCase()} {Math.round(priceForOutcome(market.qYes, market.qNo, market.liquidityB, 'YES') * 100)}¢
         </button>
         <button
           type="button"
@@ -130,15 +140,17 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           }`}
           style={outcome === 'NO' ? { background: 'var(--color-no)' } : undefined}
         >
-          NO {Math.round(priceForOutcome(market.qYes, market.qNo, market.liquidityB, 'NO') * 100)}¢
+          {t('common.no').toUpperCase()} {Math.round(priceForOutcome(market.qYes, market.qNo, market.liquidityB, 'NO') * 100)}¢
         </button>
       </div>
 
       <div>
         <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-semibold text-text-secondary">Amount</span>
+          <span className="text-sm font-semibold text-text-secondary">{t('tradePanel.amount')}</span>
           <span className="text-xs text-text-secondary">
-            {side === 'SELL' ? `${held.toFixed(2)} shares` : `$${balance.toFixed(2)} cash`}
+            {side === 'SELL'
+              ? t('tradePanel.sharesLabel', { qty: held.toFixed(2) })
+              : t('tradePanel.cashLabel', { amount: balance.toFixed(2) })}
           </span>
         </div>
         <div className="flex items-center gap-1 text-text-primary">
@@ -168,23 +180,29 @@ export function TradePanel({ market }: { market: MarketDetail }) {
 
       <div className="text-sm space-y-1 border-t border-white/10 pt-3">
         <div className="flex justify-between text-text-secondary">
-          <span>Avg. price</span>
+          <span>{t('tradePanel.avgPrice')}</span>
           <span>{(preview.price * 100).toFixed(1)}¢</span>
         </div>
         <div className="flex justify-between text-text-secondary">
-          <span>Est. shares</span>
+          <span>{t('tradePanel.estShares')}</span>
           <span>{preview.quantity.toFixed(2)}</span>
         </div>
         {side === 'BUY' && (
           <div className="flex justify-between font-semibold" style={{ color: 'var(--color-success)' }}>
-            <span>To win</span>
+            <span>{t('tradePanel.toWin')}</span>
             <span>${preview.quantity.toFixed(2)}</span>
           </div>
         )}
       </div>
 
-      {exceedsBalance && <p className="text-xs text-error">Insufficient balance — you have ${balance.toFixed(2)}.</p>}
-      {exceedsHeld && <p className="text-xs text-error">You only hold {held.toFixed(2)} {outcome} shares.</p>}
+      {exceedsBalance && (
+        <p className="text-xs text-error">{t('tradePanel.insufficientBalance', { balance: balance.toFixed(2) })}</p>
+      )}
+      {exceedsHeld && (
+        <p className="text-xs text-error">
+          {t('tradePanel.onlyHold', { qty: held.toFixed(2), outcome: t(outcome === 'YES' ? 'common.yes' : 'common.no') })}
+        </p>
+      )}
 
       {needsDeposit ? (
         <button
@@ -192,7 +210,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           onClick={openDeposit}
           className="w-full py-3 rounded-full bg-accent-primary hover:bg-accent-secondary font-bold text-white transition-colors"
         >
-          Deposit
+          {t('navbar.deposit')}
         </button>
       ) : (
         <button
@@ -201,7 +219,11 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           onClick={() => mutation.mutate()}
           className="w-full py-3 rounded-full bg-accent-primary hover:bg-accent-secondary disabled:opacity-40 disabled:cursor-not-allowed font-bold text-white transition-colors"
         >
-          {isClosed ? 'Market closed' : mutation.isPending ? 'Submitting…' : `${side} ${outcome}`}
+          {isClosed
+            ? t('tradePanel.marketClosed')
+            : mutation.isPending
+              ? t('tradePanel.submitting')
+              : `${t(side === 'BUY' ? 'tradePanel.buy' : 'tradePanel.sell').toUpperCase()} ${t(outcome === 'YES' ? 'common.yes' : 'common.no').toUpperCase()}`}
         </button>
       )}
     </div>

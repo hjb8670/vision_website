@@ -3,16 +3,18 @@ import { useMarket } from '../hooks/useMarkets';
 import { MarketDetailHeader } from '../components/MarketDetailHeader';
 import { PriceChart } from '../components/PriceChart';
 import { TradePanel } from '../components/TradePanel';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function MarketDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: market, isLoading } = useMarket(slug);
+  const { t } = useTranslation();
 
   if (isLoading) {
-    return <div className="max-w-7xl mx-auto px-4 py-12 text-text-secondary">Loading market…</div>;
+    return <div className="max-w-7xl mx-auto px-4 py-12 text-text-secondary">{t('marketDetailPage.loading')}</div>;
   }
   if (!market) {
-    return <div className="max-w-7xl mx-auto px-4 py-12 text-text-secondary">Market not found.</div>;
+    return <div className="max-w-7xl mx-auto px-4 py-12 text-text-secondary">{t('marketDetailPage.notFound')}</div>;
   }
 
   return (

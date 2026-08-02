@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useLeaderboard, useBiggestWins } from '../hooks/useLeaderboard';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { useToastStore } from '../store/toastStore';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 const TIME_WINDOWS = ['Today', 'Weekly', 'Monthly', 'All'] as const;
 const PRODUCT_TABS = ['Predictions', 'Perps', 'Combos'] as const;
@@ -10,11 +11,24 @@ export function LeaderboardPage() {
   const { data: rows, isLoading } = useLeaderboard();
   const { data: wins } = useBiggestWins();
   const push = useToastStore((s) => s.push);
+  const { t } = useTranslation();
 
   const [tab, setTab] = useState<(typeof PRODUCT_TABS)[number]>('Predictions');
   const [timeWindow, setTimeWindow] = useState<(typeof TIME_WINDOWS)[number]>('All');
   const [sortBy, setSortBy] = useState<'profit' | 'volume'>('profit');
   const [search, setSearch] = useState('');
+
+  const TAB_LABELS: Record<(typeof PRODUCT_TABS)[number], string> = {
+    Predictions: t('leaderboardPage.tabPredictions'),
+    Perps: t('leaderboardPage.tabPerps'),
+    Combos: t('leaderboardPage.tabCombos'),
+  };
+  const TIME_LABELS: Record<(typeof TIME_WINDOWS)[number], string> = {
+    Today: t('leaderboardPage.timeToday'),
+    Weekly: t('leaderboardPage.timeWeekly'),
+    Monthly: t('leaderboardPage.timeMonthly'),
+    All: t('leaderboardPage.timeAll'),
+  };
 
   const filtered = useMemo(() => {
     const list = (rows ?? []).filter((r) => r.username.toLowerCase().includes(search.toLowerCase()));
@@ -22,24 +36,24 @@ export function LeaderboardPage() {
   }, [rows, search, sortBy]);
 
   function stub(feature: string) {
-    push(`${feature} is coming soon in this demo.`, 'success');
+    push(t('navbar.comingSoon', { feature }), 'success');
   }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-extrabold mb-6">Leaderboard</h1>
+      <h1 className="text-3xl font-extrabold mb-6">{t('leaderboardPage.heading')}</h1>
 
       <div className="flex items-center gap-6 border-b border-white/10 mb-4 text-sm">
-        {PRODUCT_TABS.map((t) => (
+        {PRODUCT_TABS.map((p) => (
           <button
-            key={t}
+            key={p}
             type="button"
-            onClick={() => (t === 'Predictions' ? setTab(t) : stub(t))}
+            onClick={() => (p === 'Predictions' ? setTab(p) : stub(TAB_LABELS[p]))}
             className={`pb-3 font-semibold border-b-2 -mb-px transition-colors ${
-              tab === t ? 'border-accent-primary text-text-primary' : 'border-transparent text-text-secondary hover:text-text-primary'
+              tab === p ? 'border-accent-primary text-text-primary' : 'border-transparent text-text-secondary hover:text-text-primary'
             }`}
           >
-            {t}
+            {TAB_LABELS[p]}
           </button>
         ))}
       </div>
@@ -51,12 +65,12 @@ export function LeaderboardPage() {
               <button
                 key={w}
                 type="button"
-                onClick={() => (w === 'All' ? setTimeWindow(w) : stub(`${w} leaderboard`))}
+                onClick={() => (w === 'All' ? setTimeWindow(w) : stub(t('leaderboardPage.leaderboardComingSoon', { window: TIME_LABELS[w] })))}
                 className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
                   timeWindow === w ? 'bg-white/10 text-text-primary' : 'text-text-secondary hover:bg-white/5'
                 }`}
               >
-                {w}
+                {TIME_LABELS[w]}
               </button>
             ))}
           </div>
@@ -68,7 +82,7 @@ export function LeaderboardPage() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by name"
+                placeholder={t('leaderboardPage.searchPlaceholder')}
                 className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
               />
             </div>
@@ -78,29 +92,29 @@ export function LeaderboardPage() {
                 onClick={() => setSortBy('profit')}
                 className={`w-24 text-right font-semibold ${sortBy === 'profit' ? 'text-text-primary' : ''}`}
               >
-                Profit/Loss
+                {t('leaderboardTable.profitLoss')}
               </button>
               <button
                 type="button"
                 onClick={() => setSortBy('volume')}
                 className={`w-24 text-right font-semibold ${sortBy === 'volume' ? 'text-text-primary' : ''}`}
               >
-                Volume
+                {t('leaderboardTable.volume')}
               </button>
             </div>
           </div>
 
           {isLoading ? (
-            <p className="text-text-secondary">Loading leaderboard…</p>
+            <p className="text-text-secondary">{t('leaderboardPage.loading')}</p>
           ) : (
             <LeaderboardTable rows={filtered} sortBy={sortBy} />
           )}
         </div>
 
         <div className="bg-bg-elevated rounded-2xl p-5 h-fit">
-          <h2 className="font-bold mb-4">Biggest wins this month</h2>
+          <h2 className="font-bold mb-4">{t('leaderboardPage.biggestWins')}</h2>
           {!wins || wins.length === 0 ? (
-            <p className="text-sm text-text-secondary">No resolved payouts yet.</p>
+            <p className="text-sm text-text-secondary">{t('leaderboardPage.noPayouts')}</p>
           ) : (
             <ul className="space-y-4">
               {wins.map((w, i) => (

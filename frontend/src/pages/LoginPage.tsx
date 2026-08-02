@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ export function LoginPage() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const push = useToastStore((s) => s.push);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,10 +22,10 @@ export function LoginPage() {
     try {
       const { data } = await api.post('/auth/login', { email, password });
       setAuth(data.accessToken, data.user);
-      push(`Welcome back, ${data.user.username}!`);
+      push(t('loginPage.welcomeBack', { username: data.user.username }));
       navigate('/');
     } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Login failed');
+      setError(err?.response?.data?.message ?? t('loginPage.loginFailed'));
     } finally {
       setLoading(false);
     }
@@ -31,10 +33,10 @@ export function LoginPage() {
 
   return (
     <div className="max-w-sm mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold mb-6 text-center">Log in</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">{t('loginPage.heading')}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-xs text-text-secondary block mb-1">Email</label>
+          <label className="text-xs text-text-secondary block mb-1">{t('loginPage.email')}</label>
           <input
             type="email"
             required
@@ -44,7 +46,7 @@ export function LoginPage() {
           />
         </div>
         <div>
-          <label className="text-xs text-text-secondary block mb-1">Password</label>
+          <label className="text-xs text-text-secondary block mb-1">{t('loginPage.password')}</label>
           <input
             type="password"
             required
@@ -59,13 +61,13 @@ export function LoginPage() {
           disabled={loading}
           className="w-full py-2.5 rounded-md bg-accent-primary hover:bg-accent-secondary disabled:opacity-50 font-bold text-white transition-colors"
         >
-          {loading ? 'Logging in…' : 'Log in'}
+          {loading ? t('loginPage.loggingIn') : t('loginPage.logIn')}
         </button>
       </form>
       <p className="text-sm text-text-secondary text-center mt-4">
-        No account?{' '}
+        {t('loginPage.noAccount')}
         <Link to="/register" className="text-accent-primary hover:underline">
-          Sign up
+          {t('loginPage.signUp')}
         </Link>
       </p>
     </div>

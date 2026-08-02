@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export function RegisterPage() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const push = useToastStore((s) => s.push);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,10 +23,10 @@ export function RegisterPage() {
     try {
       const { data } = await api.post('/auth/register', { email, username, password });
       setAuth(data.accessToken, data.user);
-      push('Account created — $1,000 virtual balance added!');
+      push(t('registerPage.accountCreated'));
       navigate('/');
     } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Registration failed');
+      setError(err?.response?.data?.message ?? t('registerPage.registrationFailed'));
     } finally {
       setLoading(false);
     }
@@ -32,10 +34,10 @@ export function RegisterPage() {
 
   return (
     <div className="max-w-sm mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold mb-6 text-center">Create account</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">{t('registerPage.heading')}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-xs text-text-secondary block mb-1">Email</label>
+          <label className="text-xs text-text-secondary block mb-1">{t('registerPage.email')}</label>
           <input
             type="email"
             required
@@ -45,7 +47,7 @@ export function RegisterPage() {
           />
         </div>
         <div>
-          <label className="text-xs text-text-secondary block mb-1">Username</label>
+          <label className="text-xs text-text-secondary block mb-1">{t('registerPage.username')}</label>
           <input
             type="text"
             required
@@ -56,7 +58,7 @@ export function RegisterPage() {
           />
         </div>
         <div>
-          <label className="text-xs text-text-secondary block mb-1">Password</label>
+          <label className="text-xs text-text-secondary block mb-1">{t('registerPage.password')}</label>
           <input
             type="password"
             required
@@ -72,13 +74,13 @@ export function RegisterPage() {
           disabled={loading}
           className="w-full py-2.5 rounded-md bg-accent-primary hover:bg-accent-secondary disabled:opacity-50 font-bold text-white transition-colors"
         >
-          {loading ? 'Creating account…' : 'Sign up'}
+          {loading ? t('registerPage.creatingAccount') : t('registerPage.signUp')}
         </button>
       </form>
       <p className="text-sm text-text-secondary text-center mt-4">
-        Already have an account?{' '}
+        {t('registerPage.alreadyHaveAccount')}
         <Link to="/login" className="text-accent-primary hover:underline">
-          Log in
+          {t('registerPage.logIn')}
         </Link>
       </p>
     </div>
