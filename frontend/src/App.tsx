@@ -12,7 +12,6 @@ import { WalletPage } from './pages/WalletPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ReferralsPage } from './pages/ReferralsPage';
-import { AdminPage } from './pages/AdminPage';
 
 function App() {
   return (
@@ -30,7 +29,6 @@ function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/referral" element={<ReferralsPage />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
-          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
       <ToastHost />

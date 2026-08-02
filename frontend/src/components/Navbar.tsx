@@ -99,11 +99,6 @@ export function Navbar() {
                   <Link to="/leaderboard" className="flex items-center gap-3 px-4 py-2 hover:bg-white/5" onClick={() => setMenuOpen(false)}>
                     <RowIcon>🏆</RowIcon> Leaderboard
                   </Link>
-                  {user.role === 'ADMIN' && (
-                    <Link to="/admin" className="flex items-center gap-3 px-4 py-2 hover:bg-white/5" onClick={() => setMenuOpen(false)}>
-                      <RowIcon>🛡️</RowIcon> Admin
-                    </Link>
-                  )}
                   <button type="button" onClick={() => stub('Rewards')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/5 text-left">
                     <RowIcon>💰</RowIcon> Rewards
                   </button>
