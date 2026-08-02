@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCategories } from '../hooks/useCategories';
 import { useMarket, useCreateMarket, useUpdateMarket, type MarketFormInput } from '../hooks/useMarkets';
+import { useToastStore } from '../store/toastStore';
+import { fileToResizedDataUrl } from '../lib/image';
 import type { MarketSummary } from '../lib/types';
+
+const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 
 const EMPTY_FORM: MarketFormInput = {
   question: '',
@@ -33,8 +37,11 @@ export function MarketFormModal({
   const { data: detail } = useMarket(mode === 'edit' ? market?.slug : undefined);
   const createMutation = useCreateMarket();
   const updateMutation = useUpdateMarket();
+  const push = useToastStore((s) => s.push);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState<MarketFormInput>(EMPTY_FORM);
+  const [imageProcessing, setImageProcessing] = useState(false);
 
   useEffect(() => {
     if (mode === 'edit' && detail) {
@@ -56,6 +63,31 @@ export function MarketFormModal({
 
   function update<K extends keyof MarketFormInput>(key: K, value: MarketFormInput[K]) {
     setForm((f) => ({ ...f, [key]: value }));
+  }
+
+  async function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      push('Please choose an image file', 'error');
+      return;
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      push('Image is too large (max 8MB)', 'error');
+      return;
+    }
+
+    setImageProcessing(true);
+    try {
+      const dataUrl = await fileToResizedDataUrl(file);
+      update('imageUrl', dataUrl);
+    } catch {
+      push('Could not process that image', 'error');
+    } finally {
+      setImageProcessing(false);
+    }
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -145,12 +177,49 @@ export function MarketFormModal({
               </select>
             </Field>
 
-            <Field label="Image URL (optional)">
-              <input
-                value={form.imageUrl}
-                onChange={(e) => update('imageUrl', e.target.value)}
-                className={inputClass}
-              />
+            <Field label="Image (optional)">
+              <div className="flex items-center gap-3">
+                {form.imageUrl ? (
+                  <img src={form.imageUrl} alt="" className="w-16 h-16 rounded-lg object-cover shrink-0" />
+                ) : (
+                  <div className="w-16 h-16 rounded-lg bg-white/5 flex items-center justify-center text-text-secondary shrink-0">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  </div>
+                )}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={imageProcessing}
+                      className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-xs font-semibold transition-colors disabled:opacity-50"
+                    >
+                      {imageProcessing ? 'Processing…' : form.imageUrl ? 'Replace image' : 'Upload image'}
+                    </button>
+                    {form.imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() => update('imageUrl', '')}
+                        className="px-3 py-1.5 rounded-full bg-error/15 text-error hover:bg-error/25 text-xs font-semibold transition-colors"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                  <span className="text-xs text-text-secondary">JPG or PNG, up to 8MB</span>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="hidden"
+                />
+              </div>
             </Field>
 
             <Field label="Close date">
