@@ -195,6 +195,26 @@ export class MarketsService {
     });
   }
 
+  async setStatus(id: string, status: 'OPEN' | 'CLOSED') {
+    const market = await this.findByIdOrThrow(id);
+    if (market.status === 'RESOLVED') {
+      throw new BadRequestException('Market already resolved');
+    }
+    return this.prisma.market.update({ where: { id }, data: { status } });
+  }
+
+  async remove(id: string) {
+    await this.findByIdOrThrow(id);
+    const orderCount = await this.prisma.order.count({ where: { marketId: id } });
+    if (orderCount > 0) {
+      throw new BadRequestException('Cannot delete a market with existing trades');
+    }
+    await this.prisma.$transaction([
+      this.prisma.pricePoint.deleteMany({ where: { marketId: id } }),
+      this.prisma.market.delete({ where: { id } }),
+    ]);
+  }
+
   async resolve(id: string, outcome: 'YES' | 'NO') {
     const market = await this.findByIdOrThrow(id);
     if (market.status === 'RESOLVED') {
