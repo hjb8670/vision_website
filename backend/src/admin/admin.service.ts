@@ -6,7 +6,10 @@ export class AdminService {
   constructor(private prisma: PrismaService) {}
 
   async getStats() {
-    const [totalUsers, marketsByStatusRaw, volumeAgg, walletAgg, topMarketsRaw] =
+    const since = new Date(Date.now() - 13 * 24 * 60 * 60 * 1000);
+    since.setHours(0, 0, 0, 0);
+
+    const [totalUsers, marketsByStatusRaw, volumeAgg, walletAgg, topMarketsRaw, recentPoints] =
       await Promise.all([
         this.prisma.user.count(),
         this.prisma.market.groupBy({ by: ['status'], _count: true }),
@@ -18,7 +21,22 @@ export class AdminService {
           orderBy: { _count: { marketId: 'desc' } },
           take: 5,
         }),
+        this.prisma.pricePoint.findMany({
+          where: { timestamp: { gte: since } },
+          select: { timestamp: true, volume: true },
+        }),
       ]);
+
+    const volumeByDayMap = new Map<string, number>();
+    for (const p of recentPoints) {
+      const day = p.timestamp.toISOString().slice(0, 10);
+      volumeByDayMap.set(day, (volumeByDayMap.get(day) ?? 0) + p.volume);
+    }
+    const volumeByDay = Array.from({ length: 14 }, (_, i) => {
+      const d = new Date(since.getTime() + i * 24 * 60 * 60 * 1000);
+      const date = d.toISOString().slice(0, 10);
+      return { date, volume: volumeByDayMap.get(date) ?? 0 };
+    });
 
     const marketsByStatus = {
       OPEN: 0,
@@ -43,6 +61,7 @@ export class AdminService {
       totalVolume: volumeAgg._sum.volume ?? 0,
       totalWalletBalance: walletAgg._sum.balance ?? 0,
       topMarkets,
+      volumeByDay,
     };
   }
 }

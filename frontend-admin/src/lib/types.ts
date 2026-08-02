@@ -43,4 +43,5 @@ export interface DashboardStats {
   totalVolume: number;
   totalWalletBalance: number;
   topMarkets: { question: string; slug: string; orderCount: number }[];
+  volumeByDay: { date: string; volume: number }[];
 }

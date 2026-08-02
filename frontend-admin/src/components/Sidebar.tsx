@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { DashboardIcon, MarketsIcon, CategoriesIcon, UsersIcon } from './icons';
+import visionLogo from '../assets/vision-logo.png';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: DashboardIcon, end: true },
@@ -12,9 +13,7 @@ export function Sidebar() {
   return (
     <aside className="w-60 shrink-0 bg-bg-sidebar border-r border-white/10 flex flex-col">
       <div className="h-16 flex items-center gap-2 px-5 border-b border-white/10">
-        <span className="w-8 h-8 rounded-lg bg-accent-primary flex items-center justify-center text-white font-bold">
-          V
-        </span>
+        <img src={visionLogo} alt="Vision" className="w-8 h-8 rounded-lg object-cover" />
         <span className="font-bold tracking-tight">Vision Admin</span>
       </div>
       <nav className="flex-1 py-4 px-3 space-y-1">

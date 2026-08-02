@@ -134,11 +134,11 @@ export function MarketFormModal({
                 onChange={(e) => update('categoryId', e.target.value)}
                 className={inputClass}
               >
-                <option value="" disabled>
+                <option value="" disabled className="bg-bg-elevated text-text-primary">
                   Select a category
                 </option>
                 {categories?.map((c) => (
-                  <option key={c.id} value={c.id}>
+                  <option key={c.id} value={c.id} className="bg-bg-elevated text-text-primary">
                     {c.name}
                   </option>
                 ))}

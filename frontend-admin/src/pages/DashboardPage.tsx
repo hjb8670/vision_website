@@ -1,5 +1,8 @@
 import { useStats } from '../hooks/useStats';
 import { StatCard } from '../components/StatCard';
+import { VolumeChart } from '../components/VolumeChart';
+import { MarketsByStatusChart } from '../components/MarketsByStatusChart';
+import { TopMarketsChart } from '../components/TopMarketsChart';
 
 export function DashboardPage() {
   const { data: stats, isLoading } = useStats();
@@ -29,21 +32,14 @@ export function DashboardPage() {
         />
       </div>
 
-      <div className="bg-bg-elevated rounded-2xl p-5">
-        <h2 className="text-lg font-bold mb-4">Most active markets</h2>
-        {stats.topMarkets.length === 0 ? (
-          <p className="text-text-secondary text-sm">No trading activity yet.</p>
-        ) : (
-          <ul className="space-y-3">
-            {stats.topMarkets.map((m) => (
-              <li key={m.slug} className="flex items-center justify-between text-sm">
-                <span className="truncate pr-4">{m.question}</span>
-                <span className="text-text-secondary shrink-0">{m.orderCount} orders</span>
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2">
+          <VolumeChart data={stats.volumeByDay} />
+        </div>
+        <MarketsByStatusChart marketsByStatus={stats.marketsByStatus} />
       </div>
+
+      <TopMarketsChart topMarkets={stats.topMarkets} />
     </div>
   );
 }

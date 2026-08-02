@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
+import visionLogo from '../assets/vision-logo.png';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -34,9 +35,7 @@ export function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="flex items-center justify-center gap-2 mb-8">
-          <span className="w-9 h-9 rounded-lg bg-accent-primary flex items-center justify-center text-white font-bold text-lg">
-            V
-          </span>
+          <img src={visionLogo} alt="Vision" className="w-9 h-9 rounded-lg object-cover" />
           <span className="text-lg font-bold tracking-tight">Vision Admin</span>
         </div>
         <form onSubmit={handleSubmit} className="bg-bg-elevated rounded-2xl p-6 space-y-4">
