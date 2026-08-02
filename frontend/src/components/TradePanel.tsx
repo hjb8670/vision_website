@@ -8,7 +8,7 @@ import { useWalletBalance } from '../hooks/useWallet';
 import { usePositions } from '../hooks/usePositions';
 import { useDepositModalStore } from '../store/depositModalStore';
 import { priceForOutcome, quantityForCost, tradeCost, type Outcome } from '../lib/amm';
-import { CategoryIcon } from './CategoryIcon';
+import { MarketImage } from './MarketImage';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import type { MarketDetail } from '../lib/types';
 
@@ -91,7 +91,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   return (
     <div className="bg-bg-elevated rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-3 pb-4 border-b border-white/10">
-        <CategoryIcon label={market.category.name} size={40} />
+        <MarketImage imageUrl={market.imageUrl} categoryName={market.category.name} size={40} />
         <div className="min-w-0">
           <p className="text-sm font-semibold line-clamp-1">{market.question}</p>
           <p className="text-xs text-text-secondary">

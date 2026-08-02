@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { MarketSummary } from '../lib/types';
-import { CategoryIcon } from './CategoryIcon';
+import { MarketImage } from './MarketImage';
 import { ProbabilityRing } from './ProbabilityRing';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
@@ -27,7 +27,7 @@ export function MarketCard({ market }: { market: MarketSummary }) {
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
-          <CategoryIcon label={market.category.name} size={44} />
+          <MarketImage imageUrl={market.imageUrl} categoryName={market.category.name} size={44} />
           <h3 className="text-sm font-semibold leading-snug line-clamp-3 pt-0.5">{market.question}</h3>
         </div>
         <ProbabilityRing pct={yesPct} />

@@ -16,17 +16,36 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden rounded-2xl bg-bg-elevated min-h-[320px] md:min-h-[380px]">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            'radial-gradient(ellipse at 15% 10%, rgba(232, 54, 47, 0.25), transparent 55%), radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, 0.05), transparent 50%)',
-        }}
-      />
-      {featured && (
-        <div className="absolute -right-10 -bottom-10 opacity-[0.06] pointer-events-none">
-          <CategoryIcon label={featured.category.name} size={260} />
-        </div>
+      {featured?.imageUrl ? (
+        <>
+          <img
+            src={featured.imageUrl}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                'linear-gradient(to top, rgba(10,10,10,0.95), rgba(10,10,10,0.5) 60%, rgba(10,10,10,0.25))',
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                'radial-gradient(ellipse at 15% 10%, rgba(232, 54, 47, 0.25), transparent 55%), radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, 0.05), transparent 50%)',
+            }}
+          />
+          {featured && (
+            <div className="absolute -right-10 -bottom-10 opacity-[0.06] pointer-events-none">
+              <CategoryIcon label={featured.category.name} size={260} />
+            </div>
+          )}
+        </>
       )}
 
       {featured ? (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { MarketDetail } from '../lib/types';
-import { CategoryIcon } from './CategoryIcon';
+import { MarketImage } from './MarketImage';
 import { useToastStore } from '../store/toastStore';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
@@ -31,7 +31,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
-          <CategoryIcon label={market.category.name} size={56} />
+          <MarketImage imageUrl={market.imageUrl} categoryName={market.category.name} size={56} />
           <div className="min-w-0">
             <p className="text-sm text-text-secondary mb-1">
               {categoryLabel}
