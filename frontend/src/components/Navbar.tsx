@@ -5,6 +5,7 @@ import { useWalletBalance } from '../hooks/useWallet';
 import { useCategories } from '../hooks/useCategories';
 import { useDepositModalStore } from '../store/depositModalStore';
 import { useToastStore } from '../store/toastStore';
+import visionLogo from '../assets/vision-logo.png';
 
 export function Navbar() {
   const { user, logout } = useAuthStore();
@@ -25,9 +26,7 @@ export function Navbar() {
     <header className="sticky top-0 z-20 bg-bg-secondary/95 backdrop-blur">
       <div className="max-w-7xl mx-auto flex items-center gap-4 px-4 h-16">
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <span className="w-9 h-9 rounded-lg bg-accent-primary flex items-center justify-center text-white font-bold text-lg">
-            V
-          </span>
+          <img src={visionLogo} alt="Vision" className="w-9 h-9 rounded-lg object-cover" />
           <span className="text-lg font-bold tracking-tight hidden sm:block">Vision</span>
         </Link>
 
