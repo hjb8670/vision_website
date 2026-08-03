@@ -77,7 +77,7 @@ export function ReferralsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard label={t('referralsPage.signUps')} value="0" />
         <StatCard label={t('referralsPage.activeTraders')} value="0" />
-        <StatCard label={t('referralsPage.earnings')} value="$0.00" accent />
+        <StatCard label={t('referralsPage.earnings')} value="MX$0.00" accent />
       </div>
 
       <p className="text-xs text-text-secondary mt-6">{t('referralsPage.notLiveNotice')}</p>

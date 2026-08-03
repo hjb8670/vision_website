@@ -58,7 +58,7 @@ export function Navbar() {
         {user ? (
           <div className="flex items-center gap-3">
             <Link to="/wallet" className="px-3.5 py-1.5 rounded-full bg-white/5 text-sm font-medium hidden sm:block">
-              ${wallet?.balance?.toFixed(2) ?? '—'}
+              MX${wallet?.balance?.toFixed(2) ?? '—'}
             </Link>
             <button
               type="button"

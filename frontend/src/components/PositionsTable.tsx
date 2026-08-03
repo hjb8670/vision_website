@@ -53,7 +53,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
               </td>
               <td className="px-4 py-3 text-right">{p.quantity.toFixed(2)}</td>
               <td className="px-4 py-3 text-right">{(p.avgEntryPrice * 100).toFixed(1)}¢</td>
-              <td className="px-4 py-3 text-right">${p.currentValue.toFixed(2)}</td>
+              <td className="px-4 py-3 text-right">MX${p.currentValue.toFixed(2)}</td>
               <td
                 className="px-4 py-3 text-right font-medium"
                 style={{ color: p.unrealizedPnl >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}

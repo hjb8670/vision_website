@@ -49,7 +49,10 @@ export function HeroSection() {
       )}
 
       {featured ? (
-        <FeaturedMarketCard market={featured} />
+        <FeaturedMarketCard
+          market={featured}
+          relatedCount={(trending ?? []).filter((m) => m.category.id === featured.category.id).length - 1}
+        />
       ) : (
         <div className="relative h-full flex items-center justify-center p-8">
           <p className="text-text-secondary">{t('marketsPage.loading')}</p>
@@ -59,14 +62,26 @@ export function HeroSection() {
   );
 }
 
-function FeaturedMarketCard({ market }: { market: MarketSummary }) {
+function daysUntil(dateStr: string) {
+  const diff = new Date(dateStr).getTime() - Date.now();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function FeaturedMarketCard({ market, relatedCount }: { market: MarketSummary; relatedCount: number }) {
   const { t } = useTranslation();
   const categoryLabel = useCategoryLabel(market.category);
   const yesPct = Math.round(market.yesProbability * 100);
   const noPct = 100 - yesPct;
+  const days = daysUntil(market.closeDate);
 
   return (
     <div className="relative p-8 md:p-12 flex flex-col gap-6">
+      {days > 0 && days <= 14 && (
+        <span className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-accent-primary/90 text-xs font-bold uppercase tracking-wide text-white">
+          <span className="w-1.5 h-1.5 rounded-full bg-white" />
+          {t('home.closesInDays', { days })}
+        </span>
+      )}
       <p className="text-xs font-bold tracking-wide text-accent-primary uppercase">
         {t('home.featuredMarket')} · {categoryLabel}
       </p>
@@ -90,7 +105,9 @@ function FeaturedMarketCard({ market }: { market: MarketSummary }) {
       </div>
 
       <p className="text-sm text-text-secondary">
-        {t('home.volShort', { amount: market.volume24h.toFixed(0) })} ·{' '}
+        {t('home.volShort', { amount: market.volume24h.toFixed(0) })}
+        {relatedCount > 0 && <> · {t('home.relatedMarkets', { count: relatedCount })}</>}
+        {' · '}
         <Link to={`/market/${market.slug}`} className="text-accent-primary hover:underline">
           {t('home.viewMarket')}
         </Link>

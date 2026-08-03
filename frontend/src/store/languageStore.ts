@@ -11,7 +11,7 @@ interface LanguageState {
 export const useLanguageStore = create<LanguageState>()(
   persist(
     (set) => ({
-      lang: 'en',
+      lang: 'es',
       setLang: (lang) => set({ lang }),
     }),
     { name: 'vision-language' },

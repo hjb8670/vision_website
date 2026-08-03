@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useMarketHistory } from '../hooks/useMarkets';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 const RANGES: Array<'1D' | '1W' | '1M' | 'ALL'> = ['1D', '1W', '1M', 'ALL'];
 
 export function PriceChart({ marketId }: { marketId: string }) {
   const [range, setRange] = useState<'1D' | '1W' | '1M' | 'ALL'>('1M');
   const { data, isLoading } = useMarketHistory(marketId, range);
+  const { t, lang } = useTranslation();
+  const dateLocale = lang === 'es' ? 'es-MX' : 'en-US';
 
   const chartData = (data ?? []).map((p) => ({
     time: new Date(p.timestamp).getTime(),
@@ -33,7 +36,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
       <div className="h-64">
         {isLoading || chartData.length === 0 ? (
           <div className="h-full flex items-center justify-center text-text-secondary text-sm">
-            {isLoading ? 'Loading chart…' : 'No data yet'}
+            {isLoading ? t('priceChart.loading') : t('priceChart.noData')}
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
@@ -43,7 +46,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
                 dataKey="time"
                 type="number"
                 domain={['dataMin', 'dataMax']}
-                tickFormatter={(t) => new Date(t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                tickFormatter={(v) => new Date(v).toLocaleDateString(dateLocale, { month: 'short', day: 'numeric' })}
                 stroke="var(--color-text-secondary)"
                 tick={{ fontSize: 11 }}
                 axisLine={false}
@@ -67,7 +70,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
                   borderRadius: 8,
                   fontSize: 12,
                 }}
-                labelFormatter={(t) => new Date(t as number).toLocaleString()}
+                labelFormatter={(v) => new Date(v as number).toLocaleString(dateLocale)}
                 formatter={(v) => [`${v}%`, 'YES']}
               />
               <Line type="monotone" dataKey="yes" stroke="var(--color-accent-primary)" strokeWidth={2} dot={false} />

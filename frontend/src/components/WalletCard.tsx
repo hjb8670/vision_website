@@ -6,7 +6,8 @@ export function WalletCard() {
   const { data: wallet, isLoading } = useWalletBalance();
   const { data: transactions } = useWalletTransactions(5);
   const openDeposit = useDepositModalStore((s) => s.open);
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const dateLocale = lang === 'es' ? 'es-MX' : 'en-US';
 
   const TYPE_LABEL: Record<string, string> = {
     SEED: t('walletCard.typeSeed'),
@@ -19,7 +20,7 @@ export function WalletCard() {
       <div className="bg-bg-elevated rounded-2xl p-6">
         <p className="text-text-secondary text-sm mb-1">{t('walletCard.virtualBalance')}</p>
         <p className="text-4xl font-extrabold">
-          {isLoading || wallet?.balance == null ? '—' : `$${wallet.balance.toFixed(2)}`}
+          {isLoading || wallet?.balance == null ? '—' : `MX$${wallet.balance.toFixed(2)}`}
         </p>
 
         <div className="flex gap-2 mt-4">
@@ -51,7 +52,7 @@ export function WalletCard() {
               <li key={tx.id} className="flex items-center justify-between px-4 py-3 bg-bg-elevated">
                 <div>
                   <p className="text-sm">{tx.note || TYPE_LABEL[tx.type]}</p>
-                  <p className="text-xs text-text-secondary">{new Date(tx.createdAt).toLocaleString()}</p>
+                  <p className="text-xs text-text-secondary">{new Date(tx.createdAt).toLocaleString(dateLocale)}</p>
                 </div>
                 <span
                   className="text-sm font-semibold"

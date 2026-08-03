@@ -1,6 +1,6 @@
-// Seed script — demo-mvp-scope.md §7, seed-market-questions.md
-// Loads 14 categories + 37 markets (bracket placeholders replaced with concrete,
-// plausible names per the source doc's own guidance), simulates 20-30 price
+// Seed script — Mexico-focused Spanish demo data.
+// Hard-resets categories/markets/users, then loads 11 categories + 30
+// Mexico-localized markets (each with an image), simulates 20-30 price
 // ticks per market so charts/volume aren't flat, and creates demo users with
 // existing positions so leaderboard/portfolio aren't empty on first load.
 
@@ -11,24 +11,29 @@ import { tradeCost, yesPrice, type Outcome } from '../src/markets/amm';
 const prisma = new PrismaClient();
 
 const CATEGORIES = [
-  'Politics',
-  'Sports',
-  'Crypto',
-  'Esports',
-  'Finance',
-  'Geopolitics',
-  'Tech',
-  'Culture',
-  'Economy',
-  'Weather',
-  'Mentions',
-  'Elections',
-  'Art',
-  'World',
+  'Deportes',
+  'Política',
+  'Elecciones',
+  'Cultura',
+  'Entretenimiento',
+  'Cripto',
+  'Clima',
+  'Economía',
+  'Finanzas',
+  'Tecnología',
+  'Ciencia',
 ];
 
+const ACCENT_MAP: Record<string, string> = {
+  á: 'a', é: 'e', í: 'i', ó: 'o', ú: 'u', ü: 'u', ñ: 'n',
+};
+
 function slugifyCat(name: string) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  return name
+    .toLowerCase()
+    .replace(/[áéíóúüñ]/g, (ch) => ACCENT_MAP[ch] ?? ch)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
 
 interface MarketSeed {
@@ -36,261 +41,234 @@ interface MarketSeed {
   resolutionSource: string;
   category: string;
   closeDate: string;
+  imageUrl: string;
+}
+
+function img(id: string) {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=80`;
 }
 
 const MARKETS: MarketSeed[] = [
-  // Crypto
+  // Deportes
   {
-    question: 'Will Bitcoin close above $150,000 by December 31, 2026?',
-    resolutionSource: 'CoinGecko/CoinMarketCap BTC/USD closing price',
-    category: 'Crypto',
+    question: '¿Será el Club América campeón del Torneo Apertura 2026 de la Liga MX?',
+    resolutionSource: 'Resultado oficial de la Liga MX',
+    category: 'Deportes',
+    closeDate: '2026-12-20',
+    imageUrl: img('1522778119026-d647f0596c20'),
+  },
+  {
+    question: '¿Anotará Santiago Giménez 20 goles o más en todas las competencias durante la temporada 2026-27?',
+    resolutionSource: 'Estadísticas oficiales del club',
+    category: 'Deportes',
+    closeDate: '2027-05-31',
+    imageUrl: img('1579952363873-27f3bade9f55'),
+  },
+  {
+    question: '¿Ganará Canelo Álvarez su próxima pelea de box por título mundial?',
+    resolutionSource: 'Resultado oficial del Consejo Mundial de Boxeo',
+    category: 'Deportes',
+    closeDate: '2026-11-07',
+    imageUrl: img('1517438476312-10d79c077509'),
+  },
+  // Política
+  {
+    question: '¿Superará la aprobación presidencial de Claudia Sheinbaum el 65% hacia finales de 2026?',
+    resolutionSource: 'Encuesta nacional de aprobación (El Financiero/Reforma)',
+    category: 'Política',
     closeDate: '2026-12-31',
+    imageUrl: img('1541872703-74c5e44368f9'),
   },
   {
-    question: "Will Ethereum's market cap exceed Bitcoin's by end of 2026?",
-    resolutionSource: 'CoinGecko market cap ranking',
-    category: 'Crypto',
+    question: '¿Se aprobará una nueva reforma energética en el Congreso mexicano antes de diciembre de 2026?',
+    resolutionSource: 'Diario Oficial de la Federación',
+    category: 'Política',
     closeDate: '2026-12-31',
+    imageUrl: img('1516280440614-37939bbacd81'),
   },
   {
-    question: 'Will a spot Solana ETF be approved by the SEC in 2026?',
-    resolutionSource: 'SEC official filings/announcements',
-    category: 'Crypto',
+    question: '¿Anunciará el gobierno de México un nuevo acuerdo comercial con la Unión Europea en 2026?',
+    resolutionSource: 'Comunicado oficial de la Secretaría de Economía',
+    category: 'Política',
     closeDate: '2026-12-31',
+    imageUrl: img('1521791136064-7986c2920216'),
   },
+  // Elecciones
   {
-    question:
-      'Will any single altcoin gain 500%+ in a calendar month this year?',
-    resolutionSource: 'CoinGecko monthly price data',
-    category: 'Crypto',
+    question: '¿Superará el partido Morena el 40% de las preferencias rumbo a las elecciones intermedias de 2027?',
+    resolutionSource: 'Encuesta nacional (Mitofsky/El Financiero)',
+    category: 'Elecciones',
     closeDate: '2026-12-31',
-  },
-  // Sports
-  {
-    question: 'Will Manchester City beat Arsenal on August 23, 2026?',
-    resolutionSource: 'Official Premier League result',
-    category: 'Sports',
-    closeDate: '2026-08-23',
+    imageUrl: img('1540910419892-4a36d2c3266c'),
   },
   {
-    question: 'Will Luka Dončić score 30+ points in his next game?',
-    resolutionSource: 'Official NBA box score',
-    category: 'Sports',
-    closeDate: '2026-10-15',
-  },
-  {
-    question:
-      'Will Nigeria qualify for the 2027 Africa Cup of Nations knockout stage?',
-    resolutionSource: 'Official CAF announcement',
-    category: 'Sports',
-    closeDate: '2027-01-20',
-  },
-  // Politics
-  {
-    question:
-      'Will the US federal government reach a new debt ceiling agreement by December 31, 2026?',
-    resolutionSource: 'Congressional record/major news wire',
-    category: 'Politics',
-    closeDate: '2026-12-31',
-  },
-  {
-    question:
-      "Will Germany's parliament pass the proposed pension reform by Q4 2026?",
-    resolutionSource: 'Official Bundestag record',
-    category: 'Politics',
-    closeDate: '2026-12-31',
-  },
-  {
-    question:
-      'Will national voter turnout exceed 60% in the next major election cycle?',
-    resolutionSource: 'Official electoral commission data',
-    category: 'Politics',
+    question: '¿Ganarán los demócratas el control de la Cámara de Representantes en las elecciones intermedias de EE. UU. de noviembre de 2026?',
+    resolutionSource: 'Resultado oficial certificado',
+    category: 'Elecciones',
     closeDate: '2026-11-03',
+    imageUrl: img('1554224155-6726b3ff858f'),
   },
-  // Finance
+  // Cultura
   {
-    question:
-      'Will the Federal Reserve cut interest rates at its next FOMC meeting?',
-    resolutionSource: 'Official Fed announcement',
-    category: 'Finance',
-    closeDate: '2026-09-17',
-  },
-  {
-    question: "Will Nvidia's stock beat Q3 2026 earnings estimates?",
-    resolutionSource: 'Official earnings release',
-    category: 'Finance',
-    closeDate: '2026-11-19',
+    question: '¿Ganará una producción mexicana el Óscar a Mejor Película Internacional en la ceremonia de 2027?',
+    resolutionSource: 'Resultado oficial de la Academia de Artes y Ciencias Cinematográficas',
+    category: 'Cultura',
+    closeDate: '2027-03-10',
+    imageUrl: img('1489599849927-2ee91cede3ba'),
   },
   {
-    question: 'Will the S&P 500 close above 7,000 by year-end 2026?',
-    resolutionSource: 'Official index close',
-    category: 'Finance',
-    closeDate: '2026-12-31',
-  },
-  // Geopolitics
-  {
-    question:
-      'Will a ceasefire be reached in the Russia-Ukraine conflict by December 31, 2026?',
-    resolutionSource: 'Major wire service (Reuters/AP)',
-    category: 'Geopolitics',
-    closeDate: '2026-12-31',
-  },
-  {
-    question: 'Will the US and India sign a new trade agreement by Q4 2026?',
-    resolutionSource: 'Official government announcement',
-    category: 'Geopolitics',
-    closeDate: '2026-12-31',
-  },
-  {
-    question:
-      'Will any G7 nation see a change in head of government before year-end 2026?',
-    resolutionSource: 'Major wire service',
-    category: 'Geopolitics',
-    closeDate: '2026-12-31',
-  },
-  // Tech
-  {
-    question: 'Will Apple release the Vision Pro 2 before end of 2026?',
-    resolutionSource: 'Official Apple announcement',
-    category: 'Tech',
-    closeDate: '2026-12-31',
-  },
-  {
-    question:
-      'Will any major AI lab announce a significant new model release in Q4 2026?',
-    resolutionSource: 'Official lab announcement',
-    category: 'Tech',
-    closeDate: '2026-12-31',
-  },
-  {
-    question: "Will Databricks' IPO happen by Q4 2026?",
-    resolutionSource: 'SEC filing/stock exchange listing',
-    category: 'Tech',
-    closeDate: '2026-12-31',
-  },
-  // Economy
-  {
-    question: 'Will US CPI inflation fall below 3% by end of 2026?',
-    resolutionSource: 'Official BLS CPI report',
-    category: 'Economy',
-    closeDate: '2026-12-31',
-  },
-  {
-    question: 'Will US unemployment exceed 5% by Q4 2026?',
-    resolutionSource: 'Official BLS jobs report',
-    category: 'Economy',
-    closeDate: '2026-12-31',
-  },
-  {
-    question: 'Will any G20 country enter a technical recession in 2026?',
-    resolutionSource: 'Official national statistics agency',
-    category: 'Economy',
-    closeDate: '2026-12-31',
-  },
-  // Culture
-  {
-    question:
-      'Will Avengers: Doomsday gross over $1B worldwide at the box office?',
-    resolutionSource: 'Box Office Mojo/official studio figures',
-    category: 'Culture',
-    closeDate: '2026-12-31',
-  },
-  {
-    question: 'Will Taylor Swift release a new album by December 31, 2026?',
-    resolutionSource: 'Official artist/label announcement',
-    category: 'Culture',
-    closeDate: '2026-12-31',
-  },
-  {
-    question:
-      'Will the 2027 Grammy Album of the Year winner match the pre-show betting favorite?',
-    resolutionSource: 'Official ceremony result',
-    category: 'Culture',
-    closeDate: '2027-02-01',
-  },
-  // Esports
-  {
-    question: 'Will T1 win the League of Legends World Championship Finals?',
-    resolutionSource: 'Official tournament result',
-    category: 'Esports',
-    closeDate: '2026-11-08',
-  },
-  {
-    question: 'Will Faker be named MVP of the LCK season?',
-    resolutionSource: 'Official league announcement',
-    category: 'Esports',
-    closeDate: '2026-09-30',
-  },
-  // Weather
-  {
-    question: 'Will Chicago see measurable snowfall before December 1, 2026?',
-    resolutionSource: 'National Weather Service official record',
-    category: 'Weather',
+    question: '¿Agotará Peso Pluma las entradas de su próxima gira por estadios en México?',
+    resolutionSource: 'Anuncio oficial de la promotora/recinto',
+    category: 'Cultura',
     closeDate: '2026-12-01',
+    imageUrl: img('1493225457124-a3eb161ffa5f'),
   },
   {
-    question:
-      "Will this year's Atlantic hurricane season have more than 15 named storms?",
-    resolutionSource: 'NOAA official season summary',
-    category: 'Weather',
-    closeDate: '2026-11-30',
-  },
-  // Elections
-  {
-    question:
-      "Will Japan's ruling party retain its majority in the next election?",
-    resolutionSource: 'Official electoral commission',
-    category: 'Elections',
-    closeDate: '2026-10-25',
-  },
-  {
-    question:
-      'Will voter turnout in the 2026 Brazilian general election exceed the previous cycle?',
-    resolutionSource: 'Official electoral commission',
-    category: 'Elections',
-    closeDate: '2026-10-04',
-  },
-  // Mentions
-  {
-    question:
-      'Will "AI regulation" be mentioned in the next major central bank policy statement?',
-    resolutionSource: 'Official transcript',
-    category: 'Mentions',
-    closeDate: '2026-09-17',
-  },
-  {
-    question:
-      'Will "recession" trend on X during the next major economic data release?',
-    resolutionSource: 'X Trends (or platform equivalent) at time of release',
-    category: 'Mentions',
-    closeDate: '2026-09-05',
-  },
-  // Art
-  {
-    question:
-      'Will any artwork sell for over $50M at a major auction house in 2026?',
-    resolutionSource: "Christie's/Sotheby's official sale results",
-    category: 'Art',
-    closeDate: '2026-12-31',
-  },
-  {
-    question: "Will Banksy's next exhibition sell out on opening day?",
-    resolutionSource: 'Gallery/venue announcement',
-    category: 'Art',
+    question: '¿Promediará "La Casa de los Famosos México" más de 20 millones de espectadores en su próxima temporada?',
+    resolutionSource: 'Datos oficiales de rating (Nielsen IBOPE)',
+    category: 'Cultura',
     closeDate: '2026-12-15',
+    imageUrl: img('1522869635100-9f4c5e86aa37'),
   },
-  // World
+  // Entretenimiento
   {
-    question: 'Will global population surpass 8.2 billion by end of 2026?',
-    resolutionSource: 'UN World Population Prospects data',
-    category: 'World',
+    question: '¿Recaudará la próxima película de Marvel más de $1,000 millones de dólares a nivel mundial?',
+    resolutionSource: 'Box Office Mojo/cifras oficiales del estudio',
+    category: 'Entretenimiento',
     closeDate: '2026-12-31',
+    imageUrl: img('1478720568477-152d9b164e26'),
   },
   {
-    question: 'Will any new country gain UN membership in 2026?',
-    resolutionSource: 'Official UN announcement',
-    category: 'World',
+    question: '¿Lanzará Karol G un nuevo álbum de estudio antes de finales de 2026?',
+    resolutionSource: 'Anuncio oficial de la artista/disquera',
+    category: 'Entretenimiento',
     closeDate: '2026-12-31',
+    imageUrl: img('1470229722913-7c0e2dbbafd3'),
+  },
+  {
+    question: '¿Será Bad Bunny el artista más escuchado en Spotify México en 2026?',
+    resolutionSource: 'Spotify Wrapped/reporte anual oficial',
+    category: 'Entretenimiento',
+    closeDate: '2026-12-31',
+    imageUrl: img('1470019693664-1d202d2c0907'),
+  },
+  // Cripto
+  {
+    question: '¿Cerrará Bitcoin el año 2026 por arriba de $150,000 dólares?',
+    resolutionSource: 'Precio de cierre BTC/USD en CoinGecko',
+    category: 'Cripto',
+    closeDate: '2026-12-31',
+    imageUrl: img('1621761191319-c6fb62004040'),
+  },
+  {
+    question: '¿Superará Bitso los 15 millones de usuarios registrados en México durante 2026?',
+    resolutionSource: 'Reporte oficial de la empresa',
+    category: 'Cripto',
+    closeDate: '2026-12-31',
+    imageUrl: img('1591994843349-f415893b3a6b'),
+  },
+  {
+    question: '¿Aprobará la CNBV un marco regulatorio específico para stablecoins en México antes de 2027?',
+    resolutionSource: 'Publicación oficial en el Diario Oficial de la Federación',
+    category: 'Cripto',
+    closeDate: '2026-12-31',
+    imageUrl: img('1450101499163-c8848c66ca85'),
+  },
+  // Clima
+  {
+    question: '¿Tocará tierra en México un huracán categoría 4 o superior antes de que termine la temporada 2026?',
+    resolutionSource: 'Reporte oficial del Servicio Meteorológico Nacional/NOAA',
+    category: 'Clima',
+    closeDate: '2026-11-30',
+    imageUrl: img('1527482797697-8795b05a13fe'),
+  },
+  {
+    question: '¿Superará la Ciudad de México los 35°C durante la ola de calor de la primavera de 2027?',
+    resolutionSource: 'Registro oficial del Servicio Meteorológico Nacional',
+    category: 'Clima',
+    closeDate: '2027-05-15',
+    imageUrl: img('1504370805625-d32c54b16100'),
+  },
+  // Economía
+  {
+    question: '¿Bajará la inflación anual de México por debajo del 4% antes de que termine 2026?',
+    resolutionSource: 'Reporte oficial de INEGI (INPC)',
+    category: 'Economía',
+    closeDate: '2026-12-31',
+    imageUrl: img('1590283603385-17ffb3a7f29f'),
+  },
+  {
+    question: '¿Cerrará el peso mexicano el año por debajo de 18 pesos por dólar?',
+    resolutionSource: 'Tipo de cambio de cierre publicado por Banxico',
+    category: 'Economía',
+    closeDate: '2026-12-31',
+    imageUrl: img('1518546305927-5a555bb7020d'),
+  },
+  {
+    question: '¿Crecerá el PIB de México más del 2% en 2026?',
+    resolutionSource: 'Reporte oficial de INEGI',
+    category: 'Economía',
+    closeDate: '2027-02-15',
+    imageUrl: img('1526304640581-d334cdbbf45e'),
+  },
+  // Finanzas
+  {
+    question: '¿Recortará Banxico la tasa de interés en su próxima reunión de política monetaria?',
+    resolutionSource: 'Comunicado oficial de Banxico',
+    category: 'Finanzas',
+    closeDate: '2026-09-26',
+    imageUrl: img('1601597111158-2fceff292cdc'),
+  },
+  {
+    question: '¿Debutará Kavak en la bolsa de valores (IPO) antes de que termine 2026?',
+    resolutionSource: 'Presentación oficial ante la SEC/bolsa de valores',
+    category: 'Finanzas',
+    closeDate: '2026-12-31',
+    imageUrl: img('1611974789855-9c2a0a7236a3'),
+  },
+  {
+    question: '¿Cerrará la Bolsa Mexicana de Valores (IPC) el año por arriba de los 60,000 puntos?',
+    resolutionSource: 'Cierre oficial de la BMV',
+    category: 'Finanzas',
+    closeDate: '2026-12-31',
+    imageUrl: img('1451187580459-43490279c0fa'),
+  },
+  // Tecnología
+  {
+    question: '¿Abrirá Tesla una planta de manufactura activa en Nuevo León antes de finales de 2026?',
+    resolutionSource: 'Anuncio oficial de la empresa',
+    category: 'Tecnología',
+    closeDate: '2026-12-31',
+    imageUrl: img('1617704548623-340376564e68'),
+  },
+  {
+    question: '¿Lanzará una startup mexicana su propio modelo de inteligencia artificial de gran escala en 2026?',
+    resolutionSource: 'Anuncio oficial de la empresa',
+    category: 'Tecnología',
+    closeDate: '2026-12-31',
+    imageUrl: img('1677442136019-21780ecad995'),
+  },
+  {
+    question: '¿Alcanzará Clip el estatus de unicornio (valuación de $1,000 millones de dólares) en su próxima ronda de inversión?',
+    resolutionSource: 'Anuncio oficial de la ronda de financiamiento',
+    category: 'Tecnología',
+    closeDate: '2026-12-31',
+    imageUrl: img('1552664730-d307ca884978'),
+  },
+  // Ciencia
+  {
+    question: '¿Confirmará la UNAM el descubrimiento de una nueva especie en la selva Lacandona durante 2026?',
+    resolutionSource: 'Publicación oficial de la UNAM',
+    category: 'Ciencia',
+    closeDate: '2026-12-31',
+    imageUrl: img('1532094349884-543bc11b234d'),
+  },
+  {
+    question: '¿Lanzará México un satélite construido completamente por ingenieros mexicanos antes de 2027?',
+    resolutionSource: 'Anuncio oficial de la Agencia Espacial Mexicana',
+    category: 'Ciencia',
+    closeDate: '2026-12-31',
+    imageUrl: img('1446776653964-20c1d3a81b06'),
   },
 ];
 
@@ -315,7 +293,21 @@ function pick<T>(arr: T[]): T {
   return arr[randInt(0, arr.length - 1)];
 }
 
+async function resetExistingData() {
+  console.log('Resetting existing markets/users/categories...');
+  await prisma.pricePoint.deleteMany({});
+  await prisma.order.deleteMany({});
+  await prisma.position.deleteMany({});
+  await prisma.walletLedger.deleteMany({});
+  await prisma.wallet.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.market.deleteMany({});
+  await prisma.category.deleteMany({});
+}
+
 async function main() {
+  await resetExistingData();
+
   console.log('Seeding categories...');
   const categoryMap = new Map<string, string>();
   for (const name of CATEGORIES) {
@@ -334,17 +326,10 @@ async function main() {
     const categoryId = categoryMap.get(m.category)!;
     const liquidityB = randInt(50, 100);
 
-    const existing = await prisma.market.findFirst({
-      where: { question: m.question },
-    });
-    if (existing) {
-      marketIds.push(existing.id);
-      continue;
-    }
-
     const slug =
       m.question
         .toLowerCase()
+        .replace(/[áéíóúüñ¿?]/g, (ch) => ACCENT_MAP[ch] ?? '')
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '')
         .slice(0, 60) +
@@ -355,9 +340,10 @@ async function main() {
       data: {
         slug,
         question: m.question,
-        description: `This market resolves based on: ${m.resolutionSource}. Trade YES or NO shares to express your view on the outcome before the close date.`,
+        description: `Este mercado se resuelve con base en: ${m.resolutionSource}. Compra acciones de Sí o No para expresar tu opinión sobre el resultado antes de la fecha de cierre.`,
         resolutionSource: m.resolutionSource,
         categoryId,
+        imageUrl: m.imageUrl,
         closeDate: new Date(m.closeDate),
         liquidityB,
         qYes: 0,

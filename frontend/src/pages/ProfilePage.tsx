@@ -5,7 +5,7 @@ import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function ProfilePage() {
   const { username } = useParams<{ username: string }>();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['user', username],
@@ -30,7 +30,7 @@ export function ProfilePage() {
       </div>
       <h1 className="text-2xl font-bold">{user.username}</h1>
       <p className="text-text-secondary text-sm mt-1">
-        {t('profilePage.tradingSince', { date: new Date(user.createdAt).toLocaleDateString() })}
+        {t('profilePage.tradingSince', { date: new Date(user.createdAt).toLocaleDateString(lang === 'es' ? 'es-MX' : 'en-US') })}
       </p>
     </div>
   );

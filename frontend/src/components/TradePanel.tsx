@@ -22,7 +22,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   const openDeposit = useDepositModalStore((s) => s.open);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const [side, setSide] = useState<'BUY' | 'SELL'>('BUY');
   const [outcome, setOutcome] = useState<Outcome>('YES');
@@ -95,7 +95,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
         <div className="min-w-0">
           <p className="text-sm font-semibold line-clamp-1">{market.question}</p>
           <p className="text-xs text-text-secondary">
-            {new Date(market.closeDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} ·{' '}
+            {new Date(market.closeDate).toLocaleDateString(lang === 'es' ? 'es-MX' : 'en-US', { month: 'short', day: 'numeric' })} ·{' '}
             <span style={{ color: outcome === 'YES' ? 'var(--color-yes)' : 'var(--color-no)' }}>
               {t(outcome === 'YES' ? 'common.yes' : 'common.no').toUpperCase()}
             </span>
@@ -154,7 +154,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
           </span>
         </div>
         <div className="flex items-center gap-1 text-text-primary">
-          <span className="text-4xl font-extrabold">$</span>
+          <span className="text-4xl font-extrabold">MX$</span>
           <input
             type="number"
             min={0}
@@ -172,7 +172,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
               onClick={() => setAmount((v) => v + a)}
               className="py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-sm font-medium transition-colors"
             >
-              +${a}
+              +MX${a}
             </button>
           ))}
         </div>
@@ -190,7 +190,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
         {side === 'BUY' && (
           <div className="flex justify-between font-semibold" style={{ color: 'var(--color-success)' }}>
             <span>{t('tradePanel.toWin')}</span>
-            <span>${preview.quantity.toFixed(2)}</span>
+            <span>MX${preview.quantity.toFixed(2)}</span>
           </div>
         )}
       </div>

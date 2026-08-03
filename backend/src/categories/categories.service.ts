@@ -4,19 +4,45 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
+const ACCENT_MAP: Record<string, string> = {
+  á: 'a', é: 'e', í: 'i', ó: 'o', ú: 'u', ü: 'u', ñ: 'n',
+};
+
+function stripAccents(value: string): string {
+  return value.replace(/[áéíóúüñ]/g, (ch) => ACCENT_MAP[ch] ?? ch);
+}
+
 function slugify(name: string): string {
-  return name
-    .toLowerCase()
+  return stripAccents(name.toLowerCase())
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 }
+
+const CATEGORY_ORDER = [
+  'deportes',
+  'politica',
+  'elecciones',
+  'cultura',
+  'entretenimiento',
+  'cripto',
+  'clima',
+  'economia',
+  'finanzas',
+  'tecnologia',
+  'ciencia',
+];
 
 @Injectable()
 export class CategoriesService {
   constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.category.findMany({ orderBy: { name: 'asc' } });
+  async findAll() {
+    const categories = await this.prisma.category.findMany({ orderBy: { name: 'asc' } });
+    return categories.sort((a, b) => {
+      const ai = CATEGORY_ORDER.indexOf(a.slug);
+      const bi = CATEGORY_ORDER.indexOf(b.slug);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    });
   }
 
   async findByIdOrThrow(id: string) {

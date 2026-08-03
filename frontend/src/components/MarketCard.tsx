@@ -34,7 +34,7 @@ export function MarketCard({ market }: { market: MarketSummary }) {
       </div>
 
       <div className="text-[11px] text-text-secondary">
-        {categoryLabel} · ${market.volume24h.toFixed(0)} vol ·{' '}
+        {categoryLabel} · MX${market.volume24h.toFixed(0)} vol ·{' '}
         {isClosed
           ? t(market.status === 'RESOLVED' ? 'common.status.RESOLVED' : 'common.status.CLOSED')
           : days > 0

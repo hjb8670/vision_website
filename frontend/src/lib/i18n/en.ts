@@ -106,6 +106,10 @@ export const en = {
   probabilityRing: {
     chance: 'chance',
   },
+  priceChart: {
+    loading: 'Loading chart…',
+    noData: 'No data yet',
+  },
   leaderboardTable: {
     profitLoss: 'Profit/Loss',
     volume: 'Volume',
@@ -214,8 +218,14 @@ export const en = {
     compete: 'Compete',
     comparisonHeading: 'Compare trending markets',
     comparisonSubheading: '{category} · trending',
-    depositHeading: 'Fund your account',
+    depositHeading: 'Get ready to trade',
     depositDescription: 'Add funds to start trading on real-world outcomes.',
     allMarketsHeading: 'All markets',
+    spotlightVolume: '{category} · ${amount} traded today',
+    viewAllCategory: 'View all →',
+    closesInDays: 'Closes in {days} days',
+    closesToday: 'Closes today',
+    relatedMarkets: '{count} related markets',
+    sortLabel: 'Sort:',
   },
 };

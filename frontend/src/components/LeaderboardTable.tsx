@@ -57,9 +57,9 @@ export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
                   className="w-24 text-right font-semibold"
                   style={{ color: row.profit >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}
                 >
-                  {row.profit >= 0 ? '+' : ''}${row.profit.toFixed(2)}
+                  {row.profit >= 0 ? '+' : ''}MX${row.profit.toFixed(2)}
                 </span>
-                <span className="w-24 text-right text-text-secondary">${row.volume.toFixed(2)}</span>
+                <span className="w-24 text-right text-text-secondary">MX${row.volume.toFixed(2)}</span>
               </div>
             </div>
           );

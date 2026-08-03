@@ -26,7 +26,8 @@ function mergeSeries(seriesList: { key: string; points: PricePoint[] }[]) {
 }
 
 export function MultiMarketComparisonChart({ markets }: { markets: MarketSummary[] }) {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const dateLocale = lang === 'es' ? 'es-MX' : 'en-US';
   const h0 = useMarketHistory(markets[0]?.id, '1M');
   const h1 = useMarketHistory(markets[1]?.id, '1M');
   const h2 = useMarketHistory(markets[2]?.id, '1M');
@@ -51,7 +52,7 @@ export function MultiMarketComparisonChart({ markets }: { markets: MarketSummary
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" vertical={false} />
               <XAxis
                 dataKey="time"
-                tickFormatter={(t) => new Date(t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                tickFormatter={(t) => new Date(t).toLocaleDateString(dateLocale, { month: 'short', day: 'numeric' })}
                 stroke="var(--color-text-secondary)"
                 tick={{ fontSize: 11 }}
                 axisLine={false}
@@ -74,7 +75,7 @@ export function MultiMarketComparisonChart({ markets }: { markets: MarketSummary
                   borderRadius: 8,
                   fontSize: 12,
                 }}
-                labelFormatter={(t) => new Date(t as string).toLocaleDateString()}
+                labelFormatter={(t) => new Date(t as string).toLocaleDateString(dateLocale)}
                 formatter={(v, key) => {
                   const idx = Number(String(key).replace('m', ''));
                   return [`${v}%`, markets[idx]?.question.slice(0, 30) ?? key];

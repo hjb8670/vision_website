@@ -17,7 +17,7 @@ export function PortfolioPage() {
           <div className="text-right">
             <p className="text-sm text-text-secondary">{t('portfolioPage.positionsValue')}</p>
             <p className="text-xl font-bold">
-              ${totalValue.toFixed(2)}{' '}
+              MX${totalValue.toFixed(2)}{' '}
               <span style={{ color: totalPnl >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}>
                 ({totalPnl >= 0 ? '+' : ''}
                 {totalPnl.toFixed(2)})

@@ -126,7 +126,7 @@ export function LeaderboardPage() {
                       <span className="text-text-secondary line-clamp-1">{w.note?.replace('Payout for resolved market: ', '')}</span>
                     </p>
                     <p className="text-sm font-semibold" style={{ color: 'var(--color-success)' }}>
-                      +${w.amount.toFixed(2)}
+                      +MX${w.amount.toFixed(2)}
                     </p>
                   </div>
                 </li>

@@ -19,7 +19,7 @@ const CASH_METHODS: Method[] = [
     key: 'card',
     labelKey: 'depositModal.card',
     subKey: 'depositModal.limitInstant',
-    subVars: { limit: '$115k' },
+    subVars: { limit: '115k' },
     icon: (
       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -33,7 +33,7 @@ const CASH_METHODS: Method[] = [
     key: 'apple-pay',
     labelKey: 'depositModal.applePay',
     subKey: 'depositModal.limitInstant',
-    subVars: { limit: '$115k' },
+    subVars: { limit: '115k' },
     icon: (
       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#000">
@@ -56,7 +56,7 @@ const CASH_METHODS: Method[] = [
     key: 'google-pay',
     labelKey: 'depositModal.googlePay',
     subKey: 'depositModal.limitInstant',
-    subVars: { limit: '$115k' },
+    subVars: { limit: '115k' },
     icon: (
       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black font-bold">G</div>
     ),

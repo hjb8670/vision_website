@@ -9,10 +9,10 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
   const [expanded, setExpanded] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const push = useToastStore((s) => s.push);
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const categoryLabel = useCategoryLabel(market.category);
   const yesPct = Math.round(market.yesProbability * 100);
-  const closeDate = new Date(market.closeDate).toLocaleDateString(undefined, {
+  const closeDate = new Date(market.closeDate).toLocaleDateString(lang === 'es' ? 'es-MX' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
