@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useWalletBalance } from '../hooks/useWallet';
-import { useDepositModalStore } from '../store/depositModalStore';
 import { useTranslation } from '../lib/i18n/useTranslation';
 
 const STARTING_BALANCE = 1000;
@@ -8,7 +8,7 @@ const STARTING_BALANCE = 1000;
 export function DepositProgressBanner() {
   const user = useAuthStore((s) => s.user);
   const { data: wallet } = useWalletBalance();
-  const openDeposit = useDepositModalStore((s) => s.open);
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   if (!user || wallet?.balance !== STARTING_BALANCE) return null;
@@ -26,7 +26,7 @@ export function DepositProgressBanner() {
       </div>
       <button
         type="button"
-        onClick={openDeposit}
+        onClick={() => navigate('/deposit')}
         className="px-5 py-2.5 rounded-full bg-accent-primary hover:bg-accent-secondary text-sm font-semibold text-white transition-colors shrink-0"
       >
         {t('navbar.deposit')}

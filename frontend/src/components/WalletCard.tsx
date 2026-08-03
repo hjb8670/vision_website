@@ -1,11 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useWalletBalance, useWalletTransactions } from '../hooks/useWallet';
-import { useDepositModalStore } from '../store/depositModalStore';
 import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function WalletCard() {
   const { data: wallet, isLoading } = useWalletBalance();
   const { data: transactions } = useWalletTransactions(5);
-  const openDeposit = useDepositModalStore((s) => s.open);
+  const navigate = useNavigate();
   const { t, lang } = useTranslation();
   const dateLocale = lang === 'es' ? 'es-MX' : 'en-US';
 
@@ -13,6 +13,7 @@ export function WalletCard() {
     SEED: t('walletCard.typeSeed'),
     TRADE: t('walletCard.typeTrade'),
     PAYOUT: t('walletCard.typePayout'),
+    DEPOSIT: t('walletCard.typeDeposit'),
   };
 
   return (
@@ -26,7 +27,7 @@ export function WalletCard() {
         <div className="flex gap-2 mt-4">
           <button
             type="button"
-            onClick={openDeposit}
+            onClick={() => navigate('/deposit')}
             className="flex-1 py-2 rounded-full bg-accent-primary hover:bg-accent-secondary text-white text-sm font-semibold transition-colors"
           >
             {t('walletCard.deposit')}

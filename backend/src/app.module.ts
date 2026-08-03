@@ -11,6 +11,7 @@ import { OrdersModule } from './orders/orders.module';
 import { PositionsModule } from './positions/positions.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { AdminModule } from './admin/admin.module';
+import { PaymentHandoffModule } from './payment-handoff/payment-handoff.module';
 
 @Module({
   controllers: [AppController],
@@ -26,6 +27,7 @@ import { AdminModule } from './admin/admin.module';
     PositionsModule,
     LeaderboardModule,
     AdminModule,
+    PaymentHandoffModule,
   ],
 })
 export class AppModule {}

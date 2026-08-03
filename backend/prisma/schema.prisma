@@ -34,15 +34,24 @@ enum LedgerType {
   SEED
   TRADE
   PAYOUT
+  DEPOSIT
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  APPLE
 }
 
 model User {
-  id           String     @id @default(uuid())
-  email        String     @unique
-  username     String     @unique
-  passwordHash String
-  role         Role       @default(USER)
-  createdAt    DateTime   @default(now())
+  id           String       @id @default(uuid())
+  email        String       @unique
+  username     String       @unique
+  passwordHash String?
+  authProvider AuthProvider @default(EMAIL)
+  providerId   String?
+  role         Role         @default(USER)
+  createdAt    DateTime     @default(now())
 
   wallet    Wallet?
   positions Position[]
@@ -139,4 +148,16 @@ model PricePoint {
   volume          Float    @default(0)
 
   @@index([marketId, timestamp])
+}
+
+model PaymentHandoffToken {
+  id         String    @id @default(uuid())
+  token      String    @unique
+  userId     String
+  purpose    String
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
 }

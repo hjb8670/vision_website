@@ -6,7 +6,6 @@ import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 import { useWalletBalance } from '../hooks/useWallet';
 import { usePositions } from '../hooks/usePositions';
-import { useDepositModalStore } from '../store/depositModalStore';
 import { priceForOutcome, quantityForCost, tradeCost, type Outcome } from '../lib/amm';
 import { MarketImage } from './MarketImage';
 import { useTranslation } from '../lib/i18n/useTranslation';
@@ -19,7 +18,6 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   const { data: wallet } = useWalletBalance();
   const { data: positions } = usePositions();
   const push = useToastStore((s) => s.push);
-  const openDeposit = useDepositModalStore((s) => s.open);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { t, lang } = useTranslation();
@@ -207,7 +205,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
       {needsDeposit ? (
         <button
           type="button"
-          onClick={openDeposit}
+          onClick={() => navigate('/deposit')}
           className="w-full py-3 rounded-full bg-accent-primary hover:bg-accent-secondary font-bold text-white transition-colors"
         >
           {t('navbar.deposit')}

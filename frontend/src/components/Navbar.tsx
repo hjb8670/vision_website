@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useWalletBalance } from '../hooks/useWallet';
 import { useCategories } from '../hooks/useCategories';
-import { useDepositModalStore } from '../store/depositModalStore';
 import { useToastStore } from '../store/toastStore';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
@@ -14,7 +13,6 @@ export function Navbar() {
   const { user, logout } = useAuthStore();
   const { data: wallet } = useWalletBalance();
   const { data: categories } = useCategories();
-  const openDeposit = useDepositModalStore((s) => s.open);
   const push = useToastStore((s) => s.push);
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -62,7 +60,7 @@ export function Navbar() {
             </Link>
             <button
               type="button"
-              onClick={openDeposit}
+              onClick={() => navigate('/deposit')}
               className="px-4 py-1.5 rounded-full bg-accent-primary hover:bg-accent-secondary text-sm font-semibold text-white transition-colors"
             >
               {t('navbar.deposit')}

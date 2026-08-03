@@ -1,8 +1,9 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 import { WalletService } from './wallet.service';
+import { CreateDepositDto } from './dto/create-deposit.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('wallet')
@@ -20,5 +21,13 @@ export class WalletController {
       user.userId,
       limit ? Number(limit) : undefined,
     );
+  }
+
+  @Post('deposit/stripe/checkout-session')
+  createCheckoutSession(
+    @CurrentUser() user: AuthUser,
+    @Body() dto: CreateDepositDto,
+  ) {
+    return this.walletService.createDepositCheckoutSession(user.userId, dto.amount);
   }
 }

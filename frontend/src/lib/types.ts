@@ -53,7 +53,7 @@ export interface WalletBalance {
 export interface WalletTransaction {
   id: string;
   amount: number;
-  type: 'SEED' | 'TRADE' | 'PAYOUT';
+  type: 'SEED' | 'TRADE' | 'PAYOUT' | 'DEPOSIT';
   note: string | null;
   createdAt: string;
 }
