@@ -1,10 +1,11 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import * as admin from 'firebase-admin';
+import { initializeApp, cert, type App } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 
-let app: admin.app.App | null = null;
+let app: App | null = null;
 
 /** Lazily initializes the Firebase Admin app from env vars so a missing config only breaks the Google-auth endpoint, not app boot. */
-function getFirebaseApp(): admin.app.App {
+function getFirebaseApp(): App {
   if (app) return app;
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
@@ -17,13 +18,13 @@ function getFirebaseApp(): admin.app.App {
     );
   }
 
-  app = admin.initializeApp({
-    credential: admin.credential.cert({ projectId, clientEmail, privateKey }),
+  app = initializeApp({
+    credential: cert({ projectId, clientEmail, privateKey }),
   });
   return app;
 }
 
 export async function verifyFirebaseIdToken(idToken: string) {
-  const decoded = await admin.auth(getFirebaseApp()).verifyIdToken(idToken);
+  const decoded = await getAuth(getFirebaseApp()).verifyIdToken(idToken);
   return decoded;
 }
