@@ -9,9 +9,21 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class WalletService {
-  private stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
+  private stripeClient: Stripe | null = null;
 
   constructor(private prisma: PrismaService) {}
+
+  /** Lazy so a missing STRIPE_SECRET_KEY only breaks Stripe-specific endpoints, not app boot. */
+  private get stripe(): Stripe {
+    if (!this.stripeClient) {
+      const secretKey = process.env.STRIPE_SECRET_KEY;
+      if (!secretKey) {
+        throw new InternalServerErrorException('Stripe is not configured on the server');
+      }
+      this.stripeClient = new Stripe(secretKey);
+    }
+    return this.stripeClient;
+  }
 
   async getBalance(userId: string) {
     const wallet = await this.prisma.wallet.findUnique({ where: { userId } });
