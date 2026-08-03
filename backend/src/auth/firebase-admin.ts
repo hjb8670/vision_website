@@ -18,9 +18,15 @@ function getFirebaseApp(): App {
     );
   }
 
-  app = initializeApp({
-    credential: cert({ projectId, clientEmail, privateKey }),
-  });
+  try {
+    app = initializeApp({
+      credential: cert({ projectId, clientEmail, privateKey }),
+    });
+  } catch (err) {
+    throw new InternalServerErrorException(
+      `Firebase Admin credentials are invalid: ${err instanceof Error ? err.message : err}`,
+    );
+  }
   return app;
 }
 
