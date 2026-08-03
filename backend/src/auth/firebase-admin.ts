@@ -1,4 +1,4 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import { InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { initializeApp, cert, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
@@ -25,6 +25,10 @@ function getFirebaseApp(): App {
 }
 
 export async function verifyFirebaseIdToken(idToken: string) {
-  const decoded = await getAuth(getFirebaseApp()).verifyIdToken(idToken);
-  return decoded;
+  const firebaseApp = getFirebaseApp();
+  try {
+    return await getAuth(firebaseApp).verifyIdToken(idToken);
+  } catch {
+    throw new UnauthorizedException('Invalid Google ID token');
+  }
 }
