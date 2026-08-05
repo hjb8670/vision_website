@@ -102,6 +102,8 @@ model User {
   orders         Order[]
   posts          Post[]
   comments       Comment[]
+  likes          Like[]
+  postComments   PostComment[]
   following      Follow[]              @relation("Follower")
   followers      Follow[]              @relation("Following")
   blocking       Block[]               @relation("Blocker")
@@ -227,8 +229,36 @@ model Post {
   tags      String[]
   createdAt DateTime @default(now())
 
+  likes         Like[]
+  postComments  PostComment[]
+
   @@index([userId])
   @@index([createdAt])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model PostComment {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  text      String
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+  @@index([userId])
 }
 
 model Comment {
