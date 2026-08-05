@@ -77,6 +77,19 @@ export class AuthService {
     }
   }
 
+  private async generateUniqueReferralCode() {
+    const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I to avoid ambiguity
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        code += alphabet[Math.floor(Math.random() * alphabet.length)];
+      }
+      const existing = await this.prisma.user.findUnique({ where: { referralCode: code } });
+      if (!existing) return code;
+    }
+  }
+
   private async createUserWithWallet(data: {
     email: string;
     username: string;
@@ -84,6 +97,7 @@ export class AuthService {
     authProvider: AuthProvider;
     providerId?: string;
   }): Promise<User> {
+    const referralCode = await this.generateUniqueReferralCode();
     return this.prisma.user.create({
       data: {
         email: data.email,
@@ -91,6 +105,7 @@ export class AuthService {
         passwordHash: data.passwordHash,
         authProvider: data.authProvider,
         providerId: data.providerId,
+        referralCode,
         wallet: {
           create: {
             balance: STARTING_BALANCE,

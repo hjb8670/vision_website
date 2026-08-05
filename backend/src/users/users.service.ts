@@ -51,6 +51,7 @@ export class UsersService {
         role: true,
         bio: true,
         avatarUrl: true,
+        referralCode: true,
         createdAt: true,
       },
     });
@@ -145,6 +146,74 @@ export class UsersService {
       create: { blockerId, blockedId },
       update: {},
     });
+  }
+
+  async getReferralInfo(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { referralCode: true, referredById: true },
+    });
+    if (!user) throw new NotFoundException('User not found');
+
+    const referredCount = await this.prisma.user.count({ where: { referredById: userId } });
+    return {
+      code: user.referralCode,
+      already_redeemed: !!user.referredById,
+      referred_count: referredCount,
+    };
+  }
+
+  async redeemReferralCode(userId: string, code: string) {
+    const normalized = code.trim().toUpperCase();
+
+    const [me, referrer] = await Promise.all([
+      this.prisma.user.findUnique({ where: { id: userId } }),
+      this.prisma.user.findUnique({ where: { referralCode: normalized } }),
+    ]);
+    if (!me) throw new NotFoundException('User not found');
+    if (me.referredById) {
+      throw new BadRequestException('You have already redeemed a referral code');
+    }
+    if (!referrer) {
+      throw new BadRequestException('Invalid referral code');
+    }
+    if (referrer.id === userId) {
+      throw new BadRequestException('You cannot redeem your own referral code');
+    }
+
+    const BONUS = 10;
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: userId },
+        data: { referredById: referrer.id },
+      }),
+      this.prisma.wallet.update({
+        where: { userId },
+        data: { balance: { increment: BONUS } },
+      }),
+      this.prisma.wallet.update({
+        where: { userId: referrer.id },
+        data: { balance: { increment: BONUS } },
+      }),
+      this.prisma.walletLedger.create({
+        data: {
+          wallet: { connect: { userId } },
+          amount: BONUS,
+          type: 'BONUS',
+          note: `Referral bonus for joining via @${referrer.username}`,
+        },
+      }),
+      this.prisma.walletLedger.create({
+        data: {
+          wallet: { connect: { userId: referrer.id } },
+          amount: BONUS,
+          type: 'BONUS',
+          note: `Referral bonus — @${me.username} joined using your code`,
+        },
+      }),
+    ]);
+
+    return { bonus: BONUS, referrer_username: referrer.username };
   }
 
   async findAllAdmin(search?: string) {

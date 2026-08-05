@@ -4,6 +4,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { UpdateMeDto } from './dto/update-me.dto';
+import { RedeemReferralDto } from './dto/redeem-referral.dto';
 
 @Controller('users')
 export class UsersController {
@@ -31,6 +32,18 @@ export class UsersController {
   @Post('me/security/2fa/enable')
   enable2fa(@CurrentUser() user: AuthUser) {
     return this.usersService.enable2fa(user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me/referral')
+  referralInfo(@CurrentUser() user: AuthUser) {
+    return this.usersService.getReferralInfo(user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('me/referral/redeem')
+  redeemReferral(@CurrentUser() user: AuthUser, @Body() dto: RedeemReferralDto) {
+    return this.usersService.redeemReferralCode(user.userId, dto.code);
   }
 
   @UseGuards(JwtAuthGuard)

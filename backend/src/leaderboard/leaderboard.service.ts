@@ -48,7 +48,9 @@ export class LeaderboardService {
         const volume = u.orders.reduce((sum, o) => sum + Math.abs(o.cost), 0);
 
         return {
+          id: u.id,
           username: u.username,
+          avatarUrl: u.avatarUrl,
           profit,
           winRate,
           volume,
