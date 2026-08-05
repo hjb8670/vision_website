@@ -14,7 +14,7 @@ export function CompactMarketCard({ market }: { market: MarketSummary }) {
   return (
     <Link
       to={`/market/${market.slug}`}
-      className="flex flex-col gap-3 rounded-2xl bg-bg-elevated p-4 h-full hover:shadow-[0_0_0_1px_var(--color-accent-primary)] transition-shadow"
+      className="flex flex-col gap-3 rounded-2xl bg-bg-elevated p-4 hover:shadow-[0_0_0_1px_var(--color-accent-primary)] transition-shadow"
     >
       <div className="flex items-start gap-2">
         <MarketImage imageUrl={market.imageUrl} categoryName={market.category.name} size={32} />

@@ -25,8 +25,34 @@ function groupByFirstSeenCategory(markets: MarketSummary[]) {
   return groups;
 }
 
+function SpotlightSkeleton() {
+  return (
+    <section>
+      <div className="flex items-center justify-between mb-4">
+        <div className="h-6 w-64 rounded bg-bg-elevated animate-pulse" />
+        <div className="h-4 w-24 rounded bg-bg-elevated animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+        <div className="lg:col-span-2 h-64 rounded-2xl bg-bg-elevated animate-pulse" />
+        <div className="space-y-4">
+          <div className="h-[124px] rounded-2xl bg-bg-elevated animate-pulse" />
+          <div className="h-[124px] rounded-2xl bg-bg-elevated animate-pulse" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ComparisonSkeleton() {
+  return (
+    <section>
+      <div className="h-[420px] rounded-2xl bg-bg-elevated animate-pulse" />
+    </section>
+  );
+}
+
 export function HomePage() {
-  const { data: trending } = useMarkets('trending');
+  const { data: trending, isLoading: trendingLoading } = useMarkets('trending');
   const [allSf, setAllSf] = useState<SortFilter>('volume');
   const { data: allMarkets } = useMarkets(allSf);
   const { t } = useTranslation();
@@ -61,33 +87,41 @@ export function HomePage() {
         </div>
       </div>
 
-      {spotlightBig && (
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">
-              {t('home.spotlightVolume', { category: spotlightCategoryLabel, amount: spotlightVolume.toFixed(0) })}
-            </h2>
-            <Link to={`/markets?category=${spotlightBig.category.slug}`} className="text-sm text-accent-primary hover:underline">
-              {t('home.viewAllCategory')}
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
-            <div className="lg:col-span-2">
-              <SpotlightMarketCard market={spotlightBig} />
+      {trendingLoading ? (
+        <SpotlightSkeleton />
+      ) : (
+        spotlightBig && (
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">
+                {t('home.spotlightVolume', { category: spotlightCategoryLabel, amount: spotlightVolume.toFixed(0) })}
+              </h2>
+              <Link to={`/markets?category=${spotlightBig.category.slug}`} className="text-sm text-accent-primary hover:underline">
+                {t('home.viewAllCategory')}
+              </Link>
             </div>
-            <div className="space-y-4">
-              {spotlightSmall.map((m) => (
-                <CompactMarketCard key={m.id} market={m} />
-              ))}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+              <div className="lg:col-span-2">
+                <SpotlightMarketCard market={spotlightBig} />
+              </div>
+              <div className="space-y-4">
+                {spotlightSmall.map((m) => (
+                  <CompactMarketCard key={m.id} market={m} />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )
       )}
 
-      {comparisonMarkets.length >= 3 && (
-        <section>
-          <MultiMarketComparisonChart markets={comparisonMarkets} />
-        </section>
+      {trendingLoading ? (
+        <ComparisonSkeleton />
+      ) : (
+        comparisonMarkets.length >= 3 && (
+          <section>
+            <MultiMarketComparisonChart markets={comparisonMarkets} />
+          </section>
+        )
       )}
 
       <DepositProgressBanner />
