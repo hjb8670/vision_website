@@ -104,9 +104,10 @@ export class MarketsService {
     return summaries;
   }
 
-  async findBySlug(slug: string) {
-    const market = await this.prisma.market.findUnique({
-      where: { slug },
+  /** Accepts either a market slug (preferred) or id — some client call sites only have one on hand. */
+  async findBySlug(idOrSlug: string) {
+    const market = await this.prisma.market.findFirst({
+      where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
       include: { category: true },
     });
     if (!market) throw new NotFoundException('Market not found');
