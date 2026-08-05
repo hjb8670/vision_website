@@ -12,6 +12,10 @@ import { PositionsModule } from './positions/positions.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { AdminModule } from './admin/admin.module';
 import { PaymentHandoffModule } from './payment-handoff/payment-handoff.module';
+import { SocialModule } from './social/social.module';
+import { ReportsModule } from './reports/reports.module';
+import { SupportModule } from './support/support.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   controllers: [AppController],
@@ -28,6 +32,10 @@ import { PaymentHandoffModule } from './payment-handoff/payment-handoff.module';
     LeaderboardModule,
     AdminModule,
     PaymentHandoffModule,
+    SocialModule,
+    ReportsModule,
+    SupportModule,
+    NotificationsModule,
   ],
 })
 export class AppModule {}
