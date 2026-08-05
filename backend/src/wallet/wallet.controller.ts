@@ -28,6 +28,6 @@ export class WalletController {
     @CurrentUser() user: AuthUser,
     @Body() dto: CreateDepositDto,
   ) {
-    return this.walletService.createDepositCheckoutSession(user.userId, dto.amount);
+    return this.walletService.createDepositCheckoutSession(user.userId, dto.amount, dto.returnTo);
   }
 }

@@ -42,11 +42,17 @@ export class WalletService {
     });
   }
 
-  async createDepositCheckoutSession(userId: string, amount: number) {
+  async createDepositCheckoutSession(userId: string, amount: number, returnTo?: string) {
     const wallet = await this.prisma.wallet.findUnique({ where: { userId } });
     if (!wallet) throw new NotFoundException('Wallet not found');
 
+    // Only trust a small whitelist of app deep-link schemes as a redirect target — everything
+    // else falls back to the website's own /deposit page.
+    const isAppDeepLink = typeof returnTo === 'string' && returnTo.startsWith('visionapp://');
     const frontendUrl = process.env.FRONTEND_URL?.split(',')[0] ?? 'http://localhost:5173';
+    const successUrl = isAppDeepLink ? returnTo : `${frontendUrl}/deposit?status=success`;
+    const cancelUrl = isAppDeepLink ? returnTo : `${frontendUrl}/deposit?status=cancelled`;
+
     const session = await this.stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
@@ -61,8 +67,8 @@ export class WalletService {
         },
       ],
       metadata: { userId },
-      success_url: `${frontendUrl}/deposit?status=success`,
-      cancel_url: `${frontendUrl}/deposit?status=cancelled`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
     });
 
     return { url: session.url };
