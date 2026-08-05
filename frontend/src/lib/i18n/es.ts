@@ -63,6 +63,7 @@ export const es: typeof en = {
     checkoutFailed: 'No se pudo iniciar el pago',
     successHeading: 'Depósito completado',
     returnToApp: 'Ya puedes volver a la app de Vision.',
+    returnToAppButton: 'Volver a la app',
     cancelled: 'El pago fue cancelado',
     virtualNotice: 'Los depósitos agregan saldo virtual de Vision solo para fines de entretenimiento.',
   },

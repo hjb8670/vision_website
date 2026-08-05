@@ -61,6 +61,7 @@ export const en = {
     checkoutFailed: 'Could not start checkout',
     successHeading: 'Deposit complete',
     returnToApp: 'You can return to the Vision app now.',
+    returnToAppButton: 'Return to app',
     cancelled: 'Checkout was cancelled',
     virtualNotice: 'Deposits add virtual Vision balance for entertainment purposes only.',
   },

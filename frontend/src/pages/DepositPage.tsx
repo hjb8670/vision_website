@@ -21,10 +21,19 @@ export function DepositPage() {
 
   const handoffToken = searchParams.get('handoff');
   const status = searchParams.get('status');
+  const returnTo = searchParams.get('return_to');
 
   const [resolvingHandoff, setResolvingHandoff] = useState(!!handoffToken);
   const [amount, setAmount] = useState(25);
   const [submitting, setSubmitting] = useState(false);
+  const [appReturnUrl, setAppReturnUrl] = useState(() => sessionStorage.getItem('vision_return_to'));
+
+  useEffect(() => {
+    if (returnTo) {
+      sessionStorage.setItem('vision_return_to', returnTo);
+      setAppReturnUrl(returnTo);
+    }
+  }, [returnTo]);
 
   useEffect(() => {
     if (!handoffToken) return;
@@ -91,7 +100,18 @@ export function DepositPage() {
       {status === 'success' && (
         <div className="rounded-xl bg-bg-elevated border border-white/10 p-4 mb-6 text-sm">
           <p className="font-semibold mb-1">{t('depositPage.successHeading')}</p>
-          <p className="text-text-secondary">{t('depositPage.returnToApp')}</p>
+          <p className="text-text-secondary mb-3">{t('depositPage.returnToApp')}</p>
+          {appReturnUrl && (
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = appReturnUrl;
+              }}
+              className="w-full py-2.5 rounded-full bg-accent-primary hover:bg-accent-secondary font-bold text-white transition-colors"
+            >
+              {t('depositPage.returnToAppButton')}
+            </button>
+          )}
         </div>
       )}
 
