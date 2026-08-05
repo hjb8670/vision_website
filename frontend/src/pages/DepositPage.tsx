@@ -64,6 +64,15 @@ export function DepositPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
+  // Came from the app — automatically hand the user back to it once the deposit succeeds.
+  useEffect(() => {
+    if (status !== 'success' || !appReturnUrl) return;
+    const timer = setTimeout(() => {
+      window.location.href = appReturnUrl;
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [status, appReturnUrl]);
+
   if (resolvingHandoff) {
     return (
       <div className="max-w-md mx-auto px-4 py-16 text-center text-text-secondary">
