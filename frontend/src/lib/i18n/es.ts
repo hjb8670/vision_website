@@ -10,6 +10,12 @@ export const es: typeof en = {
       RESOLVED: 'Resuelto',
     },
   },
+  notificationsPanel: {
+    heading: 'Notificaciones',
+    empty: 'Estás al día — aún no tienes notificaciones.',
+    loginPrompt: 'Inicia sesión para ver tus notificaciones.',
+    loading: 'Cargando notificaciones…',
+  },
   bottomNav: {
     home: 'Inicio',
     markets: 'Mercados',

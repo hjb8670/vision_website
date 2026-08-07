@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
@@ -11,7 +11,6 @@ const QUICK_AMOUNTS = [10, 25, 100];
 
 export function DepositPage() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const push = useToastStore((s) => s.push);
   const { t } = useTranslation();
@@ -82,8 +81,7 @@ export function DepositPage() {
   }
 
   if (!user) {
-    navigate('/login');
-    return null;
+    return <Navigate to="/login" replace />;
   }
 
   async function handleDeposit() {

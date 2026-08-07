@@ -8,6 +8,12 @@ export const en = {
       RESOLVED: 'Resolved',
     },
   },
+  notificationsPanel: {
+    heading: 'Notifications',
+    empty: "You're all caught up — no notifications yet.",
+    loginPrompt: 'Log in to see your notifications.',
+    loading: 'Loading notifications…',
+  },
   bottomNav: {
     home: 'Home',
     markets: 'Markets',

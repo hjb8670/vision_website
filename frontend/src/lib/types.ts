@@ -72,4 +72,13 @@ export interface BiggestWin {
   note: string | null;
 }
 
+export interface AppNotification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  created_at: string;
+  read_at: string | null;
+}
+
 export type SortFilter = 'newest' | 'trending' | 'volume' | 'ending';

@@ -1,16 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { WalletCard } from '../components/WalletCard';
 import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function WalletPage() {
   const user = useAuthStore((s) => s.user);
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   if (!user) {
-    navigate('/login');
-    return null;
+    return <Navigate to="/login" replace />;
   }
 
   return (

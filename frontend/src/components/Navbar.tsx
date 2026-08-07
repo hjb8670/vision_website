@@ -7,6 +7,7 @@ import { useToastStore } from '../store/toastStore';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
 import { LanguageSwitch } from './LanguageSwitch';
+import { NotificationBell } from './NotificationBell';
 import visionLogo from '../assets/vision-logo.png';
 
 export function Navbar() {
@@ -56,13 +57,7 @@ export function Navbar() {
           <LanguageSwitch />
         </div>
 
-        <button
-          type="button"
-          aria-label={t('navbar.notifications')}
-          className="shrink-0 p-1.5 sm:p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
-        >
-          <BellIcon />
-        </button>
+        <NotificationBell />
 
         {user ? (
           <div className="flex items-center gap-1.5 sm:gap-3">
@@ -247,15 +242,6 @@ function CategoryPill({ category }: { category: { id: string; slug: string; name
     >
       {label}
     </Link>
-  );
-}
-
-function BellIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
-      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-    </svg>
   );
 }
 

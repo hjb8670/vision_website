@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 import { useTranslation } from '../lib/i18n/useTranslation';
@@ -7,13 +7,11 @@ import { useTranslation } from '../lib/i18n/useTranslation';
 export function ReferralsPage() {
   const user = useAuthStore((s) => s.user);
   const push = useToastStore((s) => s.push);
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   if (!user) {
-    navigate('/login');
-    return null;
+    return <Navigate to="/login" replace />;
   }
 
   const referralLink = `${window.location.origin}/?ref=${user.username}`;
