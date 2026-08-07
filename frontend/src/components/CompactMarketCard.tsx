@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MarketImage } from './MarketImage';
 import { Sparkline } from './Sparkline';
+import { PercentPill } from './PercentPill';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
 import type { MarketSummary } from '../lib/types';
@@ -22,12 +23,7 @@ export function CompactMarketCard({ market }: { market: MarketSummary }) {
       </div>
 
       <div className="flex items-center gap-3">
-        <p
-          className="text-2xl font-extrabold leading-none shrink-0"
-          style={{ color: yesPct >= 50 ? 'var(--color-yes)' : 'var(--color-no)' }}
-        >
-          {yesPct}%
-        </p>
+        <PercentPill pct={yesPct >= 50 ? yesPct : noPct} outcome={yesPct >= 50 ? 'YES' : 'NO'} />
         <div className="flex-1 min-w-0">
           <Sparkline points={market.sparkline} color="var(--color-accent-primary)" height={24} />
         </div>

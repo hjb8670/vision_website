@@ -43,7 +43,7 @@ export function LeaderboardPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-extrabold mb-6">{t('leaderboardPage.heading')}</h1>
 
-      <div className="flex items-center gap-6 border-b border-white/10 mb-4 text-sm">
+      <div className="flex items-center gap-6 border-b border-border mb-4 text-sm">
         {PRODUCT_TABS.map((p) => (
           <button
             key={p}
@@ -67,7 +67,7 @@ export function LeaderboardPage() {
                 type="button"
                 onClick={() => (w === 'All' ? setTimeWindow(w) : stub(t('leaderboardPage.leaderboardComingSoon', { window: TIME_LABELS[w] })))}
                 className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  timeWindow === w ? 'bg-white/10 text-text-primary' : 'text-text-secondary hover:bg-white/5'
+                  timeWindow === w ? 'bg-overlay-2 text-text-primary' : 'text-text-secondary hover:bg-overlay-1'
                 }`}
               >
                 {TIME_LABELS[w]}
@@ -83,7 +83,7 @@ export function LeaderboardPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('leaderboardPage.searchPlaceholder')}
-                className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                className="w-full bg-overlay-1 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
               />
             </div>
             <div className="flex gap-4 sm:gap-10 sm:pr-4 text-xs text-text-secondary shrink-0">

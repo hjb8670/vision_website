@@ -58,7 +58,7 @@ export function ReferralsPage() {
         <button
           type="button"
           onClick={copyLink}
-          className="flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-full px-4 py-2 text-sm transition-colors"
+          className="flex items-center gap-3 bg-overlay-1 hover:bg-overlay-2 rounded-full px-4 py-2 text-sm transition-colors"
         >
           <span className="text-text-secondary truncate max-w-[220px]">{referralLink}</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">

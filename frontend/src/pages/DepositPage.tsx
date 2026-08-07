@@ -105,7 +105,7 @@ export function DepositPage() {
       </p>
 
       {status === 'success' && (
-        <div className="rounded-xl bg-bg-elevated border border-white/10 p-4 mb-6 text-sm">
+        <div className="rounded-xl bg-bg-elevated border border-border p-4 mb-6 text-sm">
           <p className="font-semibold mb-1">{t('depositPage.successHeading')}</p>
           <p className="text-text-secondary mb-3">{t('depositPage.returnToApp')}</p>
           {appReturnUrl && (
@@ -132,7 +132,7 @@ export function DepositPage() {
                 type="button"
                 onClick={() => setAmount(qa)}
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-                  amount === qa ? 'bg-accent-primary text-white' : 'bg-white/5 text-text-secondary hover:bg-white/10'
+                  amount === qa ? 'bg-accent-primary text-white' : 'bg-overlay-1 text-text-secondary hover:bg-overlay-2'
                 }`}
               >
                 ${qa}
@@ -145,7 +145,7 @@ export function DepositPage() {
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
-            className="w-full bg-black/20 border border-white/10 rounded-md px-3 py-2 text-text-primary focus:outline-none focus:border-accent-primary"
+            className="w-full bg-sunken border border-border rounded-md px-3 py-2 text-text-primary focus:outline-none focus:border-accent-primary"
           />
         </div>
 

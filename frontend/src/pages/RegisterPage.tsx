@@ -43,7 +43,7 @@ export function RegisterPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-bg-elevated border border-white/10 rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
+            className="w-full bg-bg-elevated border border-border rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
           />
         </div>
         <div>
@@ -54,7 +54,7 @@ export function RegisterPage() {
             minLength={3}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-bg-elevated border border-white/10 rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
+            className="w-full bg-bg-elevated border border-border rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
           />
         </div>
         <div>
@@ -65,7 +65,7 @@ export function RegisterPage() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-bg-elevated border border-white/10 rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
+            className="w-full bg-bg-elevated border border-border rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-primary"
           />
         </div>
         {error && <p className="text-sm text-error">{error}</p>}

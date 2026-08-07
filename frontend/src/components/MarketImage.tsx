@@ -21,7 +21,7 @@ export function MarketImage({
       src={imageUrl}
       alt=""
       onError={() => setFailed(true)}
-      className="shrink-0 rounded-lg object-cover bg-white/5"
+      className="shrink-0 rounded-lg object-cover bg-overlay-1"
       style={{ width: size, height: size }}
     />
   );

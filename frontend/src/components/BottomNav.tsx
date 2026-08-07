@@ -24,6 +24,7 @@ export function BottomNav() {
       icon: WalletIcon,
       active: pathname === '/wallet',
     },
+    { to: '/social', label: t('bottomNav.social'), icon: SocialIcon, active: pathname === '/social' },
     {
       to: user ? `/profile/${user.username}` : '/login',
       label: user ? t('bottomNav.profile') : t('navbar.logIn'),
@@ -34,10 +35,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-bg-secondary/95 backdrop-blur border-t border-white/10"
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-bg-secondary/95 backdrop-blur border-t border-border"
       style={{ paddingBottom: 'var(--safe-bottom)' }}
     >
-      <div className={`grid h-16 ${items.length === 5 ? 'grid-cols-5' : 'grid-cols-3'}`}>
+      <div className={`grid h-16 ${items.length === 6 ? 'grid-cols-6' : 'grid-cols-4'}`}>
         {items.map((item) => (
           <Link
             key={item.label + item.to}
@@ -88,6 +89,16 @@ function WalletIcon() {
       <path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v2" />
       <rect x="3" y="7" width="18" height="13" rx="2" />
       <path d="M17 13.5h.01" />
+    </svg>
+  );
+}
+
+function SocialIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+      <path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z" />
     </svg>
   );
 }

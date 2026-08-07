@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { BottomNav } from './components/BottomNav';
 import { ToastHost } from './components/ToastHost';
+import { useThemeStore } from './store/themeStore';
 import { HomePage } from './pages/HomePage';
 import { MarketsPage } from './pages/MarketsPage';
 import { MarketDetailPage } from './pages/MarketDetailPage';
@@ -13,8 +15,16 @@ import { DepositPage } from './pages/DepositPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ReferralsPage } from './pages/ReferralsPage';
+import { SocialPage } from './pages/SocialPage';
 
 function App() {
+  const theme = useThemeStore((s) => s.theme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0a0a0a' : '#ffffff');
+  }, [theme]);
+
   return (
     <>
       <Navbar />
@@ -31,6 +41,7 @@ function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/referral" element={<ReferralsPage />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/social" element={<SocialPage />} />
         </Routes>
       </main>
       <ToastHost />

@@ -41,7 +41,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
               <XAxis
                 dataKey="time"
                 type="number"
@@ -66,7 +66,7 @@ export function PriceChart({ marketId }: { marketId: string }) {
               <Tooltip
                 contentStyle={{
                   background: 'var(--color-bg-elevated)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: '1px solid var(--color-border)',
                   borderRadius: 8,
                   fontSize: 12,
                 }}

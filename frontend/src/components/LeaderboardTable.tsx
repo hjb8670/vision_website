@@ -22,7 +22,7 @@ export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
 
   return (
     <div className="bg-bg-elevated rounded-2xl overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-3 text-xs text-text-secondary border-b border-white/5">
+      <div className="flex items-center justify-between px-4 py-3 text-xs text-text-secondary border-b border-border">
         <span />
         <div className="flex gap-4 sm:gap-10">
           <span className={`w-24 text-right truncate ${sortBy === 'profit' ? 'text-text-primary font-semibold' : ''}`}>{t('leaderboardTable.profitLoss')}</span>
@@ -37,8 +37,8 @@ export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
           return (
             <div
               key={row.username}
-              className={`flex items-center justify-between px-4 py-3.5 border-b border-white/5 last:border-0 ${
-                isYou ? 'bg-white/5' : 'hover:bg-white/5'
+              className={`flex items-center justify-between px-4 py-3.5 border-b border-border last:border-0 ${
+                isYou ? 'bg-overlay-1' : 'hover:bg-overlay-1'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MarketImage } from './MarketImage';
 import { Sparkline } from './Sparkline';
+import { PercentPill } from './PercentPill';
 import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
 import type { MarketSummary } from '../lib/types';
@@ -31,20 +32,16 @@ export function SpotlightMarketCard({ market }: { market: MarketSummary }) {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="shrink-0">
-          <p className="text-3xl font-extrabold leading-none" style={{ color: 'var(--color-yes)' }}>
-            {yesPct}%
-          </p>
-          <p className="text-xs text-text-secondary mt-1">{t('common.yes')}</p>
+        <div className="shrink-0 flex flex-col items-center gap-1.5">
+          <PercentPill pct={yesPct} outcome="YES" />
+          <p className="text-xs text-text-secondary">{t('common.yes')}</p>
         </div>
         <div className="flex-1 min-w-0">
           <Sparkline points={market.sparkline} color="var(--color-accent-primary)" height={36} />
         </div>
-        <div className="shrink-0 text-right">
-          <p className="text-3xl font-extrabold leading-none" style={{ color: 'var(--color-no)' }}>
-            {noPct}%
-          </p>
-          <p className="text-xs text-text-secondary mt-1">{t('common.no')}</p>
+        <div className="shrink-0 flex flex-col items-center gap-1.5">
+          <PercentPill pct={noPct} outcome="NO" />
+          <p className="text-xs text-text-secondary">{t('common.no')}</p>
         </div>
       </div>
 

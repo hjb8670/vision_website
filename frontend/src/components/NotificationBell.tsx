@@ -36,7 +36,7 @@ export function NotificationBell() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={t('navbar.notifications')}
-        className="relative shrink-0 p-1.5 sm:p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
+        className="relative shrink-0 p-1.5 sm:p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay-2"
       >
         <BellIcon />
         {unreadCount > 0 && (
@@ -48,7 +48,7 @@ export function NotificationBell() {
 
       {open && (
         <div className="fixed left-4 right-4 top-16 sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-80 sm:inset-x-auto max-w-full sm:max-w-[calc(100vw-2rem)] bg-bg-elevated rounded-2xl shadow-lg text-sm overflow-hidden z-30">
-          <div className="px-4 py-3 font-semibold border-b border-white/10">{t('notificationsPanel.heading')}</div>
+          <div className="px-4 py-3 font-semibold border-b border-border">{t('notificationsPanel.heading')}</div>
           <div className="max-h-96 overflow-y-auto">
             {!user ? (
               <p className="px-4 py-6 text-center text-text-secondary">{t('notificationsPanel.loginPrompt')}</p>
@@ -62,7 +62,7 @@ export function NotificationBell() {
                   key={n.id}
                   type="button"
                   onClick={() => handleSelect(n)}
-                  className={`w-full text-left px-4 py-3 flex gap-3 hover:bg-white/5 border-b border-white/5 last:border-0 ${
+                  className={`w-full text-left px-4 py-3 flex gap-3 hover:bg-overlay-1 border-b border-border last:border-0 ${
                     n.read_at ? '' : 'bg-white/[0.03]'
                   }`}
                 >

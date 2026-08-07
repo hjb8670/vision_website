@@ -97,7 +97,7 @@ export function TradePanel({
 
   return (
     <div className="bg-bg-elevated rounded-2xl p-5 space-y-4">
-      <div className="flex items-center gap-3 pb-4 border-b border-white/10">
+      <div className="flex items-center gap-3 pb-4 border-b border-border">
         <MarketImage imageUrl={market.imageUrl} categoryName={market.category.name} size={40} />
         <div className="min-w-0">
           <p className="text-sm font-semibold line-clamp-1">{market.question}</p>
@@ -110,14 +110,14 @@ export function TradePanel({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-1 bg-black/30 rounded-full p-1">
+      <div className="grid grid-cols-2 gap-1 bg-sunken rounded-full p-1">
         {(['BUY', 'SELL'] as const).map((s) => (
           <button
             key={s}
             type="button"
             onClick={() => setSide(s)}
             className={`py-2 rounded-full text-sm font-semibold transition-colors ${
-              side === s ? 'bg-white/10 text-text-primary' : 'text-text-secondary hover:text-text-primary'
+              side === s ? 'bg-overlay-2 text-text-primary' : 'text-text-secondary hover:text-text-primary'
             }`}
           >
             {t(s === 'BUY' ? 'tradePanel.buy' : 'tradePanel.sell').toUpperCase()}
@@ -133,7 +133,7 @@ export function TradePanel({
           type="button"
           onClick={() => setOutcome('YES')}
           className={`py-3 rounded-md font-bold text-sm transition-colors ${
-            outcome === 'YES' ? 'text-bg-primary' : 'bg-white/5 text-text-secondary hover:text-text-primary'
+            outcome === 'YES' ? 'text-bg-primary' : 'bg-overlay-1 text-text-secondary hover:text-text-primary'
           }`}
           style={outcome === 'YES' ? { background: 'var(--color-yes)' } : undefined}
         >
@@ -143,7 +143,7 @@ export function TradePanel({
           type="button"
           onClick={() => setOutcome('NO')}
           className={`py-3 rounded-md font-bold text-sm transition-colors ${
-            outcome === 'NO' ? 'text-white' : 'bg-white/5 text-text-secondary hover:text-text-primary'
+            outcome === 'NO' ? 'text-white' : 'bg-overlay-1 text-text-secondary hover:text-text-primary'
           }`}
           style={outcome === 'NO' ? { background: 'var(--color-no)' } : undefined}
         >
@@ -177,7 +177,7 @@ export function TradePanel({
               key={a}
               type="button"
               onClick={() => setAmount((v) => v + a)}
-              className="py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-sm font-medium transition-colors"
+              className="py-1.5 rounded-full bg-overlay-1 hover:bg-overlay-2 text-sm font-medium transition-colors"
             >
               +MX${a}
             </button>
@@ -185,7 +185,7 @@ export function TradePanel({
         </div>
       </div>
 
-      <div className="text-sm space-y-1 border-t border-white/10 pt-3">
+      <div className="text-sm space-y-1 border-t border-border pt-3">
         <div className="flex justify-between text-text-secondary">
           <span>{t('tradePanel.avgPrice')}</span>
           <span>{(preview.price * 100).toFixed(1)}¢</span>

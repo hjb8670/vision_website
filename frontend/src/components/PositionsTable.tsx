@@ -7,7 +7,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
 
   if (positions.length === 0) {
     return (
-      <div className="text-center py-16 border border-dashed border-white/15 rounded-2xl">
+      <div className="text-center py-16 border border-dashed border-border rounded-2xl">
         <p className="text-text-secondary mb-4">{t('positionsTable.empty')}</p>
         <Link
           to="/markets"
@@ -26,7 +26,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
           <Link
             key={p.id}
             to={`/market/${p.market.slug}`}
-            className="block bg-bg-elevated rounded-2xl p-4 space-y-3 hover:bg-white/5"
+            className="block bg-bg-elevated rounded-2xl p-4 space-y-3 hover:bg-overlay-1"
           >
             <div className="flex items-start justify-between gap-3">
               <p className="text-sm font-medium line-clamp-2 min-w-0">{p.market.question}</p>
@@ -54,7 +54,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
                 <p className="font-medium">MX${p.currentValue.toFixed(2)}</p>
               </div>
             </div>
-            <div className="flex items-center justify-between text-xs pt-2 border-t border-white/10">
+            <div className="flex items-center justify-between text-xs pt-2 border-t border-border">
               <span className="text-text-secondary">{t('positionsTable.unrealizedPnl')}</span>
               <span
                 className="font-semibold"
@@ -71,7 +71,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
       <div className="hidden sm:block overflow-x-auto bg-bg-elevated rounded-2xl">
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-left text-text-secondary border-b border-white/10">
+          <tr className="text-left text-text-secondary border-b border-border">
             <th className="px-4 py-3 font-medium">{t('positionsTable.market')}</th>
             <th className="px-4 py-3 font-medium">{t('positionsTable.outcome')}</th>
             <th className="px-4 py-3 font-medium text-right">{t('positionsTable.qty')}</th>
@@ -82,7 +82,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
         </thead>
         <tbody>
           {positions.map((p) => (
-            <tr key={p.id} className="border-b border-white/10 last:border-0 hover:bg-white/5">
+            <tr key={p.id} className="border-b border-border last:border-0 hover:bg-overlay-1">
               <td className="px-4 py-3 max-w-[280px]">
                 <Link to={`/market/${p.market.slug}`} className="hover:text-accent-primary line-clamp-1">
                   {p.market.question}

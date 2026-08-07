@@ -19,11 +19,14 @@ export const es: typeof en = {
   bottomNav: {
     home: 'Inicio',
     markets: 'Mercados',
+    social: 'Social',
     profile: 'Perfil',
   },
   navbar: {
     searchPlaceholder: 'Buscar mercados...',
     closeSearch: 'Cerrar búsqueda',
+    switchToLight: 'Cambiar a modo claro',
+    switchToDark: 'Cambiar a modo oscuro',
     notifications: 'Notificaciones',
     deposit: 'Depositar',
     settings: 'Configuración',
@@ -43,7 +46,6 @@ export const es: typeof en = {
     signUp: 'Registrarse',
     trending: 'Tendencias',
     comingSoon: '{feature} estará disponible próximamente en esta demo.',
-    lightModeComingSoon: 'El modo claro estará disponible próximamente en esta demo.',
   },
   tradePanel: {
     loginPrompt: 'Inicia sesión para operar en este mercado.',
@@ -113,9 +115,6 @@ export const es: typeof en = {
   marketCard: {
     daysLeft: 'Quedan {days}d',
     closingSoon: 'cierra pronto',
-  },
-  probabilityRing: {
-    chance: 'prob.',
   },
   priceChart: {
     loading: 'Cargando gráfica…',
@@ -228,6 +227,30 @@ export const es: typeof en = {
     registrationFailed: 'Error en el registro',
     alreadyHaveAccount: '¿Ya tienes una cuenta? ',
     logIn: 'Iniciar sesión',
+  },
+  social: {
+    heading: 'Social',
+    placeholder: '¿Qué estás pensando?',
+    post: 'Publicar',
+    posting: 'Publicando…',
+    loginPrompt: 'Inicia sesión para compartir tu opinión con la comunidad.',
+    empty: 'Aún no hay publicaciones — sé el primero en compartir.',
+    loading: 'Cargando feed…',
+    like: 'Me gusta',
+    comment: 'Comentar',
+    commentsHeading: 'Comentarios',
+    commentPlaceholder: 'Agregar un comentario…',
+    send: 'Enviar',
+    noComments: 'Aún no hay comentarios.',
+    sentimentBullish: 'Alcista',
+    sentimentBearish: 'Bajista',
+    sentimentNeutral: 'Neutral',
+    filterNow: 'Ahora',
+    filterToday: 'Hoy',
+    filterWeek: 'Esta semana',
+    filterMonth: 'Este mes',
+    postFailed: 'No se pudo publicar',
+    commentFailed: 'No se pudo comentar',
   },
   home: {
     heroFallbackTitle: 'Opera sobre lo que pasa después.',

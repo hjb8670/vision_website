@@ -36,7 +36,7 @@ export function WalletCard() {
             type="button"
             disabled
             title={t('walletCard.comingSoon')}
-            className="flex-1 py-2 rounded-full bg-white/5 text-text-secondary text-sm font-semibold cursor-not-allowed"
+            className="flex-1 py-2 rounded-full bg-overlay-1 text-text-secondary text-sm font-semibold cursor-not-allowed"
           >
             {t('walletCard.withdrawComingSoon')}
           </button>
@@ -48,7 +48,7 @@ export function WalletCard() {
         {!transactions || transactions.length === 0 ? (
           <p className="text-sm text-text-secondary">{t('walletCard.noTransactions')}</p>
         ) : (
-          <ul className="divide-y divide-white/5 bg-bg-elevated rounded-2xl overflow-hidden">
+          <ul className="divide-y divide-border bg-bg-elevated rounded-2xl overflow-hidden">
             {transactions.map((tx) => (
               <li key={tx.id} className="flex items-center justify-between px-4 py-3 bg-bg-elevated">
                 <div>

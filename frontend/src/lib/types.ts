@@ -80,6 +80,32 @@ export interface UserProfile {
   createdAt: string;
 }
 
+export interface SocialPostAuthor {
+  id: string;
+  username: string;
+  avatarUrl: string | null;
+}
+
+export interface SocialPost {
+  id: string;
+  text: string;
+  images: string[];
+  sentiment: string | null;
+  tags: string[];
+  createdAt: string;
+  user: SocialPostAuthor;
+  likesCount: number;
+  commentsCount: number;
+  likedByMe: boolean;
+}
+
+export interface PostComment {
+  id: string;
+  text: string;
+  createdAt: string;
+  user: SocialPostAuthor;
+}
+
 export interface AppNotification {
   id: string;
   type: string;

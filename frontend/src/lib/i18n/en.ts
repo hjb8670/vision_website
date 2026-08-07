@@ -17,11 +17,14 @@ export const en = {
   bottomNav: {
     home: 'Home',
     markets: 'Markets',
+    social: 'Social',
     profile: 'Profile',
   },
   navbar: {
     searchPlaceholder: 'Search markets...',
     closeSearch: 'Close search',
+    switchToLight: 'Switch to light mode',
+    switchToDark: 'Switch to dark mode',
     notifications: 'Notifications',
     deposit: 'Deposit',
     settings: 'Settings',
@@ -41,7 +44,6 @@ export const en = {
     signUp: 'Sign up',
     trending: 'Trending',
     comingSoon: '{feature} is coming soon in this demo.',
-    lightModeComingSoon: 'Light mode is coming soon in this demo.',
   },
   tradePanel: {
     loginPrompt: 'Log in to trade on this market.',
@@ -111,9 +113,6 @@ export const en = {
   marketCard: {
     daysLeft: '{days}d left',
     closingSoon: 'closing soon',
-  },
-  probabilityRing: {
-    chance: 'chance',
   },
   priceChart: {
     loading: 'Loading chart…',
@@ -226,6 +225,30 @@ export const en = {
     registrationFailed: 'Registration failed',
     alreadyHaveAccount: 'Already have an account? ',
     logIn: 'Log in',
+  },
+  social: {
+    heading: 'Social',
+    placeholder: "What's on your mind?",
+    post: 'Post',
+    posting: 'Posting…',
+    loginPrompt: 'Log in to share your take with the community.',
+    empty: 'No posts yet — be the first to share your take.',
+    loading: 'Loading feed…',
+    like: 'Like',
+    comment: 'Comment',
+    commentsHeading: 'Comments',
+    commentPlaceholder: 'Add a comment…',
+    send: 'Send',
+    noComments: 'No comments yet.',
+    sentimentBullish: 'Bullish',
+    sentimentBearish: 'Bearish',
+    sentimentNeutral: 'Neutral',
+    filterNow: 'Now',
+    filterToday: 'Today',
+    filterWeek: 'This Week',
+    filterMonth: 'This Month',
+    postFailed: 'Could not post',
+    commentFailed: 'Could not comment',
   },
   home: {
     heroFallbackTitle: 'Trade on what happens next.',

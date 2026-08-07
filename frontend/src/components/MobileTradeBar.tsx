@@ -25,7 +25,7 @@ export function MobileTradeBar({ market }: { market: MarketDetail }) {
   return (
     <>
       <div
-        className="lg:hidden fixed left-0 right-0 z-20 bg-bg-secondary/95 backdrop-blur border-t border-white/10 px-4 py-3"
+        className="lg:hidden fixed left-0 right-0 z-20 bg-bg-secondary/95 backdrop-blur border-t border-border px-4 py-3"
         style={{ bottom: 'calc(4rem + var(--safe-bottom))' }}
       >
         <div className="flex items-center gap-3">
@@ -65,7 +65,7 @@ export function MobileTradeBar({ market }: { market: MarketDetail }) {
             }`}
             style={{ paddingBottom: 'calc(1rem + var(--safe-bottom))' }}
           >
-            <div className="w-10 h-1 rounded-full bg-white/20 mx-auto mb-4" />
+            <div className="w-10 h-1 rounded-full bg-overlay-3 mx-auto mb-4" />
             <TradePanel market={market} initialOutcome={sheetOutcome} onTraded={() => setSheetOutcome(null)} />
           </div>
         </div>

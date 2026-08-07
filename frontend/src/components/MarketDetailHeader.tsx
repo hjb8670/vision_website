@@ -36,7 +36,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
             <p className="text-sm text-text-secondary mb-1">
               {categoryLabel}
               {market.status === 'RESOLVED' && (
-                <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-text-primary">
+                <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded bg-overlay-2 text-text-primary">
                   {t('marketDetailHeader.resolved', {
                     outcome: t(market.resolvedOutcome === 'YES' ? 'common.yes' : 'common.no').toUpperCase(),
                   })}
@@ -52,7 +52,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
             type="button"
             onClick={copyLink}
             aria-label={t('marketDetailHeader.copyLink')}
-            className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
+            className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay-2"
           >
             <LinkIcon />
           </button>
@@ -60,7 +60,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
             type="button"
             onClick={() => setBookmarked((v) => !v)}
             aria-label={t('marketDetailHeader.bookmark')}
-            className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
+            className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay-2"
           >
             <BookmarkIcon filled={bookmarked} />
           </button>
@@ -85,7 +85,7 @@ export function MarketDetailHeader({ market }: { market: MarketDetail }) {
         </button>
       </div>
 
-      <div className="text-xs text-text-secondary border-t border-white/10 pt-3">
+      <div className="text-xs text-text-secondary border-t border-border pt-3">
         <span className="font-medium text-text-primary">{t('marketDetailHeader.resolutionSource')}</span>
         {market.resolutionSource}
       </div>

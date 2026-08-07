@@ -4,7 +4,7 @@ export function LanguageSwitch() {
   const { lang, setLang } = useLanguageStore();
 
   return (
-    <div className="flex items-center rounded-full bg-white/5 p-0.5 text-xs font-semibold shrink-0">
+    <div className="flex items-center rounded-full bg-overlay-1 p-0.5 text-xs font-semibold shrink-0">
       <button
         type="button"
         onClick={() => setLang('en')}

@@ -99,15 +99,31 @@ const DEFAULT_ICON = (
   </>
 );
 
+const COLORS: Record<string, string> = {
+  deportes: '#2563eb',
+  política: '#7c3aed',
+  elecciones: '#0891b2',
+  cultura: '#db2777',
+  entretenimiento: '#ea580c',
+  cripto: '#f59e0b',
+  clima: '#0ea5e9',
+  economía: '#2563eb',
+  finanzas: '#16a34a',
+  tecnología: '#4f46e5',
+  ciencia: '#059669',
+};
+
 export function CategoryIcon({ label, size = 40 }: { label: string; size?: number }) {
-  const icon = ICONS[label.toLowerCase()] ?? DEFAULT_ICON;
+  const key = label.toLowerCase();
+  const icon = ICONS[key] ?? DEFAULT_ICON;
+  const color = COLORS[key];
 
   return (
     <div
-      className="shrink-0 flex items-center justify-center rounded-lg bg-white/5"
-      style={{ width: size, height: size }}
+      className={`shrink-0 flex items-center justify-center rounded-lg ${color ? '' : 'bg-overlay-1'}`}
+      style={{ width: size, height: size, background: color }}
     >
-      <svg {...ICON_PROPS} width={size * 0.55} height={size * 0.55} className="text-text-secondary">
+      <svg {...ICON_PROPS} width={size * 0.55} height={size * 0.55} className={color ? 'text-white' : 'text-text-secondary'}>
         {icon}
       </svg>
     </div>

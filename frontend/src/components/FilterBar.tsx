@@ -28,7 +28,7 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
           type="button"
           onClick={() => onCategoryChange(undefined)}
           className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-            !category ? 'bg-accent-primary text-white' : 'bg-white/5 text-text-secondary hover:text-text-primary'
+            !category ? 'bg-accent-primary text-white' : 'bg-overlay-1 text-text-secondary hover:text-text-primary'
           }`}
         >
           {t('filterBar.all')}
@@ -43,7 +43,7 @@ export function FilterBar({ sf, onSfChange, category, onCategoryChange }: Filter
         <select
           value={sf}
           onChange={(e) => onSfChange(e.target.value as SortFilter)}
-          className="bg-bg-elevated border border-white/10 rounded-md px-2 py-1 text-sm focus:outline-none focus:border-accent-primary"
+          className="bg-bg-elevated border border-border rounded-md px-2 py-1 text-sm focus:outline-none focus:border-accent-primary"
         >
           {SORTS.map((s) => (
             <option key={s.value} value={s.value} className="bg-bg-elevated text-text-primary">
@@ -71,7 +71,7 @@ function CategoryFilterPill({
       type="button"
       onClick={() => onSelect(category.slug)}
       className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-        active ? 'bg-accent-primary text-white' : 'bg-white/5 text-text-secondary hover:text-text-primary'
+        active ? 'bg-accent-primary text-white' : 'bg-overlay-1 text-text-secondary hover:text-text-primary'
       }`}
     >
       {label}

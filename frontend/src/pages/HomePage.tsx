@@ -134,7 +134,7 @@ export function HomePage() {
             <select
               value={allSf}
               onChange={(e) => setAllSf(e.target.value as SortFilter)}
-              className="bg-bg-elevated border border-white/10 rounded-md px-2 py-1 text-sm focus:outline-none focus:border-accent-primary"
+              className="bg-bg-elevated border border-border rounded-md px-2 py-1 text-sm focus:outline-none focus:border-accent-primary"
             >
               {SORTS.map((s) => (
                 <option key={s.value} value={s.value} className="bg-bg-elevated text-text-primary">

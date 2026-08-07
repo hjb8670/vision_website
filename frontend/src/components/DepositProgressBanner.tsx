@@ -16,7 +16,7 @@ export function DepositProgressBanner() {
   return (
     <div className="rounded-2xl bg-bg-elevated p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <div className="w-10 h-2 rounded-full bg-white/10 overflow-hidden shrink-0">
+        <div className="w-10 h-2 rounded-full bg-overlay-2 overflow-hidden shrink-0">
           <div className="h-full w-1/2 bg-accent-primary" />
         </div>
         <div>

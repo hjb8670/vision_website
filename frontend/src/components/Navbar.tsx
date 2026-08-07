@@ -8,17 +8,19 @@ import { useTranslation } from '../lib/i18n/useTranslation';
 import { useCategoryLabel } from '../lib/i18n/categories';
 import { LanguageSwitch } from './LanguageSwitch';
 import { NotificationBell } from './NotificationBell';
+import { ThemeToggle } from './ThemeToggle';
+import { useThemeStore } from '../store/themeStore';
 import visionLogo from '../assets/vision-logo.png';
 
 export function Navbar() {
   const { user, logout } = useAuthStore();
   const { data: wallet } = useWalletBalance();
   const { data: categories } = useCategories();
+  const { theme, toggleTheme } = useThemeStore();
   const push = useToastStore((s) => s.push);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
 
   function stub(feature: string) {
@@ -40,14 +42,14 @@ export function Navbar() {
             <input
               type="search"
               placeholder={t('navbar.searchPlaceholder')}
-              className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
+              className="w-full bg-overlay-1 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
             />
           </div>
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
             aria-label={t('navbar.searchPlaceholder')}
-            className="sm:hidden p-1.5 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
+            className="sm:hidden p-1.5 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay-2"
           >
             <SearchIcon />
           </button>
@@ -57,11 +59,13 @@ export function Navbar() {
           <LanguageSwitch />
         </div>
 
+        <ThemeToggle />
+
         <NotificationBell />
 
         {user ? (
           <div className="flex items-center gap-1.5 sm:gap-3">
-            <Link to="/wallet" className="px-3.5 py-1.5 rounded-full bg-white/5 text-sm font-medium hidden sm:block">
+            <Link to="/wallet" className="px-3.5 py-1.5 rounded-full bg-overlay-1 text-sm font-medium hidden sm:block">
               MX${wallet?.balance?.toFixed(2) ?? '—'}
             </Link>
             <button
@@ -92,73 +96,70 @@ export function Navbar() {
                       to={`/profile/${user.username}`}
                       onClick={() => setMenuOpen(false)}
                       aria-label={t('navbar.settings')}
-                      className="p-1.5 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10 shrink-0"
+                      className="p-1.5 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay-2 shrink-0"
                     >
                       <GearIcon />
                     </Link>
                   </div>
 
-                  <div className="h-px bg-white/10 my-1.5" />
+                  <div className="h-px bg-overlay-2 my-1.5" />
 
-                  <Link to="/portfolio" className="flex items-center gap-3 px-4 py-2 hover:bg-white/5" onClick={() => setMenuOpen(false)}>
+                  <Link to="/portfolio" className="flex items-center gap-3 px-4 py-2 hover:bg-overlay-1" onClick={() => setMenuOpen(false)}>
                     <RowIcon>📊</RowIcon> {t('navbar.portfolio')}
                   </Link>
-                  <Link to="/wallet" className="flex items-center gap-3 px-4 py-2 hover:bg-white/5" onClick={() => setMenuOpen(false)}>
+                  <Link to="/wallet" className="flex items-center gap-3 px-4 py-2 hover:bg-overlay-1" onClick={() => setMenuOpen(false)}>
                     <RowIcon>👛</RowIcon> {t('navbar.wallet')}
                   </Link>
-                  <Link to="/leaderboard" className="flex items-center gap-3 px-4 py-2 hover:bg-white/5" onClick={() => setMenuOpen(false)}>
+                  <Link to="/leaderboard" className="flex items-center gap-3 px-4 py-2 hover:bg-overlay-1" onClick={() => setMenuOpen(false)}>
                     <RowIcon>🏆</RowIcon> {t('navbar.leaderboard')}
                   </Link>
-                  <button type="button" onClick={() => stub(t('navbar.rewards'))} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/5 text-left">
+                  <button type="button" onClick={() => stub(t('navbar.rewards'))} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-overlay-1 text-left">
                     <RowIcon>💰</RowIcon> {t('navbar.rewards')}
                   </button>
-                  <button type="button" onClick={() => stub(t('navbar.apis'))} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/5 text-left">
+                  <button type="button" onClick={() => stub(t('navbar.apis'))} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-overlay-1 text-left">
                     <RowIcon>🔌</RowIcon> {t('navbar.apis')}
                   </button>
-                  <Link to="/referral" className="flex items-center gap-3 px-4 py-2 hover:bg-white/5" onClick={() => setMenuOpen(false)}>
+                  <Link to="/referral" className="flex items-center gap-3 px-4 py-2 hover:bg-overlay-1" onClick={() => setMenuOpen(false)}>
                     <RowIcon>🎁</RowIcon> {t('navbar.referEarn')}
                   </Link>
-                  <button type="button" onClick={() => stub(t('navbar.builders'))} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/5 text-left">
+                  <button type="button" onClick={() => stub(t('navbar.builders'))} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-overlay-1 text-left">
                     <RowIcon>🛠️</RowIcon> {t('navbar.builders')}
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => {
-                      push(t('navbar.lightModeComingSoon'));
-                      setDarkMode((v) => !v);
-                    }}
-                    className="w-full flex items-center justify-between px-4 py-2 hover:bg-white/5"
+                    onClick={toggleTheme}
+                    className="w-full flex items-center justify-between px-4 py-2 hover:bg-overlay-1"
                   >
                     <span className="flex items-center gap-3">
                       <RowIcon>🌙</RowIcon> {t('navbar.darkMode')}
                     </span>
                     <span
                       className={`w-9 h-5 rounded-full flex items-center px-0.5 transition-colors ${
-                        darkMode ? 'bg-accent-primary justify-end' : 'bg-white/15 justify-start'
+                        theme === 'dark' ? 'bg-accent-primary justify-end' : 'bg-overlay-3 justify-start'
                       }`}
                     >
                       <span className="w-4 h-4 rounded-full bg-white" />
                     </span>
                   </button>
 
-                  <div className="h-px bg-white/10 my-1.5" />
+                  <div className="h-px bg-overlay-2 my-1.5" />
 
-                  <button type="button" onClick={() => stub(t('navbar.accuracy'))} className="w-full text-left px-4 py-2 hover:bg-white/5 text-text-secondary">
+                  <button type="button" onClick={() => stub(t('navbar.accuracy'))} className="w-full text-left px-4 py-2 hover:bg-overlay-1 text-text-secondary">
                     {t('navbar.accuracy')}
                   </button>
-                  <button type="button" onClick={() => stub(t('navbar.support'))} className="w-full text-left px-4 py-2 hover:bg-white/5 text-text-secondary">
+                  <button type="button" onClick={() => stub(t('navbar.support'))} className="w-full text-left px-4 py-2 hover:bg-overlay-1 text-text-secondary">
                     {t('navbar.support')}
                   </button>
-                  <button type="button" onClick={() => stub(t('navbar.status'))} className="w-full text-left px-4 py-2 hover:bg-white/5 text-text-secondary">
+                  <button type="button" onClick={() => stub(t('navbar.status'))} className="w-full text-left px-4 py-2 hover:bg-overlay-1 text-text-secondary">
                     {t('navbar.status')}
                   </button>
 
-                  <div className="h-px bg-white/10 my-1.5" />
+                  <div className="h-px bg-overlay-2 my-1.5" />
 
                   <button
                     type="button"
-                    className="w-full text-left px-4 py-2 hover:bg-white/5 text-error"
+                    className="w-full text-left px-4 py-2 hover:bg-overlay-1 text-error"
                     onClick={() => {
                       logout();
                       setMenuOpen(false);
@@ -175,7 +176,7 @@ export function Navbar() {
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <Link
               to="/login"
-              className="px-2.5 sm:px-4 py-1.5 rounded-full border border-white/15 text-xs sm:text-sm font-medium whitespace-nowrap hover:bg-white/5 transition-colors"
+              className="px-2.5 sm:px-4 py-1.5 rounded-full border border-border text-xs sm:text-sm font-medium whitespace-nowrap hover:bg-overlay-1 transition-colors"
             >
               {t('navbar.logIn')}
             </Link>
@@ -197,48 +198,53 @@ export function Navbar() {
               type="search"
               autoFocus
               placeholder={t('navbar.searchPlaceholder')}
-              className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
+              className="w-full bg-overlay-1 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
             />
           </div>
           <button
             type="button"
             onClick={() => setSearchOpen(false)}
             aria-label={t('navbar.closeSearch')}
-            className="shrink-0 p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10"
+            className="shrink-0 p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay-2"
           >
             <CloseIcon />
           </button>
         </div>
       )}
 
-      <nav className="max-w-7xl mx-auto flex items-center gap-1 px-4 pb-2.5 overflow-x-auto text-sm">
+      <nav className="max-w-7xl mx-auto flex items-center gap-5 px-4 pb-2.5 overflow-x-auto text-sm">
         <Link
           to="/markets?sf=trending"
-          className="shrink-0 px-3 py-1 rounded-full font-medium text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors"
+          className="shrink-0 font-bold text-text-primary hover:text-accent-primary transition-colors"
         >
           {t('navbar.trending')}
         </Link>
         <Link
           to="/leaderboard"
-          className="shrink-0 px-3 py-1 rounded-full font-medium text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors"
+          className="shrink-0 font-medium text-text-secondary hover:text-text-primary transition-colors"
         >
           {t('navbar.leaderboard')}
         </Link>
-        <span className="w-px h-4 bg-white/10 mx-1 shrink-0" />
+        <Link
+          to="/social"
+          className="shrink-0 font-medium text-text-secondary hover:text-text-primary transition-colors"
+        >
+          {t('bottomNav.social')}
+        </Link>
         {categories?.map((c) => (
-          <CategoryPill key={c.id} category={c} />
+          <CategoryTab key={c.id} category={c} />
         ))}
       </nav>
     </header>
   );
 }
 
-function CategoryPill({ category }: { category: { id: string; slug: string; name: string } }) {
+function CategoryTab({ category }: { category: { id: string; slug: string; name: string } }) {
   const label = useCategoryLabel(category);
   return (
     <Link
       to={`/markets?category=${category.slug}`}
-      className="shrink-0 px-3 py-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors"
+      className="shrink-0 font-medium text-text-secondary hover:text-text-primary transition-colors"
     >
       {label}
     </Link>
