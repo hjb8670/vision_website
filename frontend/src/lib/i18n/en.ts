@@ -8,8 +8,14 @@ export const en = {
       RESOLVED: 'Resolved',
     },
   },
+  bottomNav: {
+    home: 'Home',
+    markets: 'Markets',
+    profile: 'Profile',
+  },
   navbar: {
     searchPlaceholder: 'Search markets...',
+    closeSearch: 'Close search',
     notifications: 'Notifications',
     deposit: 'Deposit',
     settings: 'Settings',
@@ -33,6 +39,7 @@ export const en = {
   },
   tradePanel: {
     loginPrompt: 'Log in to trade on this market.',
+    closeSheet: 'Close order slip',
     market: 'Market',
     buy: 'Buy',
     sell: 'Sell',

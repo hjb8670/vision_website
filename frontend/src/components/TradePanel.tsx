@@ -13,7 +13,15 @@ import type { MarketDetail } from '../lib/types';
 
 const QUICK_AMOUNTS = [1, 5, 10, 100];
 
-export function TradePanel({ market }: { market: MarketDetail }) {
+export function TradePanel({
+  market,
+  initialOutcome = 'YES',
+  onTraded,
+}: {
+  market: MarketDetail;
+  initialOutcome?: Outcome;
+  onTraded?: () => void;
+}) {
   const { token } = useAuthStore();
   const { data: wallet } = useWalletBalance();
   const { data: positions } = usePositions();
@@ -23,7 +31,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
   const { t, lang } = useTranslation();
 
   const [side, setSide] = useState<'BUY' | 'SELL'>('BUY');
-  const [outcome, setOutcome] = useState<Outcome>('YES');
+  const [outcome, setOutcome] = useState<Outcome>(initialOutcome);
   const [amount, setAmount] = useState(0);
 
   const balance = wallet?.balance ?? 0;
@@ -65,6 +73,7 @@ export function TradePanel({ market }: { market: MarketDetail }) {
       queryClient.invalidateQueries({ queryKey: ['wallet-balance'] });
       queryClient.invalidateQueries({ queryKey: ['positions'] });
       queryClient.invalidateQueries({ queryKey: ['markets'] });
+      onTraded?.();
     },
     onError: (err: any) => {
       push(err?.response?.data?.message ?? t('tradePanel.tradeFailed'), 'error');

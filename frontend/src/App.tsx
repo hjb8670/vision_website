@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
+import { BottomNav } from './components/BottomNav';
 import { ToastHost } from './components/ToastHost';
 import { HomePage } from './pages/HomePage';
 import { MarketsPage } from './pages/MarketsPage';
@@ -17,7 +18,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 pb-[calc(4rem+var(--safe-bottom))] lg:pb-0">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/markets" element={<MarketsPage />} />
@@ -33,6 +34,7 @@ function App() {
         </Routes>
       </main>
       <ToastHost />
+      <BottomNav />
     </>
   );
 }

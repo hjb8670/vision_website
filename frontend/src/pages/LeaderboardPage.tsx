@@ -75,8 +75,8 @@ export function LeaderboardPage() {
             ))}
           </div>
 
-          <div className="flex items-center justify-between gap-3">
-            <div className="relative flex-1 max-w-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="relative flex-1 sm:max-w-xs">
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
               <input
                 type="search"
@@ -86,18 +86,18 @@ export function LeaderboardPage() {
                 className="w-full bg-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
               />
             </div>
-            <div className="flex gap-10 pr-4 text-xs text-text-secondary shrink-0">
+            <div className="flex gap-4 sm:gap-10 sm:pr-4 text-xs text-text-secondary shrink-0">
               <button
                 type="button"
                 onClick={() => setSortBy('profit')}
-                className={`w-24 text-right font-semibold ${sortBy === 'profit' ? 'text-text-primary' : ''}`}
+                className={`w-24 text-right truncate font-semibold ${sortBy === 'profit' ? 'text-text-primary' : ''}`}
               >
                 {t('leaderboardTable.profitLoss')}
               </button>
               <button
                 type="button"
                 onClick={() => setSortBy('volume')}
-                className={`w-24 text-right font-semibold ${sortBy === 'volume' ? 'text-text-primary' : ''}`}
+                className={`w-24 text-right truncate font-semibold ${sortBy === 'volume' ? 'text-text-primary' : ''}`}
               >
                 {t('leaderboardTable.volume')}
               </button>

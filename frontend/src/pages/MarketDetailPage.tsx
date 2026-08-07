@@ -3,6 +3,7 @@ import { useMarket } from '../hooks/useMarkets';
 import { MarketDetailHeader } from '../components/MarketDetailHeader';
 import { PriceChart } from '../components/PriceChart';
 import { TradePanel } from '../components/TradePanel';
+import { MobileTradeBar } from '../components/MobileTradeBar';
 import { useTranslation } from '../lib/i18n/useTranslation';
 
 export function MarketDetailPage() {
@@ -18,16 +19,19 @@ export function MarketDetailPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2 space-y-6">
-        <MarketDetailHeader market={market} />
-        <PriceChart marketId={market.id} />
-      </div>
-      <div>
-        <div className="lg:sticky lg:top-20">
-          <TradePanel market={market} />
+    <>
+      <div className="max-w-7xl mx-auto px-4 py-8 pb-[4.5rem] lg:pb-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <MarketDetailHeader market={market} />
+          <PriceChart marketId={market.id} />
+        </div>
+        <div className="hidden lg:block">
+          <div className="lg:sticky lg:top-20">
+            <TradePanel market={market} />
+          </div>
         </div>
       </div>
-    </div>
+      <MobileTradeBar market={market} />
+    </>
   );
 }

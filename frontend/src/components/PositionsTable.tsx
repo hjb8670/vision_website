@@ -20,7 +20,55 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
   }
 
   return (
-    <div className="overflow-x-auto bg-bg-elevated rounded-2xl">
+    <>
+      <div className="sm:hidden space-y-3">
+        {positions.map((p) => (
+          <Link
+            key={p.id}
+            to={`/market/${p.market.slug}`}
+            className="block bg-bg-elevated rounded-2xl p-4 space-y-3 hover:bg-white/5"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-sm font-medium line-clamp-2 min-w-0">{p.market.question}</p>
+              <span
+                className="shrink-0 text-xs font-bold px-2 py-0.5 rounded"
+                style={{
+                  background: p.outcome === 'YES' ? 'var(--color-yes)' : 'var(--color-no)',
+                  color: p.outcome === 'YES' ? 'var(--color-bg-primary)' : '#fff',
+                }}
+              >
+                {t(p.outcome === 'YES' ? 'common.yes' : 'common.no').toUpperCase()}
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div>
+                <p className="text-text-secondary mb-0.5">{t('positionsTable.qty')}</p>
+                <p className="font-medium">{p.quantity.toFixed(2)}</p>
+              </div>
+              <div>
+                <p className="text-text-secondary mb-0.5">{t('positionsTable.avgEntry')}</p>
+                <p className="font-medium">{(p.avgEntryPrice * 100).toFixed(1)}¢</p>
+              </div>
+              <div>
+                <p className="text-text-secondary mb-0.5">{t('positionsTable.currentValue')}</p>
+                <p className="font-medium">MX${p.currentValue.toFixed(2)}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-xs pt-2 border-t border-white/10">
+              <span className="text-text-secondary">{t('positionsTable.unrealizedPnl')}</span>
+              <span
+                className="font-semibold"
+                style={{ color: p.unrealizedPnl >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}
+              >
+                {p.unrealizedPnl >= 0 ? '+' : ''}
+                {p.unrealizedPnl.toFixed(2)}
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="hidden sm:block overflow-x-auto bg-bg-elevated rounded-2xl">
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-text-secondary border-b border-white/10">
@@ -65,6 +113,7 @@ export function PositionsTable({ positions }: { positions: Position[] }) {
           ))}
         </tbody>
       </table>
-    </div>
+      </div>
+    </>
   );
 }

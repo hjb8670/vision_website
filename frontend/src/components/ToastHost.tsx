@@ -4,7 +4,7 @@ export function ToastHost() {
   const { toasts, dismiss } = useToastStore();
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)]">
+    <div className="fixed right-4 z-50 flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)] bottom-[calc(4rem+var(--safe-bottom)+1rem)] lg:bottom-4">
       {toasts.map((t) => (
         <button
           key={t.id}

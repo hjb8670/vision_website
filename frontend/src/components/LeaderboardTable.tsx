@@ -24,9 +24,9 @@ export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
     <div className="bg-bg-elevated rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 text-xs text-text-secondary border-b border-white/5">
         <span />
-        <div className="flex gap-10">
-          <span className={sortBy === 'profit' ? 'text-text-primary font-semibold' : ''}>{t('leaderboardTable.profitLoss')}</span>
-          <span className={sortBy === 'volume' ? 'text-text-primary font-semibold' : ''}>{t('leaderboardTable.volume')}</span>
+        <div className="flex gap-4 sm:gap-10">
+          <span className={`w-24 text-right truncate ${sortBy === 'profit' ? 'text-text-primary font-semibold' : ''}`}>{t('leaderboardTable.profitLoss')}</span>
+          <span className={`w-24 text-right truncate ${sortBy === 'volume' ? 'text-text-primary font-semibold' : ''}`}>{t('leaderboardTable.volume')}</span>
         </div>
       </div>
       {rows.length === 0 ? (
@@ -52,14 +52,14 @@ export function LeaderboardTable({ rows, sortBy }: LeaderboardTableProps) {
                   {isYou && <span className="text-text-secondary font-normal">{t('leaderboardTable.you')}</span>}
                 </span>
               </div>
-              <div className="flex gap-10 text-sm shrink-0">
+              <div className="flex gap-4 sm:gap-10 text-xs sm:text-sm shrink-0">
                 <span
-                  className="w-24 text-right font-semibold"
+                  className="w-20 sm:w-24 text-right font-semibold"
                   style={{ color: row.profit >= 0 ? 'var(--color-success)' : 'var(--color-error)' }}
                 >
                   {row.profit >= 0 ? '+' : ''}MX${row.profit.toFixed(2)}
                 </span>
-                <span className="w-24 text-right text-text-secondary">MX${row.volume.toFixed(2)}</span>
+                <span className="w-20 sm:w-24 text-right text-text-secondary">MX${row.volume.toFixed(2)}</span>
               </div>
             </div>
           );

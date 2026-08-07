@@ -20,6 +20,12 @@
 
 :root {
   color-scheme: dark;
+  --bottom-nav-h: 4rem;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -28,6 +34,8 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   min-height: 100svh;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #root {

@@ -10,8 +10,14 @@ export const es: typeof en = {
       RESOLVED: 'Resuelto',
     },
   },
+  bottomNav: {
+    home: 'Inicio',
+    markets: 'Mercados',
+    profile: 'Perfil',
+  },
   navbar: {
     searchPlaceholder: 'Buscar mercados...',
+    closeSearch: 'Cerrar búsqueda',
     notifications: 'Notificaciones',
     deposit: 'Depositar',
     settings: 'Configuración',
@@ -35,6 +41,7 @@ export const es: typeof en = {
   },
   tradePanel: {
     loginPrompt: 'Inicia sesión para operar en este mercado.',
+    closeSheet: 'Cerrar orden',
     market: 'Mercado',
     buy: 'Comprar',
     sell: 'Vender',
