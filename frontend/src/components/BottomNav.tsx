@@ -12,17 +12,17 @@ export function BottomNav() {
   const items = [
     { to: '/', label: t('bottomNav.home'), icon: HomeIcon, active: pathname === '/' },
     { to: '/markets', label: t('bottomNav.markets'), icon: MarketsIcon, active: pathname.startsWith('/markets') || pathname.startsWith('/market/') },
-    {
-      to: user ? '/portfolio' : '/login',
+    user && {
+      to: '/portfolio',
       label: t('navbar.portfolio'),
       icon: PortfolioIcon,
-      active: !!user && pathname === '/portfolio',
+      active: pathname === '/portfolio',
     },
-    {
-      to: user ? '/wallet' : '/login',
+    user && {
+      to: '/wallet',
       label: t('navbar.wallet'),
       icon: WalletIcon,
-      active: !!user && pathname === '/wallet',
+      active: pathname === '/wallet',
     },
     {
       to: user ? `/profile/${user.username}` : '/login',
@@ -30,14 +30,14 @@ export function BottomNav() {
       icon: ProfileIcon,
       active: user ? pathname === `/profile/${user.username}` : pathname === '/login' || pathname === '/register',
     },
-  ];
+  ].filter((item): item is Exclude<typeof item, false | null | undefined> => !!item);
 
   return (
     <nav
       className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-bg-secondary/95 backdrop-blur border-t border-white/10"
       style={{ paddingBottom: 'var(--safe-bottom)' }}
     >
-      <div className="grid grid-cols-5 h-16">
+      <div className={`grid h-16 ${items.length === 5 ? 'grid-cols-5' : 'grid-cols-3'}`}>
         {items.map((item) => (
           <Link
             key={item.label + item.to}

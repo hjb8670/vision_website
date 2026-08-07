@@ -72,6 +72,14 @@ export interface BiggestWin {
   note: string | null;
 }
 
+export interface UserProfile {
+  id: string;
+  username: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
 export interface AppNotification {
   id: string;
   type: string;
